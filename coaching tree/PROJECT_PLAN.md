@@ -144,16 +144,27 @@ Meyer's prolific branch, Barry Alvarez's Wisconsin lineage, and others.
 
 ## Task Breakdown
 
+### Phase 1 — Data Collection
 - [x] Define project scope and approach
 - [x] Create research brief for distributed data collection (RESEARCH_BRIEF.md)
 - [ ] Collect Holtz upstream lineage data
 - [ ] Collect Holtz staff rosters (all 7 stops)
 - [ ] Collect Gen-1 protege career data
+- [x] **Bob Davie tree** — ND coordinators 1997-2001, 6 assistants-turned-HCs identified
+- [ ] Collect remaining Gen-1 protege career data (Alvarez, Skip Holtz, etc.)
 - [ ] Collect Gen-2 protege career data (Meyer tree, Alvarez tree, etc.)
 - [ ] Collect Gen-3 protege data (where available)
-- [ ] Create JSON schema files and ingest research data
+
+### Phase 2 — Data Model & Ingestion
+- [x] Create JSON data files (`data/coaches.json`, `stints.json`, `relationships.json`)
+- [x] Seed with Davie tree research (11 coaches, 30 stints, 10 relationships)
+- [ ] Ingest additional research rounds as they complete
 - [ ] Validate and cross-reference data
-- [ ] Build NetworkX prototype visualization
+
+### Phase 3 — Visualization
+- [x] Build NetworkX + pyvis prototype (`visualize.py`)
+- [x] Interactive HTML output (`coaching_tree.html`) — force-directed, hover tooltips, dark theme
+- [x] Static PNG output (`coaching_tree.png`) — matplotlib fallback
 - [ ] Build interactive web visualization (D3 or Cytoscape)
 
 ---
@@ -164,6 +175,9 @@ Meyer's prolific branch, Barry Alvarez's Wisconsin lineage, and others.
 |------|---------|
 | `PROJECT_PLAN.md` | This file — project overview and status |
 | `RESEARCH_BRIEF.md` | Detailed spec for data collection (hand to research agents) |
-| `data/coaches.json` | Coach node data (created in Phase 2) |
-| `data/stints.json` | Career stint data (created in Phase 2) |
-| `data/relationships.json` | Mentor-protege edges (created in Phase 2) |
+| `data/coaches.json` | Coach node data — 11 coaches seeded from Davie tree |
+| `data/stints.json` | Career stint data — 30 stints across all seeded coaches |
+| `data/relationships.json` | Mentor-protege edges — 10 relationships including dual-mentorship paths |
+| `visualize.py` | NetworkX + pyvis prototype — generates HTML (interactive) and PNG (static) |
+| `coaching_tree.html` | Generated interactive visualization (open in browser) |
+| `coaching_tree.png` | Generated static visualization |

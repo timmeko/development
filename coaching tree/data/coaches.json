@@ -1,0 +1,80 @@
+{
+  "lou-holtz": {
+    "name": "Lou Holtz",
+    "born": 1937,
+    "birthplace": "Follansbee, WV",
+    "alma_mater": "Kent State",
+    "current_status": "retired",
+    "generation": 0
+  },
+  "bob-davie": {
+    "name": "Bob Davie",
+    "born": 1954,
+    "alma_mater": "Youngstown State",
+    "current_status": "retired",
+    "generation": 1
+  },
+  "urban-meyer": {
+    "name": "Urban Meyer",
+    "born": 1964,
+    "alma_mater": "Cincinnati",
+    "current_status": "retired",
+    "generation": 1
+  },
+  "charlie-strong": {
+    "name": "Charlie Strong",
+    "born": 1960,
+    "alma_mater": "Central Arkansas",
+    "current_status": "retired",
+    "generation": 1
+  },
+  "steve-addazio": {
+    "name": "Steve Addazio",
+    "born": 1959,
+    "alma_mater": "Central Connecticut State",
+    "current_status": "retired",
+    "generation": 2
+  },
+  "dan-mullen": {
+    "name": "Dan Mullen",
+    "born": 1972,
+    "alma_mater": "Ursinus",
+    "current_status": "active",
+    "generation": 2
+  },
+  "joker-phillips": {
+    "name": "Joker Phillips",
+    "born": 1963,
+    "alma_mater": "Kentucky",
+    "current_status": "active",
+    "generation": 2
+  },
+  "jerry-rosburg": {
+    "name": "Jerry Rosburg",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2
+  },
+  "jim-colletto": {
+    "name": "Jim Colletto",
+    "born": 1942,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2
+  },
+  "kevin-rogers": {
+    "name": "Kevin Rogers",
+    "born": null,
+    "alma_mater": null,
+    "current_status": null,
+    "generation": 2
+  },
+  "greg-mattison": {
+    "name": "Greg Mattison",
+    "born": 1949,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2
+  }
+}
