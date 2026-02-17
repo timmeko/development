@@ -1118,5 +1118,369 @@
     "generation_gap": 1,
     "confidence": "high",
     "notes": "WR coach/OC at Ohio State under Day 2019-25; hired as HC at South Florida (2026)"
+  },
+
+  {
+    "id": "alvarez-to-cosgrove",
+    "mentor_id": "barry-alvarez",
+    "protege_id": "kevin-cosgrove",
+    "school": "Wisconsin",
+    "year_start": 1995,
+    "year_end": 2003,
+    "relationship_type": "direct_report",
+    "protege_role": "LB/DC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Interim HC at New Mexico 2009"
+  },
+
+  {
+    "id": "amato-to-swepson",
+    "mentor_id": "chuck-amato",
+    "protege_id": "jason-swepson",
+    "school": "NC State",
+    "year_start": 2001,
+    "year_end": 2006,
+    "relationship_type": "direct_report",
+    "protege_role": "QB Coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Elon 2017-18"
+  },
+
+  {
+    "id": "amato-to-herring",
+    "mentor_id": "chuck-amato",
+    "protege_id": "reggie-herring",
+    "school": "NC State",
+    "year_start": 2002,
+    "year_end": 2006,
+    "relationship_type": "direct_report",
+    "protege_role": "DC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Interim HC at Houston 2014"
+  },
+
+  {
+    "id": "amato-to-roof",
+    "mentor_id": "chuck-amato",
+    "protege_id": "ted-roof",
+    "school": "NC State",
+    "year_start": 2000,
+    "year_end": 2006,
+    "relationship_type": "direct_report",
+    "protege_role": "DC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Duke 2004-07"
+  },
+
+  {
+    "id": "amato-to-pate",
+    "mentor_id": "chuck-amato",
+    "protege_id": "joe-pate",
+    "school": "NC State",
+    "year_start": 2003,
+    "year_end": 2005,
+    "relationship_type": "direct_report",
+    "protege_role": "TE/ST",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Tennessee Tech 2017-present"
+  },
+
+  {
+    "id": "davie-to-debusse",
+    "mentor_id": "bob-davie",
+    "protege_id": "bob-debusse",
+    "school": "New Mexico",
+    "year_start": 2012,
+    "year_end": 2016,
+    "relationship_type": "direct_report",
+    "protege_role": "OC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Southwest Minnesota State 1993-2005"
+  },
+
+  {
+    "id": "davie-to-long",
+    "mentor_id": "bob-davie",
+    "protege_id": "chip-long",
+    "school": "New Mexico",
+    "year_start": 2017,
+    "year_end": 2019,
+    "relationship_type": "direct_report",
+    "protege_role": "OC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Tulane 2023-present"
+  },
+
+  {
+    "id": "minter-to-dantonio",
+    "mentor_id": "rick-minter",
+    "protege_id": "mark-dantonio",
+    "school": "Cincinnati",
+    "year_start": 1997,
+    "year_end": 2000,
+    "relationship_type": "direct_report",
+    "protege_role": "DC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Central Michigan (2004-06), Cincinnati (2007), Michigan State (2007-19)"
+  },
+
+  {
+    "id": "minter-to-narduzzi",
+    "mentor_id": "rick-minter",
+    "protege_id": "pat-narduzzi",
+    "school": "Cincinnati",
+    "year_start": 1997,
+    "year_end": 2003,
+    "relationship_type": "direct_report",
+    "protege_role": "LB Coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Pittsburgh 2015-present"
+  },
+
+  {
+    "id": "minter-to-kelly",
+    "mentor_id": "rick-minter",
+    "protege_id": "brian-kelly",
+    "school": "Cincinnati",
+    "year_start": 1994,
+    "year_end": 1996,
+    "relationship_type": "direct_report",
+    "protege_role": "OC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Grand Valley, Central Michigan, Cincinnati, Notre Dame (2010-21), LSU (2022-present)"
+  },
+
+  {
+    "id": "kiffin-to-dungy",
+    "mentor_id": "monte-kiffin",
+    "protege_id": "tony-dungy",
+    "school": "Minnesota Vikings",
+    "year_start": 1986,
+    "year_end": 1986,
+    "relationship_type": "direct_report",
+    "protege_role": "DB Coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Tampa Bay (1996-01), Indianapolis Colts (2002-11)"
+  },
+
+  {
+    "id": "kiffin-to-lane-kiffin",
+    "mentor_id": "monte-kiffin",
+    "protege_id": "lane-kiffin",
+    "school": "USC",
+    "year_start": 2010,
+    "year_end": 2012,
+    "relationship_type": "direct_report",
+    "protege_role": "OC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Oakland Raiders (2007-08), Tennessee (2009), USC (2010-13), FAU (2017-19), Ole Miss (2020-present). Son of Monte Kiffin."
+  },
+
+  {
+    "id": "kiffin-to-orgeron",
+    "mentor_id": "monte-kiffin",
+    "protege_id": "ed-orgeron",
+    "school": "USC",
+    "year_start": 2010,
+    "year_end": 2013,
+    "relationship_type": "direct_report",
+    "protege_role": "DL Coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Ole Miss (2005-07), LSU (2016-21)"
+  },
+
+  {
+    "id": "ross-to-friedgen",
+    "mentor_id": "bobby-ross",
+    "protege_id": "ralph-friedgen",
+    "school": "Maryland",
+    "year_start": 1982,
+    "year_end": 1986,
+    "relationship_type": "direct_report",
+    "protege_role": "OC/OL",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Maryland 2001-10"
+  },
+
+  {
+    "id": "ross-to-smith",
+    "mentor_id": "bobby-ross",
+    "protege_id": "mike-smith-hc",
+    "school": "Maryland",
+    "year_start": 1986,
+    "year_end": 1986,
+    "relationship_type": "direct_report",
+    "protege_role": "DL Coach",
+    "generation_gap": 1,
+    "confidence": "medium",
+    "notes": "HC at Atlanta Falcons 2008-14"
+  },
+
+  {
+    "id": "henning-to-tollner",
+    "mentor_id": "dan-henning",
+    "protege_id": "ted-tollner",
+    "school": "San Diego Chargers",
+    "year_start": 1989,
+    "year_end": 1991,
+    "relationship_type": "direct_report",
+    "protege_role": "AHC/OC/QB",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at San Diego State 1994-2001"
+  },
+
+  {
+    "id": "henning-to-mora-jr",
+    "mentor_id": "dan-henning",
+    "protege_id": "jim-mora-jr",
+    "school": "San Diego Chargers",
+    "year_start": 1989,
+    "year_end": 1991,
+    "relationship_type": "direct_report",
+    "protege_role": "DB/Secondary",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Falcons (2004-06), Seahawks (2009), UCLA (2012-17), UConn (2016-19)"
+  },
+
+  {
+    "id": "henning-to-cunningham",
+    "mentor_id": "dan-henning",
+    "protege_id": "gunther-cunningham",
+    "school": "San Diego Chargers",
+    "year_start": 1989,
+    "year_end": 1990,
+    "relationship_type": "direct_report",
+    "protege_role": "DL Coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Kansas City Chiefs 1999-00"
+  },
+
+  {
+    "id": "holtz-to-jimmy-johnson",
+    "mentor_id": "lou-holtz",
+    "protege_id": "jimmy-johnson",
+    "school": "Arkansas",
+    "year_start": 1977,
+    "year_end": 1978,
+    "relationship_type": "direct_report",
+    "protege_role": "DC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Oklahoma State (1979-83), Miami (1984-88), Dallas Cowboys (1989-93), Miami Dolphins (1996-99)"
+  },
+
+  {
+    "id": "holtz-to-ken-hatfield",
+    "mentor_id": "lou-holtz",
+    "protege_id": "ken-hatfield",
+    "school": "Arkansas",
+    "year_start": 1977,
+    "year_end": 1983,
+    "relationship_type": "direct_report",
+    "protege_role": "Assistant/DB",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Air Force (1984-89), Arkansas (1990-97), Clemson (1990-93 parallel), Rice (1994-05)"
+  },
+
+  {
+    "id": "holtz-to-joe-gibbs",
+    "mentor_id": "lou-holtz",
+    "protege_id": "joe-gibbs",
+    "school": "Arkansas",
+    "year_start": 1978,
+    "year_end": 1979,
+    "relationship_type": "direct_report",
+    "protege_role": "OC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Washington Redskins 1981-92; 2004-07. Pro Football Hall of Fame"
+  },
+
+  {
+    "id": "strong-jim-to-pagano",
+    "mentor_id": "jim-strong",
+    "protege_id": "chuck-pagano",
+    "school": "UNLV",
+    "year_start": 1990,
+    "year_end": 1991,
+    "relationship_type": "direct_report",
+    "protege_role": "Secondary Coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Indianapolis Colts 2012-17"
+  },
+
+  {
+    "id": "strong-jim-to-linehan",
+    "mentor_id": "jim-strong",
+    "protege_id": "scott-linehan",
+    "school": "UNLV",
+    "year_start": 1991,
+    "year_end": 1991,
+    "relationship_type": "direct_report",
+    "protege_role": "QB Coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at St. Louis Rams 2006-08"
+  },
+
+  {
+    "id": "strong-jim-to-cable",
+    "mentor_id": "jim-strong",
+    "protege_id": "tom-cable",
+    "school": "UNLV",
+    "year_start": 1991,
+    "year_end": 1991,
+    "relationship_type": "direct_report",
+    "protege_role": "OL Coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Oakland Raiders 2008-10"
+  },
+
+  {
+    "id": "strong-jim-to-horton",
+    "mentor_id": "jim-strong",
+    "protege_id": "jeff-horton",
+    "school": "UNLV",
+    "year_start": 1990,
+    "year_end": 1991,
+    "relationship_type": "direct_report",
+    "protege_role": "Associate HC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Nevada (Reno) 1993; UNLV 1994-98"
+  },
+
+  {
+    "id": "cordelli-to-colby",
+    "mentor_id": "pete-cordelli",
+    "protege_id": "greg-colby",
+    "school": "Kent State",
+    "year_start": 1998,
+    "year_end": 1999,
+    "relationship_type": "direct_report",
+    "protege_role": "DC",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "HC at Millersville 2008-12"
   }
 ]

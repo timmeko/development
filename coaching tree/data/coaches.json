@@ -729,6 +729,292 @@
     "mentor_context": "DB at Ohio State, 2012-17"
   },
 
+  "kevin-cosgrove": {
+    "name": "Kevin Cosgrove",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["New Mexico"],
+    "mentor": "barry-alvarez",
+    "mentor_context": "LB/DC at Wisconsin, 1995-2003"
+  },
+
+  "jason-swepson": {
+    "name": "Jason Swepson",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Elon"],
+    "mentor": "chuck-amato",
+    "mentor_context": "QB Coach at NC State, 2001-06"
+  },
+
+  "reggie-herring": {
+    "name": "Reggie Herring",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Houston"],
+    "mentor": "chuck-amato",
+    "mentor_context": "DC at NC State, 2002-06"
+  },
+
+  "ted-roof": {
+    "name": "Ted Roof",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Duke"],
+    "mentor": "chuck-amato",
+    "mentor_context": "DC at NC State, 2000-06"
+  },
+
+  "joe-pate": {
+    "name": "Joe Pate",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Tennessee Tech"],
+    "mentor": "chuck-amato",
+    "mentor_context": "TE/ST at NC State, 2003-05"
+  },
+
+  "bob-debusse": {
+    "name": "Bob DeBesse",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Southwest Minnesota State"],
+    "mentor": "bob-davie",
+    "mentor_context": "OC at New Mexico, 2012-16"
+  },
+
+  "chip-long": {
+    "name": "Chip Long",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Tulane"],
+    "mentor": "bob-davie",
+    "mentor_context": "OC at New Mexico, 2017-19"
+  },
+
+  "mark-dantonio": {
+    "name": "Mark Dantonio",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Central Michigan", "Cincinnati", "Michigan State"],
+    "mentor": "rick-minter",
+    "mentor_context": "DC at Cincinnati, 1997-2000"
+  },
+
+  "pat-narduzzi": {
+    "name": "Pat Narduzzi",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Pittsburgh"],
+    "mentor": "rick-minter",
+    "mentor_context": "LB Coach at Cincinnati, 1997-2003"
+  },
+
+  "brian-kelly": {
+    "name": "Brian Kelly",
+    "born": 1961,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Grand Valley State", "Central Michigan", "Cincinnati", "Notre Dame", "LSU"],
+    "mentor": "rick-minter",
+    "mentor_context": "OC at Cincinnati, 1994-96"
+  },
+
+  "tony-dungy": {
+    "name": "Tony Dungy",
+    "born": 1955,
+    "alma_mater": "Minnesota",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Tampa Bay Buccaneers", "Indianapolis Colts"],
+    "mentor": "monte-kiffin",
+    "mentor_context": "DB Coach under Kiffin (Minnesota Vikings, 1986)"
+  },
+
+  "lane-kiffin": {
+    "name": "Lane Kiffin",
+    "born": 1975,
+    "alma_mater": "Fresno State",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Oakland Raiders", "Tennessee", "USC", "Florida Atlantic", "Ole Miss"],
+    "mentor": "monte-kiffin",
+    "mentor_context": "OC under Kiffin at USC, 2010-12"
+  },
+
+  "ed-orgeron": {
+    "name": "Ed Orgeron",
+    "born": 1957,
+    "alma_mater": "San Francisco State",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Ole Miss", "LSU"],
+    "mentor": "monte-kiffin",
+    "mentor_context": "DL Coach under Kiffin at USC, 2010-13"
+  },
+
+  "ralph-friedgen": {
+    "name": "Ralph Friedgen",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Maryland"],
+    "mentor": "bobby-ross",
+    "mentor_context": "OC/OL at Maryland, 1982-86"
+  },
+
+  "mike-smith-hc": {
+    "name": "Mike Smith",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Atlanta Falcons"],
+    "mentor": "bobby-ross",
+    "mentor_context": "DL Coach at Maryland, 1986"
+  },
+
+  "ted-tollner": {
+    "name": "Ted Tollner",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["San Diego State"],
+    "mentor": "dan-henning",
+    "mentor_context": "AHC/OC at San Diego Chargers, 1989-91"
+  },
+
+  "jim-mora-jr": {
+    "name": "Jim Mora Jr.",
+    "born": 1965,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Atlanta Falcons", "Seattle Seahawks", "UCLA", "UConn"],
+    "mentor": "dan-henning",
+    "mentor_context": "DB/Secondary at San Diego Chargers, 1989-91"
+  },
+
+  "gunther-cunningham": {
+    "name": "Gunther Cunningham",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Kansas City Chiefs"],
+    "mentor": "dan-henning",
+    "mentor_context": "DL Coach at San Diego Chargers, 1989-90"
+  },
+
+  "jimmy-johnson": {
+    "name": "Jimmy Johnson",
+    "born": 1943,
+    "alma_mater": "Arkansas",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Oklahoma State", "Miami (FL)", "Dallas Cowboys", "Miami Dolphins"],
+    "mentor": "lou-holtz",
+    "mentor_context": "DC at Arkansas, 1977-78"
+  },
+
+  "ken-hatfield": {
+    "name": "Ken Hatfield",
+    "born": 1941,
+    "alma_mater": "Arkansas",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Air Force", "Arkansas", "Clemson", "Rice"],
+    "mentor": "lou-holtz",
+    "mentor_context": "Assistant/DB at Arkansas, 1977-83"
+  },
+
+  "joe-gibbs": {
+    "name": "Joe Gibbs",
+    "born": 1940,
+    "alma_mater": "Santa Rosa Junior College",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Washington Redskins"],
+    "mentor": "lou-holtz",
+    "mentor_context": "OC at Arkansas, 1978-79"
+  },
+
+  "chuck-pagano": {
+    "name": "Chuck Pagano",
+    "born": 1960,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Indianapolis Colts"],
+    "mentor": "jim-strong",
+    "mentor_context": "Secondary Coach at UNLV, 1990-91"
+  },
+
+  "scott-linehan": {
+    "name": "Scott Linehan",
+    "born": 1965,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["St. Louis Rams"],
+    "mentor": "jim-strong",
+    "mentor_context": "QB Coach at UNLV, 1991"
+  },
+
+  "tom-cable": {
+    "name": "Tom Cable",
+    "born": 1964,
+    "alma_mater": "Emporia State",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Oakland Raiders"],
+    "mentor": "jim-strong",
+    "mentor_context": "OL Coach at UNLV, 1991"
+  },
+
+  "jeff-horton": {
+    "name": "Jeff Horton",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Nevada (Reno)", "UNLV"],
+    "mentor": "jim-strong",
+    "mentor_context": "Associate HC at UNLV, 1990-91"
+  },
+
+  "greg-colby": {
+    "name": "Greg Colby",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Millersville"],
+    "mentor": "pete-cordelli",
+    "mentor_context": "DC at Kent State, 1998-99"
+  },
+
   "marcus-freeman": {
     "name": "Marcus Freeman",
     "born": 1986,
