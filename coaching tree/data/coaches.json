@@ -7,6 +7,13 @@
     "current_status": "retired",
     "generation": 0
   },
+  "barry-alvarez": {
+    "name": "Barry Alvarez",
+    "born": 1946,
+    "alma_mater": "Nebraska",
+    "current_status": "retired",
+    "generation": 1
+  },
   "bob-davie": {
     "name": "Bob Davie",
     "born": 1954,
@@ -21,17 +28,108 @@
     "current_status": "retired",
     "generation": 1
   },
+  "skip-holtz": {
+    "name": "Skip Holtz",
+    "born": 1964,
+    "alma_mater": "Notre Dame",
+    "current_status": "active",
+    "generation": 1
+  },
+  "pete-cordelli": {
+    "name": "Pete Cordelli",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1
+  },
+  "jim-strong": {
+    "name": "Jim Strong",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1
+  },
+  "ron-cooper": {
+    "name": "Ron Cooper",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1
+  },
+  "greg-davis": {
+    "name": "Greg Davis",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1
+  },
+  "bob-chmiel": {
+    "name": "Bob Chmiel",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1
+  },
+  "gary-darnell": {
+    "name": "Gary Darnell",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1
+  },
+  "george-stewart": {
+    "name": "George Stewart",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1
+  },
+  "joe-moore": {
+    "name": "Joe Moore",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "deceased",
+    "generation": 1
+  },
+  "jay-hayes": {
+    "name": "Jay Hayes",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1
+  },
+  "dave-roberts": {
+    "name": "Dave Roberts",
+    "born": null,
+    "alma_mater": null,
+    "current_status": null,
+    "generation": 1
+  },
+  "earle-mosley": {
+    "name": "Earle Mosley",
+    "born": null,
+    "alma_mater": null,
+    "current_status": null,
+    "generation": 1
+  },
+  "kirk-doll": {
+    "name": "Kirk Doll",
+    "born": null,
+    "alma_mater": null,
+    "current_status": null,
+    "generation": 1
+  },
+  "vinny-cerrato": {
+    "name": "Vinny Cerrato",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1
+  },
   "charlie-strong": {
     "name": "Charlie Strong",
     "born": 1960,
     "alma_mater": "Central Arkansas",
-    "current_status": "retired",
-    "generation": 1
-  },
-  "steve-addazio": {
-    "name": "Steve Addazio",
-    "born": 1959,
-    "alma_mater": "Central Connecticut State",
     "current_status": "retired",
     "generation": 2
   },
@@ -40,6 +138,76 @@
     "born": 1972,
     "alma_mater": "Ursinus",
     "current_status": "active",
+    "generation": 2
+  },
+  "luke-fickell": {
+    "name": "Luke Fickell",
+    "born": 1973,
+    "alma_mater": "Ohio State",
+    "current_status": "active",
+    "generation": 2
+  },
+  "tom-herman": {
+    "name": "Tom Herman",
+    "born": 1975,
+    "alma_mater": "California (PA)",
+    "current_status": "active",
+    "generation": 2
+  },
+  "ryan-day": {
+    "name": "Ryan Day",
+    "born": 1979,
+    "alma_mater": "New Hampshire",
+    "current_status": "active",
+    "generation": 2
+  },
+  "greg-schiano": {
+    "name": "Greg Schiano",
+    "born": 1966,
+    "alma_mater": "Bucknell",
+    "current_status": "active",
+    "generation": 2
+  },
+  "chris-ash": {
+    "name": "Chris Ash",
+    "born": 1974,
+    "alma_mater": "Drake",
+    "current_status": "active",
+    "generation": 2
+  },
+  "everett-withers": {
+    "name": "Everett Withers",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2
+  },
+  "doc-holliday": {
+    "name": "Doc Holliday",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2
+  },
+  "kerry-coombs": {
+    "name": "Kerry Coombs",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2
+  },
+  "marcus-freeman": {
+    "name": "Marcus Freeman",
+    "born": 1986,
+    "alma_mater": "Ohio State",
+    "current_status": "active",
+    "generation": 3
+  },
+  "steve-addazio": {
+    "name": "Steve Addazio",
+    "born": 1959,
+    "alma_mater": "Central Connecticut State",
+    "current_status": "retired",
     "generation": 2
   },
   "joker-phillips": {
@@ -73,6 +241,41 @@
   "greg-mattison": {
     "name": "Greg Mattison",
     "born": 1949,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2
+  },
+  "bret-bielema": {
+    "name": "Bret Bielema",
+    "born": 1970,
+    "alma_mater": "Iowa",
+    "current_status": "active",
+    "generation": 2
+  },
+  "paul-chryst": {
+    "name": "Paul Chryst",
+    "born": 1965,
+    "alma_mater": "Wisconsin",
+    "current_status": "active",
+    "generation": 2
+  },
+  "gary-andersen": {
+    "name": "Gary Andersen",
+    "born": 1964,
+    "alma_mater": "Utah",
+    "current_status": "retired",
+    "generation": 2
+  },
+  "dave-doeren": {
+    "name": "Dave Doeren",
+    "born": 1972,
+    "alma_mater": "Drake",
+    "current_status": "active",
+    "generation": 2
+  },
+  "don-treadwell": {
+    "name": "Don Treadwell",
+    "born": null,
     "alma_mater": null,
     "current_status": "retired",
     "generation": 2

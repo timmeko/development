@@ -1,127 +1,516 @@
-<html>
-    <head>
-        <meta charset="utf-8">
-        
-            <script src="lib/bindings/utils.js"></script>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            
-        
-<center>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lou Holtz Coaching Tree</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #111827;
+    color: #e5e7eb;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+  }
+  h1 {
+    text-align: center;
+    padding: 18px 0 4px;
+    font-size: 28px;
+    color: #fbbf24;
+    letter-spacing: 1px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #9ca3af;
+    padding-bottom: 8px;
+  }
+  svg { display: block; }
+  .link {
+    fill: none;
+    stroke: #4b5563;
+    stroke-width: 1.5;
+    stroke-opacity: 0.6;
+  }
+  .link.gen1 { stroke: #6b7280; stroke-width: 2; stroke-opacity: 0.7; }
+  .node-label-name {
+    font-weight: 700;
+    font-size: 12px;
+    fill: #f3f4f6;
+  }
+  .node-label-role {
+    font-size: 10px;
+    fill: #9ca3af;
+    font-style: italic;
+  }
+  .node-label-hc {
+    font-size: 10px;
+    fill: #fbbf24;
+  }
+  .leaf-name {
+    font-size: 11px;
+    fill: #d1d5db;
+    font-weight: 500;
+  }
+  .leaf-role {
+    font-size: 9px;
+    fill: #6b7280;
+    font-style: italic;
+  }
+  .center-circle {
+    fill: #b45309;
+    stroke: #fbbf24;
+    stroke-width: 3;
+  }
+  .center-label {
+    font-size: 18px;
+    font-weight: 800;
+    fill: #ffffff;
+    text-anchor: middle;
+  }
+  .center-sub {
+    font-size: 11px;
+    fill: #fde68a;
+    text-anchor: middle;
+  }
+  .branch-circle {
+    stroke-width: 2;
+  }
+  .legend {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    background: rgba(17,24,39,0.9);
+    border: 1px solid #374151;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #9ca3af;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
 <h1>Lou Holtz Coaching Tree</h1>
-</center>
+<p class="subtitle">Staff members across all head coaching stops who went on to become head coaches, and their downstream proteges</p>
+<div id="chart"></div>
 
-<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
-<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
-          crossorigin="anonymous"
-        />
-        <script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-          crossorigin="anonymous"
-        ></script>
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#b45309;border:2px solid #fbbf24"></div> Lou Holtz</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1e40af"></div> Gen 1 — Holtz Proteges</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#166534"></div> Gen 2 — Proteges of Proteges</div>
+  <div style="margin-top:6px;font-size:11px;color:#6b7280">
+    <em>Circle = became head coach with downstream tree</em><br>
+    <em>Text only = staff member / leaf node</em>
+  </div>
+</div>
 
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+// ── Complete coaching tree data ──────────────────────────────────
+// Each node: name, role (relationship to parent), hc (head coaching positions), children
+const treeData = {
+  name: "Lou Holtz",
+  role: "",
+  hc: "W&M, NC State, NYJ, Arkansas, Minnesota, Notre Dame, South Carolina",
+  children: [
+    // ── Barry Alvarez branch ──
+    {
+      name: "Barry Alvarez",
+      role: "DC at Notre Dame, 1987-89",
+      hc: "HC: Wisconsin (1990-2005)",
+      children: [
+        { name: "Bret Bielema", role: "DC at Wisconsin", hc: "HC: Wisconsin, Arkansas, Illinois", children: [] },
+        { name: "Paul Chryst", role: "OC at Wisconsin", hc: "HC: Pittsburgh, Wisconsin", children: [] },
+        { name: "Gary Andersen", role: "Asst at Wisconsin", hc: "HC: Utah State, Wisconsin, Oregon State", children: [] },
+        { name: "Dave Doeren", role: "Asst at Wisconsin", hc: "HC: Northern Illinois, NC State", children: [] },
+        { name: "Don Treadwell", role: "Asst at Wisconsin", hc: "HC: Miami (OH)", children: [] }
+      ]
+    },
+    // ── Bob Davie branch ──
+    {
+      name: "Bob Davie",
+      role: "DC at Notre Dame, 1994-96",
+      hc: "HC: Notre Dame (1997-2001), New Mexico (2012-19)",
+      children: [
+        { name: "Steve Addazio", role: "TE/OL Coach at Notre Dame", hc: "HC: Temple, Boston College, Colorado State", children: [] },
+        { name: "Joker Phillips", role: "WR Coach at Notre Dame", hc: "HC: Kentucky (2010-12)", children: [] },
+        { name: "Jerry Rosburg", role: "OLB/ST Coach at Notre Dame", hc: "HC: Denver Broncos (interim, 2022)", children: [] },
+        { name: "Greg Mattison", role: "DC at Notre Dame", hc: "", children: [] },
+        { name: "Jim Colletto", role: "OC at Notre Dame", hc: "", children: [] },
+        { name: "Kevin Rogers", role: "OC/QB Coach at Notre Dame", hc: "", children: [] }
+      ]
+    },
+    // ── Urban Meyer branch (largest) ──
+    {
+      name: "Urban Meyer",
+      role: "WR Coach at Notre Dame, 1996",
+      hc: "HC: Bowling Green, Utah, Florida, Ohio State, Jax Jaguars",
+      children: [
+        {
+          name: "Dan Mullen",
+          role: "OC at Bowling Green, Utah, Florida",
+          hc: "HC: Mississippi State, Florida, UNLV",
+          children: []
+        },
+        {
+          name: "Luke Fickell",
+          role: "DC/LB Coach at Ohio State",
+          hc: "HC: Cincinnati (2017-22), Wisconsin (2023-)",
+          children: []
+        },
+        {
+          name: "Tom Herman",
+          role: "OC at Iowa State, Ohio State",
+          hc: "HC: Houston (2015-16), Texas (2017-20)",
+          children: []
+        },
+        {
+          name: "Charlie Strong",
+          role: "DC at Florida",
+          hc: "HC: Louisville, Texas, South Florida",
+          children: []
+        },
+        {
+          name: "Ryan Day",
+          role: "OC/QB Coach at Ohio State",
+          hc: "HC: Ohio State (2019-)",
+          children: [
+            { name: "Marcus Freeman", role: "DC at Ohio State (via Cincinnati)", hc: "HC: Notre Dame (2022-)", children: [] }
+          ]
+        },
+        {
+          name: "Greg Schiano",
+          role: "DC at Ohio State",
+          hc: "HC: Rutgers, Tampa Bay Buccaneers",
+          children: []
+        },
+        {
+          name: "Chris Ash",
+          role: "DC at Ohio State",
+          hc: "HC: Rutgers (2016-19)",
+          children: []
+        },
+        {
+          name: "Everett Withers",
+          role: "DC/Asst HC at Ohio State",
+          hc: "HC: James Madison, Texas State",
+          children: []
+        },
+        {
+          name: "Doc Holliday",
+          role: "Asst at Florida",
+          hc: "HC: Marshall (2010-20)",
+          children: []
+        },
+        { name: "Kerry Coombs", role: "DB Coach at Ohio State", hc: "", children: [] }
+      ]
+    },
+    // ── Skip Holtz branch ──
+    {
+      name: "Skip Holtz",
+      role: "Asst/GA at Notre Dame",
+      hc: "HC: UConn, East Carolina, South Florida, Louisiana Tech, Marshall",
+      children: []
+    },
+    // ── Pete Cordelli branch ──
+    {
+      name: "Pete Cordelli",
+      role: "WR Coach at Notre Dame",
+      hc: "HC: Kent State (1991-97)",
+      children: []
+    },
+    // ── Jim Strong branch ──
+    {
+      name: "Jim Strong",
+      role: "Asst at Notre Dame",
+      hc: "HC: UNLV (1994-98)",
+      children: []
+    },
+    // ── Ron Cooper branch ──
+    {
+      name: "Ron Cooper",
+      role: "Asst at Notre Dame",
+      hc: "HC: Eastern Michigan, Louisville, Alabama A&M",
+      children: []
+    },
+    // ── Staff who did not become HCs (leaf / name-only) ──
+    { name: "Greg Davis", role: "Asst at Notre Dame", hc: "OC: Texas, Iowa", children: [] },
+    { name: "Bob Chmiel", role: "Secondary Coach at Notre Dame", hc: "", children: [] },
+    { name: "Gary Darnell", role: "Asst at Notre Dame", hc: "", children: [] },
+    { name: "George Stewart", role: "Asst at Notre Dame", hc: "NFL position coach career", children: [] },
+    { name: "Joe Moore", role: "OL Coach at Notre Dame", hc: "", children: [] },
+    { name: "Jay Hayes", role: "DL Coach at Notre Dame", hc: "", children: [] },
+    { name: "Dave Roberts", role: "Asst at Notre Dame", hc: "", children: [] },
+    { name: "Earle Mosley", role: "Asst at Notre Dame", hc: "", children: [] },
+    { name: "Kirk Doll", role: "Asst at Notre Dame", hc: "", children: [] },
+    { name: "Vinny Cerrato", role: "Recruiting Coord at Notre Dame", hc: "", children: [] }
+  ]
+};
 
-        <center>
-          <h1>Lou Holtz Coaching Tree</h1>
-        </center>
-        <style type="text/css">
+// ── Layout parameters ──
+const width = window.innerWidth;
+const height = window.innerHeight - 90;
+const cx = width / 2;
+const cy = height / 2;
+const centerRadius = 36;
 
-             #mynetwork {
-                 width: 100%;
-                 height: 900px;
-                 background-color: #1a1a2e;
-                 border: 1px solid lightgray;
-                 position: relative;
-                 float: left;
-             }
+const svg = d3.select("#chart")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
 
-             
+const g = svg.append("g")
+  .attr("transform", `translate(${cx},${cy})`);
 
-             
+// Build hierarchy
+const root = d3.hierarchy(treeData);
 
-             
-        </style>
-    </head>
+// Separate gen-1 children into "branch" (have children or have HC roles) vs "leaf-only"
+const gen1Children = treeData.children;
+const branchNodes = gen1Children.filter(d => d.children.length > 0 || (d.hc && d.hc.startsWith("HC:")));
+const leafOnlyNodes = gen1Children.filter(d => d.children.length === 0 && (!d.hc || !d.hc.startsWith("HC:")));
 
+// ── Compute radial tree layout using D3 ──
+const treeLayout = d3.tree()
+  .size([2 * Math.PI, Math.min(cx, cy) - 100])
+  .separation((a, b) => {
+    // Give more space at deeper levels
+    if (a.depth === 1 && b.depth === 1) return 1.2;
+    return (a.parent === b.parent ? 1 : 1.5) / a.depth;
+  });
 
-    <body>
-        <div class="card" style="width: 100%">
-            
-            
-            <div id="mynetwork" class="card-body"></div>
-        </div>
+treeLayout(root);
 
-        
-        
+// Radial point helper
+function radialPoint(angle, radius) {
+  return [radius * Math.cos(angle - Math.PI / 2), radius * Math.sin(angle - Math.PI / 2)];
+}
 
-        <script type="text/javascript">
+// Scale radii: depth 0 = 0, depth 1 = ring1, depth 2 = ring2, depth 3 = ring3
+const ring1 = 200;
+const ring2 = 360;
+const ring3 = 470;
+function depthRadius(d) {
+  if (d === 0) return 0;
+  if (d === 1) return ring1;
+  if (d === 2) return ring2;
+  return ring3;
+}
 
-              // initialize global variables.
-              var edges;
-              var nodes;
-              var allNodes;
-              var allEdges;
-              var nodeColors;
-              var originalNodes;
-              var network;
-              var container;
-              var options, data;
-              var filter = {
-                  item : '',
-                  property : '',
-                  value : []
-              };
+// Override the radius for each node
+root.each(d => {
+  d.radius = depthRadius(d.depth);
+  d.angle = d.x; // angle in radians
+});
 
-              
+// ── Draw curved links ──
+const linkGen = d3.linkRadial()
+  .angle(d => d.angle)
+  .radius(d => d.radius);
 
-              
+g.selectAll(".link")
+  .data(root.links().filter(d => d.source.depth > 0 || !isLeafOnly(d.target.data)))
+  .join("path")
+  .attr("class", d => "link" + (d.source.depth === 0 ? " gen1" : ""))
+  .attr("d", d => linkGen({source: d.source, target: d.target}));
 
-              // This method is responsible for drawing the graph, returns the drawn network
-              function drawGraph() {
-                  var container = document.getElementById('mynetwork');
+function isLeafOnly(data) {
+  return data.children.length === 0 && (!data.hc || !data.hc.startsWith("HC:"));
+}
+function isBranchNode(data) {
+  return data.children && data.children.length > 0;
+}
 
-                  
+// ── Draw non-root, non-leaf-only nodes ──
+const nodes = root.descendants().filter(d => d.depth > 0);
 
-                  // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"color": "#FFD700", "font": {"color": "white"}, "id": "lou-holtz", "label": "Lou Holtz", "shape": "dot", "size": 18, "title": "\u003cb\u003eLou Holtz\u003c/b\u003e\u003cbr\u003eGeneration: 0\u003cbr\u003eHC at: Notre Dame"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "bob-davie", "label": "Bob Davie", "shape": "dot", "size": 26, "title": "\u003cb\u003eBob Davie\u003c/b\u003e\u003cbr\u003eGeneration: 1\u003cbr\u003eHC at: Notre Dame, New Mexico"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "urban-meyer", "label": "Urban Meyer", "shape": "dot", "size": 50, "title": "\u003cb\u003eUrban Meyer\u003c/b\u003e\u003cbr\u003eGeneration: 1\u003cbr\u003eHC at: Bowling Green, Utah, Florida, Ohio State, Jacksonville Jaguars"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "charlie-strong", "label": "Charlie Strong", "shape": "dot", "size": 34, "title": "\u003cb\u003eCharlie Strong\u003c/b\u003e\u003cbr\u003eGeneration: 1\u003cbr\u003eHC at: Louisville, Texas, South Florida"}, {"color": "#00843D", "font": {"color": "white"}, "id": "steve-addazio", "label": "Steve Addazio", "shape": "dot", "size": 34, "title": "\u003cb\u003eSteve Addazio\u003c/b\u003e\u003cbr\u003eGeneration: 2\u003cbr\u003eHC at: Temple, Boston College, Colorado State"}, {"color": "#00843D", "font": {"color": "white"}, "id": "dan-mullen", "label": "Dan Mullen", "shape": "dot", "size": 34, "title": "\u003cb\u003eDan Mullen\u003c/b\u003e\u003cbr\u003eGeneration: 2\u003cbr\u003eHC at: Mississippi State, Florida, UNLV"}, {"color": "#00843D", "font": {"color": "white"}, "id": "joker-phillips", "label": "Joker Phillips", "shape": "dot", "size": 18, "title": "\u003cb\u003eJoker Phillips\u003c/b\u003e\u003cbr\u003eGeneration: 2\u003cbr\u003eHC at: Kentucky"}, {"color": "#00843D", "font": {"color": "white"}, "id": "jerry-rosburg", "label": "Jerry Rosburg", "shape": "dot", "size": 18, "title": "\u003cb\u003eJerry Rosburg\u003c/b\u003e\u003cbr\u003eGeneration: 2\u003cbr\u003eHC at: Denver Broncos"}, {"color": "#00843D", "font": {"color": "white"}, "id": "jim-colletto", "label": "Jim Colletto", "shape": "dot", "size": 15, "title": "\u003cb\u003eJim Colletto\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "kevin-rogers", "label": "Kevin Rogers", "shape": "dot", "size": 15, "title": "\u003cb\u003eKevin Rogers\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "greg-mattison", "label": "Greg Mattison", "shape": "dot", "size": 15, "title": "\u003cb\u003eGreg Mattison\u003c/b\u003e\u003cbr\u003eGeneration: 2"}]);
-                  edges = new vis.DataSet([{"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1994-1996", "to": "bob-davie", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1996-1996", "to": "urban-meyer", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1995-1996", "to": "charlie-strong", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 1997-2000", "to": "urban-meyer", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 1997-1998", "to": "charlie-strong", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 1999-2001", "to": "steve-addazio", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 1999-2000", "to": "dan-mullen", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 2001-2001", "to": "joker-phillips", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 1999-2000", "to": "jerry-rosburg", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "urban-meyer", "title": "multiple 2001-2008", "to": "dan-mullen", "width": 2.5}]);
+nodes.forEach(d => {
+  const [x, y] = radialPoint(d.angle, d.radius);
+  d.px = x;
+  d.py = y;
+});
 
-                  nodeColors = {};
-                  allNodes = nodes.get({ returnType: "Object" });
-                  for (nodeId in allNodes) {
-                    nodeColors[nodeId] = allNodes[nodeId].color;
-                  }
-                  allEdges = edges.get({ returnType: "Object" });
-                  // adding nodes and edges to the graph
-                  data = {nodes: nodes, edges: edges};
+// Draw branch nodes (have children) with circles
+const branchG = g.selectAll(".branch-node")
+  .data(nodes.filter(d => d.data.children && d.data.children.length > 0))
+  .join("g")
+  .attr("class", "branch-node")
+  .attr("transform", d => `translate(${d.px},${d.py})`);
 
-                  var options = {"nodes": {"borderWidth": 2, "borderWidthSelected": 4, "shape": "dot"}, "edges": {"smooth": {"type": "continuous"}}, "interaction": {"hover": true, "tooltipDelay": 100, "navigationButtons": true}, "physics": {"barnesHut": {"gravitationalConstant": -3000, "centralGravity": 0.3, "springLength": 200, "springConstant": 0.05, "avoidOverlap": 0.5}}};
+branchG.append("circle")
+  .attr("class", "branch-circle")
+  .attr("r", d => d.depth === 1 ? 10 : 6)
+  .attr("fill", d => d.depth === 1 ? "#1e40af" : "#166534")
+  .attr("stroke", d => d.depth === 1 ? "#3b82f6" : "#22c55e")
+  .attr("stroke-width", 2);
 
-                  
+// ── Labels for branch nodes ──
+branchG.each(function(d) {
+  const el = d3.select(this);
+  const angleDeg = (d.angle * 180 / Math.PI) - 90;
+  const isRight = angleDeg > -90 && angleDeg < 90;
+  const textAnchor = isRight ? "start" : "end";
+  const xOff = isRight ? 16 : -16;
+  const flipAngle = isRight ? angleDeg : angleDeg + 180;
 
+  const labelG = el.append("g")
+    .attr("transform", `rotate(${flipAngle})`);
 
-                  
+  labelG.append("text")
+    .attr("class", "node-label-name")
+    .attr("x", xOff)
+    .attr("dy", "-0.6em")
+    .attr("text-anchor", textAnchor)
+    .text(d.data.name);
 
-                  network = new vis.Network(container, data, options);
+  labelG.append("text")
+    .attr("class", "node-label-role")
+    .attr("x", xOff)
+    .attr("dy", "0.5em")
+    .attr("text-anchor", textAnchor)
+    .text(d.data.role);
 
-                  
+  if (d.data.hc) {
+    labelG.append("text")
+      .attr("class", "node-label-hc")
+      .attr("x", xOff)
+      .attr("dy", "1.7em")
+      .attr("text-anchor", textAnchor)
+      .text(d.data.hc);
+  }
+});
 
-                  
+// ── Labels for leaf nodes (no children, but have HC) — small circle + text ──
+const hcLeafData = nodes.filter(d => d.data.children.length === 0 && d.data.hc && d.data.hc.startsWith("HC:"));
+const hcLeafG = g.selectAll(".hc-leaf-node")
+  .data(hcLeafData)
+  .join("g")
+  .attr("class", "hc-leaf-node")
+  .attr("transform", d => `translate(${d.px},${d.py})`);
 
-                  
+hcLeafG.append("circle")
+  .attr("r", d => d.depth === 1 ? 7 : 5)
+  .attr("fill", d => d.depth === 1 ? "#1e40af" : "#166534")
+  .attr("stroke", d => d.depth === 1 ? "#3b82f6" : "#22c55e")
+  .attr("stroke-width", 1.5);
 
+hcLeafG.each(function(d) {
+  const el = d3.select(this);
+  const angleDeg = (d.angle * 180 / Math.PI) - 90;
+  const isRight = angleDeg > -90 && angleDeg < 90;
+  const textAnchor = isRight ? "start" : "end";
+  const xOff = isRight ? 12 : -12;
+  const flipAngle = isRight ? angleDeg : angleDeg + 180;
 
-                  
+  const labelG = el.append("g")
+    .attr("transform", `rotate(${flipAngle})`);
 
-                  return network;
+  labelG.append("text")
+    .attr("class", "node-label-name")
+    .attr("x", xOff)
+    .attr("dy", "-0.6em")
+    .attr("text-anchor", textAnchor)
+    .text(d.data.name);
 
-              }
-              drawGraph();
-        </script>
-    </body>
+  labelG.append("text")
+    .attr("class", "node-label-role")
+    .attr("x", xOff)
+    .attr("dy", "0.5em")
+    .attr("text-anchor", textAnchor)
+    .text(d.data.role);
+
+  if (d.data.hc) {
+    labelG.append("text")
+      .attr("class", "node-label-hc")
+      .attr("x", xOff)
+      .attr("dy", "1.7em")
+      .attr("text-anchor", textAnchor)
+      .text(d.data.hc);
+  }
+});
+
+// ── Labels for pure leaf nodes (no HC, no children) — text only, no circle ──
+const pureLeafData = nodes.filter(d => d.data.children.length === 0 && (!d.data.hc || !d.data.hc.startsWith("HC:")));
+const pureLeafG = g.selectAll(".pure-leaf")
+  .data(pureLeafData)
+  .join("g")
+  .attr("class", "pure-leaf")
+  .attr("transform", d => `translate(${d.px},${d.py})`);
+
+pureLeafG.each(function(d) {
+  const el = d3.select(this);
+  const angleDeg = (d.angle * 180 / Math.PI) - 90;
+  const isRight = angleDeg > -90 && angleDeg < 90;
+  const textAnchor = isRight ? "start" : "end";
+  const xOff = isRight ? 4 : -4;
+  const flipAngle = isRight ? angleDeg : angleDeg + 180;
+
+  const labelG = el.append("g")
+    .attr("transform", `rotate(${flipAngle})`);
+
+  labelG.append("text")
+    .attr("class", "leaf-name")
+    .attr("x", xOff)
+    .attr("dy", "-0.2em")
+    .attr("text-anchor", textAnchor)
+    .text(d.data.name);
+
+  if (d.data.role) {
+    labelG.append("text")
+      .attr("class", "leaf-role")
+      .attr("x", xOff)
+      .attr("dy", "1em")
+      .attr("text-anchor", textAnchor)
+      .text(d.data.role);
+  }
+
+  if (d.data.hc) {
+    labelG.append("text")
+      .attr("class", "leaf-role")
+      .attr("x", xOff)
+      .attr("dy", d.data.role ? "2.1em" : "1em")
+      .attr("text-anchor", textAnchor)
+      .text(d.data.hc);
+  }
+});
+
+// ── Center node: Lou Holtz ──
+g.append("circle")
+  .attr("class", "center-circle")
+  .attr("cx", 0).attr("cy", 0)
+  .attr("r", centerRadius);
+
+g.append("text")
+  .attr("class", "center-label")
+  .attr("dy", "-0.2em")
+  .text("Lou Holtz");
+
+g.append("text")
+  .attr("class", "center-sub")
+  .attr("dy", "1.2em")
+  .text("7 HC stops, 1988 Natl Champ");
+
+// ── Zoom / pan ──
+const zoom = d3.zoom()
+  .scaleExtent([0.3, 3])
+  .on("zoom", (event) => {
+    g.attr("transform", `translate(${event.transform.x},${event.transform.y}) scale(${event.transform.k})`);
+  });
+
+svg.call(zoom);
+svg.call(zoom.transform, d3.zoomIdentity.translate(cx, cy));
+
+</script>
+</body>
 </html>
