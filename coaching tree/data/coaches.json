@@ -5,279 +5,758 @@
     "birthplace": "Follansbee, WV",
     "alma_mater": "Kent State",
     "current_status": "retired",
-    "generation": 0
+    "generation": 0,
+    "hc_schools": ["William & Mary", "NC State", "New York Jets", "Arkansas", "Minnesota", "Notre Dame", "South Carolina"]
   },
+
+  "forest-evashevski": {
+    "name": "Forest Evashevski",
+    "born": 1918,
+    "alma_mater": "Michigan",
+    "current_status": "deceased",
+    "generation": -1,
+    "hc_schools": ["Iowa"]
+  },
+  "woody-hayes": {
+    "name": "Woody Hayes",
+    "born": 1913,
+    "alma_mater": "Denison",
+    "current_status": "deceased",
+    "generation": -1,
+    "hc_schools": ["Denison", "Miami (OH)", "Ohio State"]
+  },
+  "paul-dietzel": {
+    "name": "Paul Dietzel",
+    "born": 1924,
+    "alma_mater": "Miami (OH)",
+    "current_status": "deceased",
+    "generation": -1,
+    "hc_schools": ["LSU", "Army", "South Carolina"]
+  },
+  "milt-drewer": {
+    "name": "Milt Drewer",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "deceased",
+    "generation": -1,
+    "hc_schools": ["William & Mary"]
+  },
+  "rick-forzano": {
+    "name": "Rick Forzano",
+    "born": 1928,
+    "alma_mater": "Kent State",
+    "current_status": "deceased",
+    "generation": -1,
+    "hc_schools": ["Connecticut", "Navy", "Detroit Lions"]
+  },
+
   "barry-alvarez": {
     "name": "Barry Alvarez",
     "born": 1946,
     "alma_mater": "Nebraska",
     "current_status": "retired",
-    "generation": 1
+    "generation": 1,
+    "hc_schools": ["Wisconsin"],
+    "holtz_connection": "DC at Notre Dame, 1987-89"
   },
   "bob-davie": {
     "name": "Bob Davie",
     "born": 1954,
     "alma_mater": "Youngstown State",
     "current_status": "retired",
-    "generation": 1
+    "generation": 1,
+    "hc_schools": ["Notre Dame", "New Mexico"],
+    "holtz_connection": "DC at Notre Dame, 1994-96"
   },
   "urban-meyer": {
     "name": "Urban Meyer",
     "born": 1964,
     "alma_mater": "Cincinnati",
     "current_status": "retired",
-    "generation": 1
-  },
-  "skip-holtz": {
-    "name": "Skip Holtz",
-    "born": 1964,
-    "alma_mater": "Notre Dame",
-    "current_status": "active",
-    "generation": 1
-  },
-  "pete-cordelli": {
-    "name": "Pete Cordelli",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1
-  },
-  "jim-strong": {
-    "name": "Jim Strong",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1
-  },
-  "ron-cooper": {
-    "name": "Ron Cooper",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1
-  },
-  "greg-davis": {
-    "name": "Greg Davis",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1
-  },
-  "bob-chmiel": {
-    "name": "Bob Chmiel",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1
-  },
-  "gary-darnell": {
-    "name": "Gary Darnell",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1
-  },
-  "george-stewart": {
-    "name": "George Stewart",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1
-  },
-  "joe-moore": {
-    "name": "Joe Moore",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "deceased",
-    "generation": 1
-  },
-  "jay-hayes": {
-    "name": "Jay Hayes",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1
-  },
-  "dave-roberts": {
-    "name": "Dave Roberts",
-    "born": null,
-    "alma_mater": null,
-    "current_status": null,
-    "generation": 1
-  },
-  "earle-mosley": {
-    "name": "Earle Mosley",
-    "born": null,
-    "alma_mater": null,
-    "current_status": null,
-    "generation": 1
-  },
-  "kirk-doll": {
-    "name": "Kirk Doll",
-    "born": null,
-    "alma_mater": null,
-    "current_status": null,
-    "generation": 1
-  },
-  "vinny-cerrato": {
-    "name": "Vinny Cerrato",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1
+    "generation": 1,
+    "hc_schools": ["Bowling Green", "Utah", "Florida", "Ohio State", "Jacksonville Jaguars"],
+    "holtz_connection": "WR Coach at Notre Dame, 1996"
   },
   "charlie-strong": {
     "name": "Charlie Strong",
     "born": 1960,
     "alma_mater": "Central Arkansas",
     "current_status": "retired",
-    "generation": 2
+    "generation": 1,
+    "hc_schools": ["Louisville", "Texas", "South Florida"],
+    "holtz_connection": "DL at Notre Dame, 1995-96; DC at South Carolina, 1999-2002",
+    "notes": "Also DC at Florida under Urban Meyer 2005-09"
   },
-  "dan-mullen": {
-    "name": "Dan Mullen",
-    "born": 1972,
-    "alma_mater": "Ursinus",
-    "current_status": "active",
-    "generation": 2
-  },
-  "luke-fickell": {
-    "name": "Luke Fickell",
-    "born": 1973,
-    "alma_mater": "Ohio State",
-    "current_status": "active",
-    "generation": 2
-  },
-  "tom-herman": {
-    "name": "Tom Herman",
-    "born": 1975,
-    "alma_mater": "California (PA)",
-    "current_status": "active",
-    "generation": 2
-  },
-  "ryan-day": {
-    "name": "Ryan Day",
-    "born": 1979,
-    "alma_mater": "New Hampshire",
-    "current_status": "active",
-    "generation": 2
-  },
-  "greg-schiano": {
-    "name": "Greg Schiano",
-    "born": 1966,
-    "alma_mater": "Bucknell",
-    "current_status": "active",
-    "generation": 2
-  },
-  "chris-ash": {
-    "name": "Chris Ash",
-    "born": 1974,
-    "alma_mater": "Drake",
-    "current_status": "active",
-    "generation": 2
-  },
-  "everett-withers": {
-    "name": "Everett Withers",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "active",
-    "generation": 2
-  },
-  "doc-holliday": {
-    "name": "Doc Holliday",
+  "rick-minter": {
+    "name": "Rick Minter",
     "born": null,
     "alma_mater": null,
     "current_status": "retired",
-    "generation": 2
+    "generation": 1,
+    "hc_schools": ["Cincinnati"],
+    "holtz_connection": "DC at Notre Dame, 1992-93; GA at Arkansas, 1978; DC at South Carolina, 2004"
   },
-  "kerry-coombs": {
-    "name": "Kerry Coombs",
+  "skip-holtz": {
+    "name": "Skip Holtz",
+    "born": 1964,
+    "alma_mater": "Notre Dame",
+    "current_status": "active",
+    "generation": 1,
+    "hc_schools": ["Connecticut", "East Carolina", "South Florida", "Louisiana Tech", "Marshall"],
+    "holtz_connection": "OC/WR at Notre Dame, 1992-93; OC at South Carolina, 1999-2004"
+  },
+  "gary-darnell": {
+    "name": "Gary Darnell",
     "born": null,
     "alma_mater": null,
-    "current_status": "active",
-    "generation": 2
-  },
-  "marcus-freeman": {
-    "name": "Marcus Freeman",
-    "born": 1986,
-    "alma_mater": "Ohio State",
-    "current_status": "active",
-    "generation": 3
-  },
-  "steve-addazio": {
-    "name": "Steve Addazio",
-    "born": 1959,
-    "alma_mater": "Central Connecticut State",
     "current_status": "retired",
-    "generation": 2
+    "generation": 1,
+    "hc_schools": ["Tennessee Tech", "Western Michigan"],
+    "holtz_connection": "DC at Notre Dame, 1990-91"
+  },
+  "pete-cordelli": {
+    "name": "Pete Cordelli",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": ["Kent State"],
+    "holtz_connection": "WR/QB at Notre Dame, 1986-90; WR at Minnesota, 1984-85; WR at Arkansas, 1983"
+  },
+  "jim-strong": {
+    "name": "Jim Strong",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": ["UNLV"],
+    "holtz_connection": "OC/RB at Notre Dame, 1987-89; RB at Minnesota, 1984-85; OT/TE at Arkansas, 1983"
+  },
+  "ron-cooper": {
+    "name": "Ron Cooper",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": ["Eastern Michigan", "Louisville", "Alabama A&M", "Florida International"],
+    "holtz_connection": "DB/Asst HC at Notre Dame, 1991-92; GA at Minnesota, 1985; DB at South Carolina, 2004"
+  },
+  "dave-roberts": {
+    "name": "Dave Roberts",
+    "born": null,
+    "alma_mater": null,
+    "current_status": null,
+    "generation": 1,
+    "hc_schools": ["Western Kentucky", "Northeast Louisiana", "Baylor"],
+    "holtz_connection": "OC at Notre Dame, 1994-96; Asst at South Carolina, 1999-2004"
+  },
+  "john-palermo": {
+    "name": "John Palermo",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": ["Austin Peay"],
+    "holtz_connection": "DL at Notre Dame, 1988-89; DL at Minnesota, 1984-85"
+  },
+  "peter-vaas": {
+    "name": "Peter Vaas",
+    "born": null,
+    "alma_mater": null,
+    "current_status": null,
+    "generation": 1,
+    "hc_schools": ["Holy Cross"],
+    "holtz_connection": "RB/QB at Notre Dame, 1990-91"
+  },
+  "bobby-ross": {
+    "name": "Bobby Ross",
+    "born": 1936,
+    "alma_mater": "VMI",
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": ["Maryland", "Georgia Tech", "San Diego Chargers", "Detroit Lions"],
+    "holtz_connection": "DC at William & Mary, 1970"
+  },
+  "chuck-amato": {
+    "name": "Chuck Amato",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": ["NC State"],
+    "holtz_connection": "GA/Staff at NC State, 1972-75"
+  },
+  "bo-rein": {
+    "name": "Bo Rein",
+    "born": 1945,
+    "alma_mater": "Ohio State",
+    "current_status": "deceased",
+    "generation": 1,
+    "hc_schools": ["NC State"],
+    "holtz_connection": "Staff at NC State, 1972-74",
+    "notes": "Died in plane crash, January 1980"
+  },
+  "monte-kiffin": {
+    "name": "Monte Kiffin",
+    "born": 1940,
+    "alma_mater": "Nebraska",
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": [],
+    "holtz_connection": "DC at Arkansas, 1977-79",
+    "notes": "Never college HC; prolific NFL DC with massive coaching tree"
+  },
+  "pete-carroll": {
+    "name": "Pete Carroll",
+    "born": 1951,
+    "alma_mater": "Pacific",
+    "current_status": "active",
+    "generation": 1,
+    "hc_schools": ["New York Jets", "New England Patriots", "USC", "Seattle Seahawks", "Las Vegas Raiders"],
+    "holtz_connection": "GA at Arkansas, 1977"
+  },
+  "buddy-pough": {
+    "name": "Buddy Pough",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": ["South Carolina State"],
+    "holtz_connection": "RB at South Carolina, 1999-2001"
   },
   "joker-phillips": {
     "name": "Joker Phillips",
     "born": 1963,
     "alma_mater": "Kentucky",
     "current_status": "active",
-    "generation": 2
+    "generation": 1,
+    "hc_schools": ["Kentucky"],
+    "holtz_connection": "Asst at South Carolina, 2002; WR at Notre Dame under Davie, 2001"
   },
-  "jerry-rosburg": {
-    "name": "Jerry Rosburg",
+  "rick-stockstill": {
+    "name": "Rick Stockstill",
     "born": null,
     "alma_mater": null,
-    "current_status": "active",
-    "generation": 2
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": ["Middle Tennessee"],
+    "holtz_connection": "Asst at South Carolina, 2004"
   },
-  "jim-colletto": {
-    "name": "Jim Colletto",
+  "dan-henning": {
+    "name": "Dan Henning",
     "born": 1942,
-    "alma_mater": null,
+    "alma_mater": "William & Mary",
     "current_status": "retired",
-    "generation": 2
+    "generation": 1,
+    "hc_schools": ["Atlanta Falcons", "San Diego Chargers"],
+    "holtz_connection": "WR Coach on NY Jets, 1976"
   },
-  "kevin-rogers": {
-    "name": "Kevin Rogers",
+  "greg-davis": {
+    "name": "Greg Davis",
     "born": null,
     "alma_mater": null,
-    "current_status": null,
-    "generation": 2
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": [],
+    "holtz_connection": "Asst at Notre Dame",
+    "notes": "OC at Texas (2004-10), OC at Iowa (2012-16)"
   },
-  "greg-mattison": {
-    "name": "Greg Mattison",
-    "born": 1949,
+  "george-stewart": {
+    "name": "George Stewart",
+    "born": null,
     "alma_mater": null,
     "current_status": "retired",
-    "generation": 2
+    "generation": 1,
+    "hc_schools": [],
+    "holtz_connection": "GA at Arkansas 1983; TE at Notre Dame 1986-88; OL at Minnesota 1984-85"
+  },
+  "joe-moore": {
+    "name": "Joe Moore",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "deceased",
+    "generation": 1,
+    "hc_schools": [],
+    "holtz_connection": "OL Coach at Notre Dame, 1988-96"
+  },
+  "vinny-cerrato": {
+    "name": "Vinny Cerrato",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": [],
+    "holtz_connection": "RC at Notre Dame 1986-91; GA at Minnesota 1984-85"
+  },
+  "bob-chmiel": {
+    "name": "Bob Chmiel",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": [],
+    "holtz_connection": "TE/RC at Notre Dame, 1994-96"
+  },
+  "dean-pees": {
+    "name": "Dean Pees",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": [],
+    "holtz_connection": "DB at Notre Dame, 1994",
+    "notes": "NFL DC career: Patriots, Ravens, Titans, Falcons"
+  },
+
+  "dan-mccarney": {
+    "name": "Dan McCarney",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Iowa State", "North Texas"],
+    "mentor": "barry-alvarez",
+    "mentor_context": "DC/DL at Wisconsin, 1990-94"
   },
   "bret-bielema": {
     "name": "Bret Bielema",
     "born": 1970,
     "alma_mater": "Iowa",
     "current_status": "active",
-    "generation": 2
+    "generation": 2,
+    "hc_schools": ["Wisconsin", "Arkansas", "Illinois"],
+    "mentor": "barry-alvarez",
+    "mentor_context": "DC at Wisconsin, 2004-05"
   },
   "paul-chryst": {
     "name": "Paul Chryst",
     "born": 1965,
     "alma_mater": "Wisconsin",
     "current_status": "active",
-    "generation": 2
+    "generation": 2,
+    "hc_schools": ["Pittsburgh", "Wisconsin"],
+    "mentor": "barry-alvarez",
+    "mentor_context": "Co-OC/TE at Wisconsin, 2005"
+  },
+  "brad-childress": {
+    "name": "Brad Childress",
+    "born": 1956,
+    "alma_mater": "Eastern Illinois",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Minnesota Vikings"],
+    "mentor": "barry-alvarez",
+    "mentor_context": "OC at Wisconsin, 1993-98"
   },
   "gary-andersen": {
     "name": "Gary Andersen",
     "born": 1964,
     "alma_mater": "Utah",
     "current_status": "retired",
-    "generation": 2
+    "generation": 2,
+    "hc_schools": ["Utah State", "Wisconsin", "Oregon State"],
+    "mentor": "barry-alvarez",
+    "mentor_context": "Asst at Wisconsin, 2000-02"
   },
   "dave-doeren": {
     "name": "Dave Doeren",
     "born": 1972,
     "alma_mater": "Drake",
     "current_status": "active",
-    "generation": 2
+    "generation": 2,
+    "hc_schools": ["Northern Illinois", "NC State"],
+    "mentor": "barry-alvarez",
+    "mentor_context": "Asst at Wisconsin, 2001-05"
   },
   "don-treadwell": {
     "name": "Don Treadwell",
     "born": null,
     "alma_mater": null,
     "current_status": "retired",
-    "generation": 2
+    "generation": 2,
+    "hc_schools": ["Miami (OH)"],
+    "mentor": "barry-alvarez",
+    "mentor_context": "Asst at Wisconsin, 2000-05"
+  },
+  "dan-mullen": {
+    "name": "Dan Mullen",
+    "born": 1972,
+    "alma_mater": "Ursinus",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Mississippi State", "Florida", "UNLV"],
+    "mentor": "urban-meyer",
+    "mentor_context": "OC at Bowling Green, Utah, Florida, 2001-08"
+  },
+  "luke-fickell": {
+    "name": "Luke Fickell",
+    "born": 1973,
+    "alma_mater": "Ohio State",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Cincinnati", "Wisconsin"],
+    "mentor": "urban-meyer",
+    "mentor_context": "DC/LB at Ohio State, 2012-16"
+  },
+  "tom-herman": {
+    "name": "Tom Herman",
+    "born": 1975,
+    "alma_mater": "California (PA)",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Houston", "Texas"],
+    "mentor": "urban-meyer",
+    "mentor_context": "OC at Ohio State, 2012-14"
+  },
+  "ryan-day": {
+    "name": "Ryan Day",
+    "born": 1979,
+    "alma_mater": "New Hampshire",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Ohio State"],
+    "mentor": "urban-meyer",
+    "mentor_context": "OC/QB at Ohio State, 2017-18"
+  },
+  "greg-schiano": {
+    "name": "Greg Schiano",
+    "born": 1966,
+    "alma_mater": "Bucknell",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Rutgers", "Tampa Bay Buccaneers"],
+    "mentor": "urban-meyer",
+    "mentor_context": "DC at Ohio State, 2016-18"
+  },
+  "chris-ash": {
+    "name": "Chris Ash",
+    "born": 1974,
+    "alma_mater": "Drake",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Rutgers"],
+    "mentor": "urban-meyer",
+    "mentor_context": "Co-DC at Ohio State, 2014-15"
+  },
+  "everett-withers": {
+    "name": "Everett Withers",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["James Madison", "Texas State"],
+    "mentor": "urban-meyer",
+    "mentor_context": "DC at Ohio State, 2012-13"
+  },
+  "dj-durkin": {
+    "name": "D.J. Durkin",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Maryland"],
+    "mentor": "urban-meyer",
+    "mentor_context": "Asst at Florida/Ohio State"
+  },
+  "tim-beckman": {
+    "name": "Tim Beckman",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Toledo", "Illinois"],
+    "mentor": "urban-meyer",
+    "mentor_context": "DC at Bowling Green"
+  },
+  "gregg-brandon": {
+    "name": "Gregg Brandon",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Bowling Green"],
+    "mentor": "urban-meyer",
+    "mentor_context": "OC at Bowling Green"
+  },
+  "stan-drayton": {
+    "name": "Stan Drayton",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Temple"],
+    "mentor": "urban-meyer",
+    "mentor_context": "RB Coach at Ohio State"
+  },
+  "tim-beck": {
+    "name": "Tim Beck",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Coastal Carolina"],
+    "mentor": "urban-meyer",
+    "mentor_context": "OC at Ohio State"
+  },
+  "steve-addazio": {
+    "name": "Steve Addazio",
+    "born": 1959,
+    "alma_mater": "Central Connecticut State",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Temple", "Boston College", "Colorado State"],
+    "mentor": "bob-davie",
+    "mentor_context": "TE/OL at Notre Dame, 1999-2001"
+  },
+  "jerry-rosburg": {
+    "name": "Jerry Rosburg",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Denver Broncos (interim)"],
+    "mentor": "bob-davie",
+    "mentor_context": "OLB/ST at Notre Dame, 1999-2000"
+  },
+  "john-harbaugh": {
+    "name": "John Harbaugh",
+    "born": 1962,
+    "alma_mater": "Miami (OH)",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Baltimore Ravens", "New York Giants"],
+    "mentor": "rick-minter",
+    "mentor_context": "ST Coord at Cincinnati, 1994-96"
+  },
+  "rex-ryan": {
+    "name": "Rex Ryan",
+    "born": 1962,
+    "alma_mater": "Southwestern Oklahoma State",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["New York Jets", "Buffalo Bills"],
+    "mentor": "rick-minter",
+    "mentor_context": "DC at Cincinnati, 1996-97"
+  },
+  "mike-tomlin": {
+    "name": "Mike Tomlin",
+    "born": 1972,
+    "alma_mater": "William & Mary",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Pittsburgh Steelers"],
+    "mentor": "rick-minter",
+    "mentor_context": "DB at Cincinnati, 1999-2000"
+  },
+  "jay-norvell": {
+    "name": "Jay Norvell",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Nevada", "Colorado State"],
+    "mentor": "charlie-strong",
+    "mentor_context": "WR at Texas, 2015"
+  },
+  "sterlin-gilbert": {
+    "name": "Sterlin Gilbert",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["McNeese State"],
+    "mentor": "charlie-strong",
+    "mentor_context": "OC/QB at Texas, 2016"
+  },
+  "mike-sanford-sr": {
+    "name": "Mike Sanford Sr.",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Indiana State"],
+    "mentor": "charlie-strong",
+    "mentor_context": "AHC/OC at Louisville, 2010-11"
+  },
+  "doc-holliday": {
+    "name": "Doc Holliday",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Marshall"],
+    "mentor": "chuck-amato",
+    "mentor_context": "AHC/WR at NC State, 2000-02"
+  },
+  "curt-cignetti": {
+    "name": "Curt Cignetti",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["IUP", "Elon", "James Madison", "Indiana"],
+    "mentor": "chuck-amato",
+    "mentor_context": "TE/RC at NC State, 2000-06"
+  },
+  "manny-diaz": {
+    "name": "Manny Diaz",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Miami (FL)", "Duke"],
+    "mentor": "chuck-amato",
+    "mentor_context": "LB at NC State, 2002-03"
+  },
+  "norm-chow": {
+    "name": "Norm Chow",
+    "born": 1946,
+    "alma_mater": "Utah",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Hawaii"],
+    "mentor": "chuck-amato",
+    "mentor_context": "OC/QB at NC State, 2000"
+  },
+  "bill-cubit": {
+    "name": "Bill Cubit",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Western Michigan"],
+    "mentor": "gary-darnell",
+    "mentor_context": "OC at Western Michigan, 1997-99"
+  },
+  "dan-enos": {
+    "name": "Dan Enos",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Central Michigan"],
+    "mentor": "gary-darnell",
+    "mentor_context": "QB at Western Michigan, 2000-02"
+  },
+  "lovie-smith": {
+    "name": "Lovie Smith",
+    "born": 1958,
+    "alma_mater": "Tulsa",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Chicago Bears", "Tampa Bay Buccaneers", "Houston Texans"],
+    "mentor": "monte-kiffin",
+    "mentor_context": "NFL Asst under Kiffin (Tampa Bay era)"
+  },
+  "herm-edwards": {
+    "name": "Herm Edwards",
+    "born": 1954,
+    "alma_mater": "California",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["New York Jets", "Kansas City Chiefs"],
+    "mentor": "monte-kiffin",
+    "mentor_context": "NFL Asst under Kiffin"
+  },
+  "raheem-morris": {
+    "name": "Raheem Morris",
+    "born": 1976,
+    "alma_mater": "Hofstra",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Tampa Bay Buccaneers", "Atlanta Falcons"],
+    "mentor": "monte-kiffin",
+    "mentor_context": "NFL Asst under Kiffin"
+  },
+  "gus-bradley": {
+    "name": "Gus Bradley",
+    "born": 1966,
+    "alma_mater": "North Dakota State",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": ["Jacksonville Jaguars"],
+    "mentor": "monte-kiffin",
+    "mentor_context": "NFL Asst under Kiffin"
+  },
+  "rod-marinelli": {
+    "name": "Rod Marinelli",
+    "born": 1949,
+    "alma_mater": "California (PA)",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Detroit Lions"],
+    "mentor": "monte-kiffin",
+    "mentor_context": "NFL Asst under Kiffin"
+  },
+  "greg-mattison": {
+    "name": "Greg Mattison",
+    "born": 1949,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": [],
+    "mentor": "bob-davie",
+    "mentor_context": "DC at Notre Dame, 1997-2001"
+  },
+  "jim-colletto": {
+    "name": "Jim Colletto",
+    "born": 1942,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": [],
+    "mentor": "bob-davie",
+    "mentor_context": "OC at Notre Dame, 1997-98"
+  },
+  "kevin-rogers": {
+    "name": "Kevin Rogers",
+    "born": null,
+    "alma_mater": null,
+    "current_status": null,
+    "generation": 2,
+    "hc_schools": [],
+    "mentor": "bob-davie",
+    "mentor_context": "OC/QB at Notre Dame, 1999-2001"
+  },
+  "kerry-coombs": {
+    "name": "Kerry Coombs",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": [],
+    "mentor": "urban-meyer",
+    "mentor_context": "DB at Ohio State, 2012-17"
+  },
+
+  "marcus-freeman": {
+    "name": "Marcus Freeman",
+    "born": 1986,
+    "alma_mater": "Ohio State",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": ["Notre Dame"],
+    "mentor": "luke-fickell",
+    "mentor_context": "DC/LB at Cincinnati, 2017-20"
+  },
+  "jeff-hafley": {
+    "name": "Jeff Hafley",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": ["Boston College"],
+    "mentor": "ryan-day",
+    "mentor_context": "Co-DC at Ohio State, 2019"
+  },
+  "brian-hartline": {
+    "name": "Brian Hartline",
+    "born": 1986,
+    "alma_mater": "Ohio State",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": ["South Florida"],
+    "mentor": "ryan-day",
+    "mentor_context": "WR Coach at Ohio State, 2017-25"
   }
 }

@@ -102,16 +102,18 @@
 </head>
 <body>
 <h1>Lou Holtz Coaching Tree</h1>
-<p class="subtitle">Staff members across all head coaching stops who went on to become head coaches, and their downstream proteges</p>
+<p class="subtitle">3 generations of downstream proteges across 7 coaching stops — from Bo Rein &amp; Pete Carroll at Arkansas to Marcus Freeman at Notre Dame</p>
 <div id="chart"></div>
 
 <div class="legend">
   <div class="legend-item"><div class="legend-dot" style="background:#b45309;border:2px solid #fbbf24"></div> Lou Holtz</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#1e40af"></div> Gen 1 — Holtz Proteges</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1e40af"></div> Gen 1 — Direct Holtz Proteges</div>
   <div class="legend-item"><div class="legend-dot" style="background:#166534"></div> Gen 2 — Proteges of Proteges</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#5b21b6"></div> Gen 3 — Third Generation</div>
   <div style="margin-top:6px;font-size:11px;color:#6b7280">
-    <em>Circle = became head coach with downstream tree</em><br>
-    <em>Text only = staff member / leaf node</em>
+    <em>Large circle = HC with downstream proteges</em><br>
+    <em>Small circle = HC, no downstream data</em><br>
+    <em>Text only = notable staff, no HC role</em>
   </div>
 </div>
 
@@ -119,6 +121,9 @@
 <script>
 // ── Complete coaching tree data ──────────────────────────────────
 // Each node: name, role (relationship to parent), hc (head coaching positions), children
+// Generations: Gen 1 = direct Holtz assistants who became HCs
+//              Gen 2 = their assistants who became HCs
+//              Gen 3 = next level down
 const treeData = {
   name: "Lou Holtz",
   role: "",
@@ -130,11 +135,49 @@ const treeData = {
       role: "DC at Notre Dame, 1987-89",
       hc: "HC: Wisconsin (1990-2005)",
       children: [
-        { name: "Bret Bielema", role: "DC at Wisconsin", hc: "HC: Wisconsin, Arkansas, Illinois", children: [] },
-        { name: "Paul Chryst", role: "OC at Wisconsin", hc: "HC: Pittsburgh, Wisconsin", children: [] },
-        { name: "Gary Andersen", role: "Asst at Wisconsin", hc: "HC: Utah State, Wisconsin, Oregon State", children: [] },
-        { name: "Dave Doeren", role: "Asst at Wisconsin", hc: "HC: Northern Illinois, NC State", children: [] },
-        { name: "Don Treadwell", role: "Asst at Wisconsin", hc: "HC: Miami (OH)", children: [] }
+        { name: "Dan McCarney", role: "DC/DL at Wisconsin, 1990-94", hc: "HC: Iowa State, North Texas", children: [] },
+        { name: "Bret Bielema", role: "DC at Wisconsin, 2004-05", hc: "HC: Wisconsin, Arkansas, Illinois", children: [] },
+        { name: "Paul Chryst", role: "Co-OC/TE at Wisconsin, 2005", hc: "HC: Pittsburgh, Wisconsin", children: [] },
+        { name: "Brad Childress", role: "OC at Wisconsin, 1993-98", hc: "HC: Minnesota Vikings (NFL)", children: [] },
+        { name: "Gary Andersen", role: "Asst at Wisconsin, 2000-02", hc: "HC: Utah State, Wisconsin, Oregon State", children: [] },
+        { name: "Dave Doeren", role: "Asst at Wisconsin, 2001-05", hc: "HC: Northern Illinois, NC State", children: [] },
+        { name: "Don Treadwell", role: "Asst at Wisconsin, 2000-05", hc: "HC: Miami (OH)", children: [] }
+      ]
+    },
+    // ── Urban Meyer branch ──
+    {
+      name: "Urban Meyer",
+      role: "WR Coach at Notre Dame, 1996",
+      hc: "HC: Bowling Green, Utah, Florida, Ohio State, Jax Jaguars",
+      children: [
+        { name: "Dan Mullen", role: "OC at Bowling Green, Utah, Florida", hc: "HC: Mississippi State, Florida, UNLV", children: [] },
+        {
+          name: "Luke Fickell",
+          role: "DC/LB at Ohio State, 2012-16",
+          hc: "HC: Cincinnati (2017-22), Wisconsin (2023-)",
+          children: [
+            { name: "Marcus Freeman", role: "DC at Cincinnati, 2017-20", hc: "HC: Notre Dame (2022-)", children: [] }
+          ]
+        },
+        { name: "Tom Herman", role: "OC at Ohio State, 2012-14", hc: "HC: Houston, Texas", children: [] },
+        {
+          name: "Ryan Day",
+          role: "OC/QB at Ohio State, 2017-18",
+          hc: "HC: Ohio State (2019-)",
+          children: [
+            { name: "Jeff Hafley", role: "Co-DC at Ohio State, 2019", hc: "HC: Boston College (2020-23)", children: [] },
+            { name: "Brian Hartline", role: "WR at Ohio State, 2017-25", hc: "HC: South Florida (2026-)", children: [] }
+          ]
+        },
+        { name: "Greg Schiano", role: "DC at Ohio State, 2016-18", hc: "HC: Rutgers, Tampa Bay Bucs", children: [] },
+        { name: "Chris Ash", role: "Co-DC at Ohio State, 2014-15", hc: "HC: Rutgers (2016-19)", children: [] },
+        { name: "Everett Withers", role: "DC at Ohio State, 2012-13", hc: "HC: James Madison, Texas State", children: [] },
+        { name: "D.J. Durkin", role: "Asst at Florida/Ohio State", hc: "HC: Maryland (2016-18)", children: [] },
+        { name: "Tim Beckman", role: "DC at Bowling Green", hc: "HC: Toledo, Illinois", children: [] },
+        { name: "Gregg Brandon", role: "OC at Bowling Green", hc: "HC: Bowling Green (2003-08)", children: [] },
+        { name: "Stan Drayton", role: "RB Coach at Ohio State", hc: "HC: Temple (2022-24)", children: [] },
+        { name: "Tim Beck", role: "OC at Ohio State", hc: "HC: Coastal Carolina (2023-)", children: [] },
+        { name: "Kerry Coombs", role: "DB Coach at Ohio State, 2012-17", hc: "", children: [] }
       ]
     },
     // ── Bob Davie branch ──
@@ -143,117 +186,115 @@ const treeData = {
       role: "DC at Notre Dame, 1994-96",
       hc: "HC: Notre Dame (1997-2001), New Mexico (2012-19)",
       children: [
-        { name: "Steve Addazio", role: "TE/OL Coach at Notre Dame", hc: "HC: Temple, Boston College, Colorado State", children: [] },
-        { name: "Joker Phillips", role: "WR Coach at Notre Dame", hc: "HC: Kentucky (2010-12)", children: [] },
-        { name: "Jerry Rosburg", role: "OLB/ST Coach at Notre Dame", hc: "HC: Denver Broncos (interim, 2022)", children: [] },
-        { name: "Greg Mattison", role: "DC at Notre Dame", hc: "", children: [] },
-        { name: "Jim Colletto", role: "OC at Notre Dame", hc: "", children: [] },
-        { name: "Kevin Rogers", role: "OC/QB Coach at Notre Dame", hc: "", children: [] }
+        { name: "Steve Addazio", role: "TE/OL at Notre Dame, 1999-2001", hc: "HC: Temple, Boston College, Colorado State", children: [] },
+        { name: "Jerry Rosburg", role: "OLB/ST at Notre Dame, 1999-2000", hc: "HC: Denver Broncos (interim, 2022)", children: [] },
+        { name: "Greg Mattison", role: "DC at Notre Dame, 1997-2001", hc: "", children: [] },
+        { name: "Jim Colletto", role: "OC at Notre Dame, 1997-98", hc: "", children: [] },
+        { name: "Kevin Rogers", role: "OC/QB at Notre Dame, 1999-2001", hc: "", children: [] }
       ]
     },
-    // ── Urban Meyer branch (largest) ──
+    // ── Rick Minter branch — John Harbaugh, Rex Ryan, Mike Tomlin ──
     {
-      name: "Urban Meyer",
-      role: "WR Coach at Notre Dame, 1996",
-      hc: "HC: Bowling Green, Utah, Florida, Ohio State, Jax Jaguars",
+      name: "Rick Minter",
+      role: "DC at Notre Dame, 1992-93",
+      hc: "HC: Cincinnati (1994-2003)",
       children: [
-        {
-          name: "Dan Mullen",
-          role: "OC at Bowling Green, Utah, Florida",
-          hc: "HC: Mississippi State, Florida, UNLV",
-          children: []
-        },
-        {
-          name: "Luke Fickell",
-          role: "DC/LB Coach at Ohio State",
-          hc: "HC: Cincinnati (2017-22), Wisconsin (2023-)",
-          children: []
-        },
-        {
-          name: "Tom Herman",
-          role: "OC at Iowa State, Ohio State",
-          hc: "HC: Houston (2015-16), Texas (2017-20)",
-          children: []
-        },
-        {
-          name: "Charlie Strong",
-          role: "DC at Florida",
-          hc: "HC: Louisville, Texas, South Florida",
-          children: []
-        },
-        {
-          name: "Ryan Day",
-          role: "OC/QB Coach at Ohio State",
-          hc: "HC: Ohio State (2019-)",
-          children: [
-            { name: "Marcus Freeman", role: "DC at Ohio State (via Cincinnati)", hc: "HC: Notre Dame (2022-)", children: [] }
-          ]
-        },
-        {
-          name: "Greg Schiano",
-          role: "DC at Ohio State",
-          hc: "HC: Rutgers, Tampa Bay Buccaneers",
-          children: []
-        },
-        {
-          name: "Chris Ash",
-          role: "DC at Ohio State",
-          hc: "HC: Rutgers (2016-19)",
-          children: []
-        },
-        {
-          name: "Everett Withers",
-          role: "DC/Asst HC at Ohio State",
-          hc: "HC: James Madison, Texas State",
-          children: []
-        },
-        {
-          name: "Doc Holliday",
-          role: "Asst at Florida",
-          hc: "HC: Marshall (2010-20)",
-          children: []
-        },
-        { name: "Kerry Coombs", role: "DB Coach at Ohio State", hc: "", children: [] }
+        { name: "John Harbaugh", role: "ST Coord at Cincinnati, 1994-96", hc: "HC: Baltimore Ravens, NY Giants", children: [] },
+        { name: "Rex Ryan", role: "DC at Cincinnati, 1996-97", hc: "HC: NY Jets, Buffalo Bills", children: [] },
+        { name: "Mike Tomlin", role: "DB at Cincinnati, 1999-2000", hc: "HC: Pittsburgh Steelers (2007-)", children: [] }
       ]
     },
-    // ── Skip Holtz branch ──
+    // ── Charlie Strong branch — direct Holtz protege (ND 1995-96, SC 1999-2002) ──
+    {
+      name: "Charlie Strong",
+      role: "DL at Notre Dame 1995-96; DC at S. Carolina 1999-2002",
+      hc: "HC: Louisville, Texas, South Florida",
+      children: [
+        { name: "Jay Norvell", role: "WR at Texas, 2015", hc: "HC: Nevada, Colorado State", children: [] },
+        { name: "Sterlin Gilbert", role: "OC/QB at Texas, 2016", hc: "HC: McNeese State", children: [] },
+        { name: "Mike Sanford Sr.", role: "AHC/OC at Louisville, 2010-11", hc: "HC: Indiana State", children: [] }
+      ]
+    },
+    // ── Chuck Amato branch — NC State 1972-75 ──
+    {
+      name: "Chuck Amato",
+      role: "GA/Staff at NC State, 1972-75",
+      hc: "HC: NC State (2000-06)",
+      children: [
+        { name: "Curt Cignetti", role: "TE/RC at NC State, 2000-06", hc: "HC: IUP, Elon, James Madison, Indiana", children: [] },
+        { name: "Manny Diaz", role: "LB at NC State, 2002-03", hc: "HC: Miami (FL), Duke", children: [] },
+        { name: "Doc Holliday", role: "AHC/WR at NC State, 2000-02", hc: "HC: Marshall (2010-20)", children: [] },
+        { name: "Norm Chow", role: "OC/QB at NC State, 2000", hc: "HC: Hawaii (2012-15)", children: [] }
+      ]
+    },
+    // ── Gary Darnell branch ──
+    {
+      name: "Gary Darnell",
+      role: "DC at Notre Dame, 1990-91",
+      hc: "HC: Tennessee Tech, Western Michigan (1997-2004)",
+      children: [
+        { name: "Bill Cubit", role: "OC at W. Michigan, 1997-99", hc: "HC: Western Michigan (2005-12)", children: [] },
+        { name: "Dan Enos", role: "QB at W. Michigan, 2000-02", hc: "HC: Central Michigan (2010-14)", children: [] }
+      ]
+    },
+    // ── Monte Kiffin branch — Arkansas DC 1977-79 → NFL coaching tree ──
+    {
+      name: "Monte Kiffin",
+      role: "DC at Arkansas, 1977-79",
+      hc: "NFL DC: Tampa Bay, Dallas (Buccaneers dynasty)",
+      children: [
+        { name: "Lovie Smith", role: "NFL Asst under Kiffin", hc: "HC: Chicago Bears, Houston Texans", children: [] },
+        { name: "Herm Edwards", role: "NFL Asst under Kiffin", hc: "HC: NY Jets, Kansas City Chiefs", children: [] },
+        { name: "Raheem Morris", role: "NFL Asst under Kiffin", hc: "HC: Tampa Bay Bucs, Atlanta Falcons", children: [] },
+        { name: "Gus Bradley", role: "NFL Asst under Kiffin", hc: "HC: Jacksonville Jaguars", children: [] },
+        { name: "Rod Marinelli", role: "NFL Asst under Kiffin", hc: "HC: Detroit Lions", children: [] }
+      ]
+    },
+    // ── Pete Carroll — surprise GA connection, Arkansas 1977 ──
+    {
+      name: "Pete Carroll",
+      role: "GA at Arkansas, 1977",
+      hc: "HC: NY Jets, New England, USC, Seattle Seahawks",
+      children: []
+    },
+    // ── Skip Holtz ──
     {
       name: "Skip Holtz",
-      role: "Asst/GA at Notre Dame",
+      role: "OC/WR at Notre Dame, 1992-93; OC at South Carolina, 1999-2004",
       hc: "HC: UConn, East Carolina, South Florida, Louisiana Tech, Marshall",
       children: []
     },
-    // ── Pete Cordelli branch ──
+    // ── Bobby Ross — William & Mary 1970 ──
     {
-      name: "Pete Cordelli",
-      role: "WR Coach at Notre Dame",
-      hc: "HC: Kent State (1991-97)",
+      name: "Bobby Ross",
+      role: "DC at William & Mary, 1970",
+      hc: "HC: Maryland, Georgia Tech, SD Chargers, Detroit Lions",
       children: []
     },
-    // ── Jim Strong branch ──
+    // ── Bo Rein — NC State staff 1972-74 ──
     {
-      name: "Jim Strong",
-      role: "Asst at Notre Dame",
-      hc: "HC: UNLV (1994-98)",
+      name: "Bo Rein",
+      role: "Staff at NC State, 1972-74",
+      hc: "HC: NC State (1976-79)",
       children: []
     },
-    // ── Ron Cooper branch ──
-    {
-      name: "Ron Cooper",
-      role: "Asst at Notre Dame",
-      hc: "HC: Eastern Michigan, Louisville, Alabama A&M",
-      children: []
-    },
-    // ── Staff who did not become HCs (leaf / name-only) ──
+    // ── Remaining Gen-1 HCs ──
+    { name: "Pete Cordelli", role: "WR/QB at Notre Dame, 1986-90", hc: "HC: Kent State (1991-97)", children: [] },
+    { name: "Jim Strong", role: "OC/RB at Notre Dame, 1987-89", hc: "HC: UNLV (1994-98)", children: [] },
+    { name: "Dave Roberts", role: "OC at Notre Dame, 1994-96; Asst at S. Carolina, 1999-2004", hc: "HC: W. Kentucky, NE Louisiana, Baylor", children: [] },
+    { name: "Ron Cooper", role: "DB/Asst HC at Notre Dame, 1991-92", hc: "HC: Eastern Michigan, Louisville, Alabama A&M, FIU", children: [] },
+    { name: "John Palermo", role: "DL at Notre Dame, 1988-89", hc: "HC: Austin Peay (1990-96)", children: [] },
+    { name: "Peter Vaas", role: "RB/QB at Notre Dame, 1990-91", hc: "HC: Holy Cross (1994-98)", children: [] },
+    { name: "Buddy Pough", role: "RB at South Carolina, 1999-2001", hc: "HC: SC State (2002-23)", children: [] },
+    { name: "Joker Phillips", role: "Asst at South Carolina, 2002", hc: "HC: Kentucky (2010-12)", children: [] },
+    { name: "Rick Stockstill", role: "Asst at South Carolina, 2004", hc: "HC: Middle Tennessee (2006-23)", children: [] },
+    { name: "Dan Henning", role: "WR Coach on NY Jets, 1976", hc: "HC: Atlanta Falcons, SD Chargers", children: [] },
+    // ── Notable staff who did not become HCs ──
     { name: "Greg Davis", role: "Asst at Notre Dame", hc: "OC: Texas, Iowa", children: [] },
-    { name: "Bob Chmiel", role: "Secondary Coach at Notre Dame", hc: "", children: [] },
-    { name: "Gary Darnell", role: "Asst at Notre Dame", hc: "", children: [] },
-    { name: "George Stewart", role: "Asst at Notre Dame", hc: "NFL position coach career", children: [] },
-    { name: "Joe Moore", role: "OL Coach at Notre Dame", hc: "", children: [] },
-    { name: "Jay Hayes", role: "DL Coach at Notre Dame", hc: "", children: [] },
-    { name: "Dave Roberts", role: "Asst at Notre Dame", hc: "", children: [] },
-    { name: "Earle Mosley", role: "Asst at Notre Dame", hc: "", children: [] },
-    { name: "Kirk Doll", role: "Asst at Notre Dame", hc: "", children: [] },
+    { name: "Joe Moore", role: "OL Coach at Notre Dame, 1988-96", hc: "", children: [] },
+    { name: "George Stewart", role: "GA at Arkansas 1983; TE at Notre Dame 1986-88", hc: "NFL position coach career", children: [] },
+    { name: "Dean Pees", role: "DB at Notre Dame, 1994", hc: "NFL DC: Patriots, Ravens, Titans", children: [] },
+    { name: "Bob Chmiel", role: "TE/RC at Notre Dame, 1994-96", hc: "", children: [] },
     { name: "Vinny Cerrato", role: "Recruiting Coord at Notre Dame", hc: "", children: [] }
   ]
 };
@@ -298,9 +339,9 @@ function radialPoint(angle, radius) {
 }
 
 // Scale radii: depth 0 = 0, depth 1 = ring1, depth 2 = ring2, depth 3 = ring3
-const ring1 = 200;
-const ring2 = 360;
-const ring3 = 470;
+const ring1 = 220;
+const ring2 = 390;
+const ring3 = 510;
 function depthRadius(d) {
   if (d === 0) return 0;
   if (d === 1) return ring1;
@@ -350,9 +391,9 @@ const branchG = g.selectAll(".branch-node")
 
 branchG.append("circle")
   .attr("class", "branch-circle")
-  .attr("r", d => d.depth === 1 ? 10 : 6)
-  .attr("fill", d => d.depth === 1 ? "#1e40af" : "#166534")
-  .attr("stroke", d => d.depth === 1 ? "#3b82f6" : "#22c55e")
+  .attr("r", d => d.depth === 1 ? 10 : d.depth === 2 ? 7 : 5)
+  .attr("fill", d => d.depth === 1 ? "#1e40af" : d.depth === 2 ? "#166534" : "#5b21b6")
+  .attr("stroke", d => d.depth === 1 ? "#3b82f6" : d.depth === 2 ? "#22c55e" : "#a78bfa")
   .attr("stroke-width", 2);
 
 // ── Labels for branch nodes ──
@@ -400,9 +441,9 @@ const hcLeafG = g.selectAll(".hc-leaf-node")
   .attr("transform", d => `translate(${d.px},${d.py})`);
 
 hcLeafG.append("circle")
-  .attr("r", d => d.depth === 1 ? 7 : 5)
-  .attr("fill", d => d.depth === 1 ? "#1e40af" : "#166534")
-  .attr("stroke", d => d.depth === 1 ? "#3b82f6" : "#22c55e")
+  .attr("r", d => d.depth === 1 ? 7 : d.depth === 2 ? 5 : 4)
+  .attr("fill", d => d.depth === 1 ? "#1e40af" : d.depth === 2 ? "#166534" : "#5b21b6")
+  .attr("stroke", d => d.depth === 1 ? "#3b82f6" : d.depth === 2 ? "#22c55e" : "#a78bfa")
   .attr("stroke-width", 1.5);
 
 hcLeafG.each(function(d) {
