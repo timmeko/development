@@ -1482,5 +1482,33 @@
     "generation_gap": 1,
     "confidence": "high",
     "notes": "HC at Millersville 2008-12"
+  },
+
+  {
+    "id": "cooper-to-henson",
+    "mentor_id": "ron-cooper",
+    "protege_id": "dan-henson",
+    "school": "Eastern Michigan",
+    "year_start": 1995,
+    "year_end": 1996,
+    "relationship_type": "direct_report",
+    "protege_role": "QB Coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "QB coach at Eastern Michigan under Cooper 1995-96; later HC at Eastern Illinois (2002-12)"
+  },
+
+  {
+    "id": "skip-holtz-to-snow",
+    "mentor_id": "skip-holtz",
+    "protege_id": "clifford-snow",
+    "school": "Connecticut",
+    "year_start": 1995,
+    "year_end": 1998,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_line_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DL coach at UConn under Skip Holtz 1995-98; served as interim HC at UConn 1998"
   }
 ]

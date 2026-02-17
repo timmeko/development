@@ -1015,6 +1015,28 @@
     "mentor_context": "DC at Kent State, 1998-99"
   },
 
+  "dan-henson": {
+    "name": "Dan Henson",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Eastern Illinois"],
+    "mentor": "ron-cooper",
+    "mentor_context": "QB Coach at Eastern Michigan, 1995-96"
+  },
+
+  "clifford-snow": {
+    "name": "Clifford Snow",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": ["Connecticut"],
+    "mentor": "skip-holtz",
+    "mentor_context": "DL Coach at UConn, 1995-98"
+  },
+
   "marcus-freeman": {
     "name": "Marcus Freeman",
     "born": 1986,
