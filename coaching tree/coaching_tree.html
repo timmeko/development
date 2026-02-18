@@ -1,557 +1,222 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Lou Holtz Coaching Tree</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: #111827;
-    color: #e5e7eb;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    overflow: hidden;
-  }
-  h1 {
-    text-align: center;
-    padding: 18px 0 4px;
-    font-size: 28px;
-    color: #fbbf24;
-    letter-spacing: 1px;
-  }
-  .subtitle {
-    text-align: center;
-    font-size: 13px;
-    color: #9ca3af;
-    padding-bottom: 8px;
-  }
-  svg { display: block; }
-  .link {
-    fill: none;
-    stroke: #4b5563;
-    stroke-width: 1.5;
-    stroke-opacity: 0.6;
-  }
-  .link.gen1 { stroke: #6b7280; stroke-width: 2; stroke-opacity: 0.7; }
-  .node-label-name {
-    font-weight: 700;
-    font-size: 12px;
-    fill: #f3f4f6;
-  }
-  .node-label-role {
-    font-size: 10px;
-    fill: #9ca3af;
-    font-style: italic;
-  }
-  .node-label-hc {
-    font-size: 10px;
-    fill: #fbbf24;
-  }
-  .leaf-name {
-    font-size: 11px;
-    fill: #d1d5db;
-    font-weight: 500;
-  }
-  .leaf-role {
-    font-size: 9px;
-    fill: #6b7280;
-    font-style: italic;
-  }
-  .center-circle {
-    fill: #b45309;
-    stroke: #fbbf24;
-    stroke-width: 3;
-  }
-  .center-label {
-    font-size: 18px;
-    font-weight: 800;
-    fill: #ffffff;
-    text-anchor: middle;
-  }
-  .center-sub {
-    font-size: 11px;
-    fill: #fde68a;
-    text-anchor: middle;
-  }
-  .branch-circle {
-    stroke-width: 2;
-  }
-  .legend {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    background: rgba(17,24,39,0.9);
-    border: 1px solid #374151;
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 12px;
-    color: #9ca3af;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 4px 0;
-  }
-  .legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-</style>
-</head>
-<body>
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
 <h1>Lou Holtz Coaching Tree</h1>
-<p class="subtitle">3 generations of downstream proteges across 7 coaching stops — from Bo Rein &amp; Pete Carroll at Arkansas to Marcus Freeman at Notre Dame</p>
-<div id="chart"></div>
+</center>
 
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:#b45309;border:2px solid #fbbf24"></div> Lou Holtz</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#1e40af"></div> Gen 1 — Direct Holtz Proteges</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#166534"></div> Gen 2 — Proteges of Proteges</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#5b21b6"></div> Gen 3 — Third Generation</div>
-  <div style="margin-top:6px;font-size:11px;color:#6b7280">
-    <em>Large circle = HC with downstream proteges</em><br>
-    <em>Small circle = HC, no downstream data</em><br>
-    <em>Text only = notable staff, no HC role</em>
-  </div>
-</div>
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
 
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script>
-// ── Complete coaching tree data ──────────────────────────────────
-// Each node: name, role (relationship to parent), hc (head coaching positions), children
-// Generations: Gen 1 = direct Holtz assistants who became HCs
-//              Gen 2 = their assistants who became HCs
-//              Gen 3 = next level down
-const treeData = {
-  name: "Lou Holtz",
-  role: "",
-  hc: "W&M, NC State, NYJ, Arkansas, Minnesota, Notre Dame, South Carolina",
-  children: [
-    // ── Barry Alvarez branch ──
-    {
-      name: "Barry Alvarez",
-      role: "DC at Notre Dame, 1987-89",
-      hc: "HC: Wisconsin (1990-2005)",
-      children: [
-        { name: "Dan McCarney", role: "DC/DL at Wisconsin, 1990-94", hc: "HC: Iowa State, North Texas", children: [] },
-        { name: "Bret Bielema", role: "DC at Wisconsin, 2004-05", hc: "HC: Wisconsin, Arkansas, Illinois", children: [] },
-        { name: "Paul Chryst", role: "Co-OC/TE at Wisconsin, 2005", hc: "HC: Pittsburgh, Wisconsin", children: [] },
-        { name: "Brad Childress", role: "OC at Wisconsin, 1993-98", hc: "HC: Minnesota Vikings (NFL)", children: [] },
-        { name: "Gary Andersen", role: "Asst at Wisconsin, 2000-02", hc: "HC: Utah State, Wisconsin, Oregon State", children: [] },
-        { name: "Dave Doeren", role: "Asst at Wisconsin, 2001-05", hc: "HC: Northern Illinois, NC State", children: [] },
-        { name: "Don Treadwell", role: "Asst at Wisconsin, 2000-05", hc: "HC: Miami (OH)", children: [] }
-      ]
-    },
-    // ── Urban Meyer branch ──
-    {
-      name: "Urban Meyer",
-      role: "WR Coach at Notre Dame, 1996",
-      hc: "HC: Bowling Green, Utah, Florida, Ohio State, Jax Jaguars",
-      children: [
-        { name: "Dan Mullen", role: "OC at Bowling Green, Utah, Florida", hc: "HC: Mississippi State, Florida, UNLV", children: [] },
-        {
-          name: "Luke Fickell",
-          role: "DC/LB at Ohio State, 2012-16",
-          hc: "HC: Cincinnati (2017-22), Wisconsin (2023-)",
-          children: [
-            { name: "Marcus Freeman", role: "DC at Cincinnati, 2017-20", hc: "HC: Notre Dame (2022-)", children: [] }
-          ]
-        },
-        { name: "Tom Herman", role: "OC at Ohio State, 2012-14", hc: "HC: Houston, Texas", children: [] },
-        {
-          name: "Ryan Day",
-          role: "OC/QB at Ohio State, 2017-18",
-          hc: "HC: Ohio State (2019-)",
-          children: [
-            { name: "Jeff Hafley", role: "Co-DC at Ohio State, 2019", hc: "HC: Boston College (2020-23)", children: [] },
-            { name: "Brian Hartline", role: "WR at Ohio State, 2017-25", hc: "HC: South Florida (2026-)", children: [] }
-          ]
-        },
-        { name: "Greg Schiano", role: "DC at Ohio State, 2016-18", hc: "HC: Rutgers, Tampa Bay Bucs", children: [] },
-        { name: "Chris Ash", role: "Co-DC at Ohio State, 2014-15", hc: "HC: Rutgers (2016-19)", children: [] },
-        { name: "Everett Withers", role: "DC at Ohio State, 2012-13", hc: "HC: James Madison, Texas State", children: [] },
-        { name: "D.J. Durkin", role: "Asst at Florida/Ohio State", hc: "HC: Maryland (2016-18)", children: [] },
-        { name: "Tim Beckman", role: "DC at Bowling Green", hc: "HC: Toledo, Illinois", children: [] },
-        { name: "Gregg Brandon", role: "OC at Bowling Green", hc: "HC: Bowling Green (2003-08)", children: [] },
-        { name: "Stan Drayton", role: "RB Coach at Ohio State", hc: "HC: Temple (2022-24)", children: [] },
-        { name: "Tim Beck", role: "OC at Ohio State", hc: "HC: Coastal Carolina (2023-)", children: [] },
-        { name: "Kerry Coombs", role: "DB Coach at Ohio State, 2012-17", hc: "", children: [] }
-      ]
-    },
-    // ── Bob Davie branch ──
-    {
-      name: "Bob Davie",
-      role: "DC at Notre Dame, 1994-96",
-      hc: "HC: Notre Dame (1997-2001), New Mexico (2012-19)",
-      children: [
-        { name: "Steve Addazio", role: "TE/OL at Notre Dame, 1999-2001", hc: "HC: Temple, Boston College, Colorado State", children: [] },
-        { name: "Jerry Rosburg", role: "OLB/ST at Notre Dame, 1999-2000", hc: "HC: Denver Broncos (interim, 2022)", children: [] },
-        { name: "Greg Mattison", role: "DC at Notre Dame, 1997-2001", hc: "", children: [] },
-        { name: "Jim Colletto", role: "OC at Notre Dame, 1997-98", hc: "", children: [] },
-        { name: "Kevin Rogers", role: "OC/QB at Notre Dame, 1999-2001", hc: "", children: [] }
-      ]
-    },
-    // ── Rick Minter branch — John Harbaugh, Rex Ryan, Mike Tomlin ──
-    {
-      name: "Rick Minter",
-      role: "DC at Notre Dame, 1992-93",
-      hc: "HC: Cincinnati (1994-2003)",
-      children: [
-        { name: "John Harbaugh", role: "ST Coord at Cincinnati, 1994-96", hc: "HC: Baltimore Ravens, NY Giants", children: [] },
-        { name: "Rex Ryan", role: "DC at Cincinnati, 1996-97", hc: "HC: NY Jets, Buffalo Bills", children: [] },
-        { name: "Mike Tomlin", role: "DB at Cincinnati, 1999-2000", hc: "HC: Pittsburgh Steelers (2007-)", children: [] }
-      ]
-    },
-    // ── Charlie Strong branch — direct Holtz protege (ND 1995-96, SC 1999-2002) ──
-    {
-      name: "Charlie Strong",
-      role: "DL at Notre Dame 1995-96; DC at S. Carolina 1999-2002",
-      hc: "HC: Louisville, Texas, South Florida",
-      children: [
-        { name: "Jay Norvell", role: "WR at Texas, 2015", hc: "HC: Nevada, Colorado State", children: [] },
-        { name: "Sterlin Gilbert", role: "OC/QB at Texas, 2016", hc: "HC: McNeese State", children: [] },
-        { name: "Mike Sanford Sr.", role: "AHC/OC at Louisville, 2010-11", hc: "HC: Indiana State", children: [] }
-      ]
-    },
-    // ── Chuck Amato branch — NC State 1972-75 ──
-    {
-      name: "Chuck Amato",
-      role: "GA/Staff at NC State, 1972-75",
-      hc: "HC: NC State (2000-06)",
-      children: [
-        { name: "Curt Cignetti", role: "TE/RC at NC State, 2000-06", hc: "HC: IUP, Elon, James Madison, Indiana", children: [] },
-        { name: "Manny Diaz", role: "LB at NC State, 2002-03", hc: "HC: Miami (FL), Duke", children: [] },
-        { name: "Doc Holliday", role: "AHC/WR at NC State, 2000-02", hc: "HC: Marshall (2010-20)", children: [] },
-        { name: "Norm Chow", role: "OC/QB at NC State, 2000", hc: "HC: Hawaii (2012-15)", children: [] }
-      ]
-    },
-    // ── Gary Darnell branch ──
-    {
-      name: "Gary Darnell",
-      role: "DC at Notre Dame, 1990-91",
-      hc: "HC: Tennessee Tech, Western Michigan (1997-2004)",
-      children: [
-        { name: "Bill Cubit", role: "OC at W. Michigan, 1997-99", hc: "HC: Western Michigan (2005-12)", children: [] },
-        { name: "Dan Enos", role: "QB at W. Michigan, 2000-02", hc: "HC: Central Michigan (2010-14)", children: [] }
-      ]
-    },
-    // ── Monte Kiffin branch — Arkansas DC 1977-79 → NFL coaching tree ──
-    {
-      name: "Monte Kiffin",
-      role: "DC at Arkansas, 1977-79",
-      hc: "NFL DC: Tampa Bay, Dallas (Buccaneers dynasty)",
-      children: [
-        { name: "Lovie Smith", role: "NFL Asst under Kiffin", hc: "HC: Chicago Bears, Houston Texans", children: [] },
-        { name: "Herm Edwards", role: "NFL Asst under Kiffin", hc: "HC: NY Jets, Kansas City Chiefs", children: [] },
-        { name: "Raheem Morris", role: "NFL Asst under Kiffin", hc: "HC: Tampa Bay Bucs, Atlanta Falcons", children: [] },
-        { name: "Gus Bradley", role: "NFL Asst under Kiffin", hc: "HC: Jacksonville Jaguars", children: [] },
-        { name: "Rod Marinelli", role: "NFL Asst under Kiffin", hc: "HC: Detroit Lions", children: [] }
-      ]
-    },
-    // ── Pete Carroll — surprise GA connection, Arkansas 1977 ──
-    {
-      name: "Pete Carroll",
-      role: "GA at Arkansas, 1977",
-      hc: "HC: NY Jets, New England, USC, Seattle Seahawks",
-      children: []
-    },
-    // ── Skip Holtz ──
-    {
-      name: "Skip Holtz",
-      role: "OC/WR at Notre Dame, 1992-93; OC at South Carolina, 1999-2004",
-      hc: "HC: UConn, East Carolina, South Florida, Louisiana Tech, Marshall",
-      children: []
-    },
-    // ── Bobby Ross — William & Mary 1970 ──
-    {
-      name: "Bobby Ross",
-      role: "DC at William & Mary, 1970",
-      hc: "HC: Maryland, Georgia Tech, SD Chargers, Detroit Lions",
-      children: []
-    },
-    // ── Bo Rein — NC State staff 1972-74 ──
-    {
-      name: "Bo Rein",
-      role: "Staff at NC State, 1972-74",
-      hc: "HC: NC State (1976-79)",
-      children: []
-    },
-    // ── Remaining Gen-1 HCs ──
-    { name: "Pete Cordelli", role: "WR/QB at Notre Dame, 1986-90", hc: "HC: Kent State (1991-97)", children: [] },
-    { name: "Jim Strong", role: "OC/RB at Notre Dame, 1987-89", hc: "HC: UNLV (1994-98)", children: [] },
-    { name: "Dave Roberts", role: "OC at Notre Dame, 1994-96; Asst at S. Carolina, 1999-2004", hc: "HC: W. Kentucky, NE Louisiana, Baylor", children: [] },
-    { name: "Ron Cooper", role: "DB/Asst HC at Notre Dame, 1991-92", hc: "HC: Eastern Michigan, Louisville, Alabama A&M, FIU", children: [] },
-    { name: "John Palermo", role: "DL at Notre Dame, 1988-89", hc: "HC: Austin Peay (1990-96)", children: [] },
-    { name: "Peter Vaas", role: "RB/QB at Notre Dame, 1990-91", hc: "HC: Holy Cross (1994-98)", children: [] },
-    { name: "Buddy Pough", role: "RB at South Carolina, 1999-2001", hc: "HC: SC State (2002-23)", children: [] },
-    { name: "Joker Phillips", role: "Asst at South Carolina, 2002", hc: "HC: Kentucky (2010-12)", children: [] },
-    { name: "Rick Stockstill", role: "Asst at South Carolina, 2004", hc: "HC: Middle Tennessee (2006-23)", children: [] },
-    { name: "Dan Henning", role: "WR Coach on NY Jets, 1976", hc: "HC: Atlanta Falcons, SD Chargers", children: [] },
-    // ── Notable staff who did not become HCs ──
-    { name: "Greg Davis", role: "Asst at Notre Dame", hc: "OC: Texas, Iowa", children: [] },
-    { name: "Joe Moore", role: "OL Coach at Notre Dame, 1988-96", hc: "", children: [] },
-    { name: "George Stewart", role: "GA at Arkansas 1983; TE at Notre Dame 1986-88", hc: "NFL position coach career", children: [] },
-    { name: "Dean Pees", role: "DB at Notre Dame, 1994", hc: "NFL DC: Patriots, Ravens, Titans", children: [] },
-    { name: "Bob Chmiel", role: "TE/RC at Notre Dame, 1994-96", hc: "", children: [] },
-    { name: "Vinny Cerrato", role: "Recruiting Coord at Notre Dame", hc: "", children: [] }
-  ]
-};
 
-// ── Layout parameters ──
-const width = window.innerWidth;
-const height = window.innerHeight - 90;
-const cx = width / 2;
-const cy = height / 2;
-const centerRadius = 36;
+        <center>
+          <h1>Lou Holtz Coaching Tree</h1>
+        </center>
+        <style type="text/css">
 
-const svg = d3.select("#chart")
-  .append("svg")
-  .attr("width", width)
-  .attr("height", height);
+             #mynetwork {
+                 width: 100%;
+                 height: 900px;
+                 background-color: #1a1a2e;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
 
-const g = svg.append("g")
-  .attr("transform", `translate(${cx},${cy})`);
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 900px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
 
-// Build hierarchy
-const root = d3.hierarchy(treeData);
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
 
-// Separate gen-1 children into "branch" (have children or have HC roles) vs "leaf-only"
-const gen1Children = treeData.children;
-const branchNodes = gen1Children.filter(d => d.children.length > 0 || (d.hc && d.hc.startsWith("HC:")));
-const leafOnlyNodes = gen1Children.filter(d => d.children.length === 0 && (!d.hc || !d.hc.startsWith("HC:")));
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
 
-// ── Compute radial tree layout using D3 ──
-const treeLayout = d3.tree()
-  .size([2 * Math.PI, Math.min(cx, cy) - 100])
-  .separation((a, b) => {
-    // Give more space at deeper levels
-    if (a.depth === 1 && b.depth === 1) return 1.2;
-    return (a.parent === b.parent ? 1 : 1.5) / a.depth;
-  });
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
 
-treeLayout(root);
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
 
-// Radial point helper
-function radialPoint(angle, radius) {
-  return [radius * Math.cos(angle - Math.PI / 2), radius * Math.sin(angle - Math.PI / 2)];
-}
+             
 
-// Scale radii: depth 0 = 0, depth 1 = ring1, depth 2 = ring2, depth 3 = ring3
-const ring1 = 220;
-const ring2 = 390;
-const ring3 = 510;
-function depthRadius(d) {
-  if (d === 0) return 0;
-  if (d === 1) return ring1;
-  if (d === 2) return ring2;
-  return ring3;
-}
+             
+        </style>
+    </head>
 
-// Override the radius for each node
-root.each(d => {
-  d.radius = depthRadius(d.depth);
-  d.angle = d.x; // angle in radians
-});
 
-// ── Draw curved links ──
-const linkGen = d3.linkRadial()
-  .angle(d => d.angle)
-  .radius(d => d.radius);
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
 
-g.selectAll(".link")
-  .data(root.links().filter(d => d.source.depth > 0 || !isLeafOnly(d.target.data)))
-  .join("path")
-  .attr("class", d => "link" + (d.source.depth === 0 ? " gen1" : ""))
-  .attr("d", d => linkGen({source: d.source, target: d.target}));
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
 
-function isLeafOnly(data) {
-  return data.children.length === 0 && (!data.hc || !data.hc.startsWith("HC:"));
-}
-function isBranchNode(data) {
-  return data.children && data.children.length > 0;
-}
+        <script type="text/javascript">
 
-// ── Draw non-root, non-leaf-only nodes ──
-const nodes = root.descendants().filter(d => d.depth > 0);
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
 
-nodes.forEach(d => {
-  const [x, y] = radialPoint(d.angle, d.radius);
-  d.px = x;
-  d.py = y;
-});
+              
 
-// Draw branch nodes (have children) with circles
-const branchG = g.selectAll(".branch-node")
-  .data(nodes.filter(d => d.data.children && d.data.children.length > 0))
-  .join("g")
-  .attr("class", "branch-node")
-  .attr("transform", d => `translate(${d.px},${d.py})`);
+              
 
-branchG.append("circle")
-  .attr("class", "branch-circle")
-  .attr("r", d => d.depth === 1 ? 10 : d.depth === 2 ? 7 : 5)
-  .attr("fill", d => d.depth === 1 ? "#1e40af" : d.depth === 2 ? "#166534" : "#5b21b6")
-  .attr("stroke", d => d.depth === 1 ? "#3b82f6" : d.depth === 2 ? "#22c55e" : "#a78bfa")
-  .attr("stroke-width", 2);
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
 
-// ── Labels for branch nodes ──
-branchG.each(function(d) {
-  const el = d3.select(this);
-  const angleDeg = (d.angle * 180 / Math.PI) - 90;
-  const isRight = angleDeg > -90 && angleDeg < 90;
-  const textAnchor = isRight ? "start" : "end";
-  const xOff = isRight ? 16 : -16;
-  const flipAngle = isRight ? angleDeg : angleDeg + 180;
+                  
 
-  const labelG = el.append("g")
-    .attr("transform", `rotate(${flipAngle})`);
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#FFD700", "font": {"color": "white"}, "id": "lou-holtz", "label": "Lou Holtz", "shape": "dot", "size": 18, "title": "\u003cb\u003eLou Holtz\u003c/b\u003e\u003cbr\u003eGeneration: 0\u003cbr\u003eHC at: Notre Dame"}, {"color": "#888888", "font": {"color": "white"}, "id": "forest-evashevski", "label": "Forest Evashevski", "shape": "dot", "size": 15, "title": "\u003cb\u003eForest Evashevski\u003c/b\u003e\u003cbr\u003eGeneration: -1"}, {"color": "#888888", "font": {"color": "white"}, "id": "woody-hayes", "label": "Woody Hayes", "shape": "dot", "size": 15, "title": "\u003cb\u003eWoody Hayes\u003c/b\u003e\u003cbr\u003eGeneration: -1"}, {"color": "#888888", "font": {"color": "white"}, "id": "paul-dietzel", "label": "Paul Dietzel", "shape": "dot", "size": 15, "title": "\u003cb\u003ePaul Dietzel\u003c/b\u003e\u003cbr\u003eGeneration: -1"}, {"color": "#888888", "font": {"color": "white"}, "id": "milt-drewer", "label": "Milt Drewer", "shape": "dot", "size": 15, "title": "\u003cb\u003eMilt Drewer\u003c/b\u003e\u003cbr\u003eGeneration: -1"}, {"color": "#888888", "font": {"color": "white"}, "id": "rick-forzano", "label": "Rick Forzano", "shape": "dot", "size": 15, "title": "\u003cb\u003eRick Forzano\u003c/b\u003e\u003cbr\u003eGeneration: -1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "barry-alvarez", "label": "Barry Alvarez", "shape": "dot", "size": 15, "title": "\u003cb\u003eBarry Alvarez\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "bob-davie", "label": "Bob Davie", "shape": "dot", "size": 26, "title": "\u003cb\u003eBob Davie\u003c/b\u003e\u003cbr\u003eGeneration: 1\u003cbr\u003eHC at: Notre Dame, New Mexico"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "urban-meyer", "label": "Urban Meyer", "shape": "dot", "size": 50, "title": "\u003cb\u003eUrban Meyer\u003c/b\u003e\u003cbr\u003eGeneration: 1\u003cbr\u003eHC at: Bowling Green, Utah, Florida, Ohio State, Jacksonville Jaguars"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "charlie-strong", "label": "Charlie Strong", "shape": "dot", "size": 34, "title": "\u003cb\u003eCharlie Strong\u003c/b\u003e\u003cbr\u003eGeneration: 1\u003cbr\u003eHC at: Louisville, Texas, South Florida"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "rick-minter", "label": "Rick Minter", "shape": "dot", "size": 15, "title": "\u003cb\u003eRick Minter\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "skip-holtz", "label": "Skip Holtz", "shape": "dot", "size": 15, "title": "\u003cb\u003eSkip Holtz\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "gary-darnell", "label": "Gary Darnell", "shape": "dot", "size": 15, "title": "\u003cb\u003eGary Darnell\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "pete-cordelli", "label": "Pete Cordelli", "shape": "dot", "size": 15, "title": "\u003cb\u003ePete Cordelli\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "jim-strong", "label": "Jim Strong", "shape": "dot", "size": 15, "title": "\u003cb\u003eJim Strong\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "ron-cooper", "label": "Ron Cooper", "shape": "dot", "size": 15, "title": "\u003cb\u003eRon Cooper\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "dave-roberts", "label": "Dave Roberts", "shape": "dot", "size": 15, "title": "\u003cb\u003eDave Roberts\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "john-palermo", "label": "John Palermo", "shape": "dot", "size": 15, "title": "\u003cb\u003eJohn Palermo\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "peter-vaas", "label": "Peter Vaas", "shape": "dot", "size": 15, "title": "\u003cb\u003ePeter Vaas\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "bobby-ross", "label": "Bobby Ross", "shape": "dot", "size": 15, "title": "\u003cb\u003eBobby Ross\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "chuck-amato", "label": "Chuck Amato", "shape": "dot", "size": 15, "title": "\u003cb\u003eChuck Amato\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "bo-rein", "label": "Bo Rein", "shape": "dot", "size": 15, "title": "\u003cb\u003eBo Rein\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "monte-kiffin", "label": "Monte Kiffin", "shape": "dot", "size": 15, "title": "\u003cb\u003eMonte Kiffin\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "pete-carroll", "label": "Pete Carroll", "shape": "dot", "size": 15, "title": "\u003cb\u003ePete Carroll\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "buddy-pough", "label": "Buddy Pough", "shape": "dot", "size": 15, "title": "\u003cb\u003eBuddy Pough\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "joker-phillips", "label": "Joker Phillips", "shape": "dot", "size": 18, "title": "\u003cb\u003eJoker Phillips\u003c/b\u003e\u003cbr\u003eGeneration: 1\u003cbr\u003eHC at: Kentucky"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "rick-stockstill", "label": "Rick Stockstill", "shape": "dot", "size": 15, "title": "\u003cb\u003eRick Stockstill\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "dan-henning", "label": "Dan Henning", "shape": "dot", "size": 15, "title": "\u003cb\u003eDan Henning\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "greg-davis", "label": "Greg Davis", "shape": "dot", "size": 15, "title": "\u003cb\u003eGreg Davis\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "george-stewart", "label": "George Stewart", "shape": "dot", "size": 15, "title": "\u003cb\u003eGeorge Stewart\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "joe-moore", "label": "Joe Moore", "shape": "dot", "size": 15, "title": "\u003cb\u003eJoe Moore\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "vinny-cerrato", "label": "Vinny Cerrato", "shape": "dot", "size": 15, "title": "\u003cb\u003eVinny Cerrato\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "bob-chmiel", "label": "Bob Chmiel", "shape": "dot", "size": 15, "title": "\u003cb\u003eBob Chmiel\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#0C2340", "font": {"color": "white"}, "id": "dean-pees", "label": "Dean Pees", "shape": "dot", "size": 15, "title": "\u003cb\u003eDean Pees\u003c/b\u003e\u003cbr\u003eGeneration: 1"}, {"color": "#00843D", "font": {"color": "white"}, "id": "dan-mccarney", "label": "Dan McCarney", "shape": "dot", "size": 15, "title": "\u003cb\u003eDan McCarney\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "bret-bielema", "label": "Bret Bielema", "shape": "dot", "size": 15, "title": "\u003cb\u003eBret Bielema\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "paul-chryst", "label": "Paul Chryst", "shape": "dot", "size": 15, "title": "\u003cb\u003ePaul Chryst\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "brad-childress", "label": "Brad Childress", "shape": "dot", "size": 15, "title": "\u003cb\u003eBrad Childress\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "gary-andersen", "label": "Gary Andersen", "shape": "dot", "size": 15, "title": "\u003cb\u003eGary Andersen\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "dave-doeren", "label": "Dave Doeren", "shape": "dot", "size": 15, "title": "\u003cb\u003eDave Doeren\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "don-treadwell", "label": "Don Treadwell", "shape": "dot", "size": 15, "title": "\u003cb\u003eDon Treadwell\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "dan-mullen", "label": "Dan Mullen", "shape": "dot", "size": 34, "title": "\u003cb\u003eDan Mullen\u003c/b\u003e\u003cbr\u003eGeneration: 2\u003cbr\u003eHC at: Mississippi State, Florida, UNLV"}, {"color": "#00843D", "font": {"color": "white"}, "id": "luke-fickell", "label": "Luke Fickell", "shape": "dot", "size": 15, "title": "\u003cb\u003eLuke Fickell\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "tom-herman", "label": "Tom Herman", "shape": "dot", "size": 15, "title": "\u003cb\u003eTom Herman\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "ryan-day", "label": "Ryan Day", "shape": "dot", "size": 15, "title": "\u003cb\u003eRyan Day\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "greg-schiano", "label": "Greg Schiano", "shape": "dot", "size": 15, "title": "\u003cb\u003eGreg Schiano\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "chris-ash", "label": "Chris Ash", "shape": "dot", "size": 15, "title": "\u003cb\u003eChris Ash\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "everett-withers", "label": "Everett Withers", "shape": "dot", "size": 15, "title": "\u003cb\u003eEverett Withers\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "dj-durkin", "label": "D.J. Durkin", "shape": "dot", "size": 15, "title": "\u003cb\u003eD.J. Durkin\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "tim-beckman", "label": "Tim Beckman", "shape": "dot", "size": 15, "title": "\u003cb\u003eTim Beckman\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "gregg-brandon", "label": "Gregg Brandon", "shape": "dot", "size": 15, "title": "\u003cb\u003eGregg Brandon\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "stan-drayton", "label": "Stan Drayton", "shape": "dot", "size": 15, "title": "\u003cb\u003eStan Drayton\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "tim-beck", "label": "Tim Beck", "shape": "dot", "size": 15, "title": "\u003cb\u003eTim Beck\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "steve-addazio", "label": "Steve Addazio", "shape": "dot", "size": 34, "title": "\u003cb\u003eSteve Addazio\u003c/b\u003e\u003cbr\u003eGeneration: 2\u003cbr\u003eHC at: Temple, Boston College, Colorado State"}, {"color": "#00843D", "font": {"color": "white"}, "id": "jerry-rosburg", "label": "Jerry Rosburg", "shape": "dot", "size": 18, "title": "\u003cb\u003eJerry Rosburg\u003c/b\u003e\u003cbr\u003eGeneration: 2\u003cbr\u003eHC at: Denver Broncos"}, {"color": "#00843D", "font": {"color": "white"}, "id": "john-harbaugh", "label": "John Harbaugh", "shape": "dot", "size": 15, "title": "\u003cb\u003eJohn Harbaugh\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "rex-ryan", "label": "Rex Ryan", "shape": "dot", "size": 15, "title": "\u003cb\u003eRex Ryan\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "mike-tomlin", "label": "Mike Tomlin", "shape": "dot", "size": 15, "title": "\u003cb\u003eMike Tomlin\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "jay-norvell", "label": "Jay Norvell", "shape": "dot", "size": 15, "title": "\u003cb\u003eJay Norvell\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "sterlin-gilbert", "label": "Sterlin Gilbert", "shape": "dot", "size": 15, "title": "\u003cb\u003eSterlin Gilbert\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "mike-sanford-sr", "label": "Mike Sanford Sr.", "shape": "dot", "size": 15, "title": "\u003cb\u003eMike Sanford Sr.\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "doc-holliday", "label": "Doc Holliday", "shape": "dot", "size": 15, "title": "\u003cb\u003eDoc Holliday\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "curt-cignetti", "label": "Curt Cignetti", "shape": "dot", "size": 15, "title": "\u003cb\u003eCurt Cignetti\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "manny-diaz", "label": "Manny Diaz", "shape": "dot", "size": 15, "title": "\u003cb\u003eManny Diaz\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "norm-chow", "label": "Norm Chow", "shape": "dot", "size": 15, "title": "\u003cb\u003eNorm Chow\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "bill-cubit", "label": "Bill Cubit", "shape": "dot", "size": 15, "title": "\u003cb\u003eBill Cubit\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "dan-enos", "label": "Dan Enos", "shape": "dot", "size": 15, "title": "\u003cb\u003eDan Enos\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "lovie-smith", "label": "Lovie Smith", "shape": "dot", "size": 15, "title": "\u003cb\u003eLovie Smith\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "herm-edwards", "label": "Herm Edwards", "shape": "dot", "size": 15, "title": "\u003cb\u003eHerm Edwards\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "raheem-morris", "label": "Raheem Morris", "shape": "dot", "size": 15, "title": "\u003cb\u003eRaheem Morris\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "gus-bradley", "label": "Gus Bradley", "shape": "dot", "size": 15, "title": "\u003cb\u003eGus Bradley\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "rod-marinelli", "label": "Rod Marinelli", "shape": "dot", "size": 15, "title": "\u003cb\u003eRod Marinelli\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "greg-mattison", "label": "Greg Mattison", "shape": "dot", "size": 15, "title": "\u003cb\u003eGreg Mattison\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "jim-colletto", "label": "Jim Colletto", "shape": "dot", "size": 15, "title": "\u003cb\u003eJim Colletto\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "kevin-rogers", "label": "Kevin Rogers", "shape": "dot", "size": 15, "title": "\u003cb\u003eKevin Rogers\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "kerry-coombs", "label": "Kerry Coombs", "shape": "dot", "size": 15, "title": "\u003cb\u003eKerry Coombs\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "kevin-cosgrove", "label": "Kevin Cosgrove", "shape": "dot", "size": 15, "title": "\u003cb\u003eKevin Cosgrove\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "jason-swepson", "label": "Jason Swepson", "shape": "dot", "size": 15, "title": "\u003cb\u003eJason Swepson\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "reggie-herring", "label": "Reggie Herring", "shape": "dot", "size": 15, "title": "\u003cb\u003eReggie Herring\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "ted-roof", "label": "Ted Roof", "shape": "dot", "size": 15, "title": "\u003cb\u003eTed Roof\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "joe-pate", "label": "Joe Pate", "shape": "dot", "size": 15, "title": "\u003cb\u003eJoe Pate\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "bob-debusse", "label": "Bob DeBesse", "shape": "dot", "size": 15, "title": "\u003cb\u003eBob DeBesse\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "chip-long", "label": "Chip Long", "shape": "dot", "size": 15, "title": "\u003cb\u003eChip Long\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "mark-dantonio", "label": "Mark Dantonio", "shape": "dot", "size": 15, "title": "\u003cb\u003eMark Dantonio\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "pat-narduzzi", "label": "Pat Narduzzi", "shape": "dot", "size": 15, "title": "\u003cb\u003ePat Narduzzi\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "brian-kelly", "label": "Brian Kelly", "shape": "dot", "size": 15, "title": "\u003cb\u003eBrian Kelly\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "tony-dungy", "label": "Tony Dungy", "shape": "dot", "size": 15, "title": "\u003cb\u003eTony Dungy\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "lane-kiffin", "label": "Lane Kiffin", "shape": "dot", "size": 15, "title": "\u003cb\u003eLane Kiffin\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "ed-orgeron", "label": "Ed Orgeron", "shape": "dot", "size": 15, "title": "\u003cb\u003eEd Orgeron\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "ralph-friedgen", "label": "Ralph Friedgen", "shape": "dot", "size": 15, "title": "\u003cb\u003eRalph Friedgen\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "mike-smith-hc", "label": "Mike Smith", "shape": "dot", "size": 15, "title": "\u003cb\u003eMike Smith\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "ted-tollner", "label": "Ted Tollner", "shape": "dot", "size": 15, "title": "\u003cb\u003eTed Tollner\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "jim-mora-jr", "label": "Jim Mora Jr.", "shape": "dot", "size": 15, "title": "\u003cb\u003eJim Mora Jr.\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "gunther-cunningham", "label": "Gunther Cunningham", "shape": "dot", "size": 15, "title": "\u003cb\u003eGunther Cunningham\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "jimmy-johnson", "label": "Jimmy Johnson", "shape": "dot", "size": 15, "title": "\u003cb\u003eJimmy Johnson\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "ken-hatfield", "label": "Ken Hatfield", "shape": "dot", "size": 15, "title": "\u003cb\u003eKen Hatfield\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "joe-gibbs", "label": "Joe Gibbs", "shape": "dot", "size": 15, "title": "\u003cb\u003eJoe Gibbs\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "chuck-pagano", "label": "Chuck Pagano", "shape": "dot", "size": 15, "title": "\u003cb\u003eChuck Pagano\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "scott-linehan", "label": "Scott Linehan", "shape": "dot", "size": 15, "title": "\u003cb\u003eScott Linehan\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "tom-cable", "label": "Tom Cable", "shape": "dot", "size": 15, "title": "\u003cb\u003eTom Cable\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "jeff-horton", "label": "Jeff Horton", "shape": "dot", "size": 15, "title": "\u003cb\u003eJeff Horton\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "greg-colby", "label": "Greg Colby", "shape": "dot", "size": 15, "title": "\u003cb\u003eGreg Colby\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "dan-henson", "label": "Dan Henson", "shape": "dot", "size": 15, "title": "\u003cb\u003eDan Henson\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "clifford-snow", "label": "Clifford Snow", "shape": "dot", "size": 15, "title": "\u003cb\u003eClifford Snow\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "marcus-freeman", "label": "Marcus Freeman", "shape": "dot", "size": 15, "title": "\u003cb\u003eMarcus Freeman\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "jeff-hafley", "label": "Jeff Hafley", "shape": "dot", "size": 15, "title": "\u003cb\u003eJeff Hafley\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "brian-hartline", "label": "Brian Hartline", "shape": "dot", "size": 15, "title": "\u003cb\u003eBrian Hartline\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#00843D", "font": {"color": "white"}, "id": "steve-sarkisian", "label": "Steve Sarkisian", "shape": "dot", "size": 15, "title": "\u003cb\u003eSteve Sarkisian\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "dan-quinn", "label": "Dan Quinn", "shape": "dot", "size": 15, "title": "\u003cb\u003eDan Quinn\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#00843D", "font": {"color": "white"}, "id": "darrell-bevell", "label": "Darrell Bevell", "shape": "dot", "size": 15, "title": "\u003cb\u003eDarrell Bevell\u003c/b\u003e\u003cbr\u003eGeneration: 2"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "butch-davis", "label": "Butch Davis", "shape": "dot", "size": 15, "title": "\u003cb\u003eButch Davis\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "dave-wannstedt", "label": "Dave Wannstedt", "shape": "dot", "size": 15, "title": "\u003cb\u003eDave Wannstedt\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "tommy-tuberville", "label": "Tommy Tuberville", "shape": "dot", "size": 15, "title": "\u003cb\u003eTommy Tuberville\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "norv-turner", "label": "Norv Turner", "shape": "dot", "size": 15, "title": "\u003cb\u003eNorv Turner\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "richie-petitbon", "label": "Richie Petitbon", "shape": "dot", "size": 15, "title": "\u003cb\u003eRichie Petitbon\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "joe-bugel", "label": "Joe Bugel", "shape": "dot", "size": 15, "title": "\u003cb\u003eJoe Bugel\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "al-saunders", "label": "Al Saunders", "shape": "dot", "size": 15, "title": "\u003cb\u003eAl Saunders\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "gregg-williams", "label": "Gregg Williams", "shape": "dot", "size": 15, "title": "\u003cb\u003eGregg Williams\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "bill-callahan", "label": "Bill Callahan", "shape": "dot", "size": 15, "title": "\u003cb\u003eBill Callahan\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "houston-nutt", "label": "Houston Nutt", "shape": "dot", "size": 15, "title": "\u003cb\u003eHouston Nutt\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "tommy-west", "label": "Tommy West", "shape": "dot", "size": 15, "title": "\u003cb\u003eTommy West\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "david-bailiff", "label": "David Bailiff", "shape": "dot", "size": 15, "title": "\u003cb\u003eDavid Bailiff\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "chuck-martin", "label": "Chuck Martin", "shape": "dot", "size": 15, "title": "\u003cb\u003eChuck Martin\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "butch-jones", "label": "Butch Jones", "shape": "dot", "size": 15, "title": "\u003cb\u003eButch Jones\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "jeff-quinn", "label": "Jeff Quinn", "shape": "dot", "size": 15, "title": "\u003cb\u003eJeff Quinn\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "bob-diaco", "label": "Bob Diaco", "shape": "dot", "size": 15, "title": "\u003cb\u003eBob Diaco\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "mike-elko", "label": "Mike Elko", "shape": "dot", "size": 15, "title": "\u003cb\u003eMike Elko\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "clark-lea", "label": "Clark Lea", "shape": "dot", "size": 15, "title": "\u003cb\u003eClark Lea\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "brian-polian", "label": "Brian Polian", "shape": "dot", "size": 15, "title": "\u003cb\u003eBrian Polian\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "harlon-barnett", "label": "Harlon Barnett", "shape": "dot", "size": 15, "title": "\u003cb\u003eHarlon Barnett\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "mike-tressel", "label": "Mike Tressel", "shape": "dot", "size": 15, "title": "\u003cb\u003eMike Tressel\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "charlie-partridge", "label": "Charlie Partridge", "shape": "dot", "size": 15, "title": "\u003cb\u003eCharlie Partridge\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "sam-pittman", "label": "Sam Pittman", "shape": "dot", "size": 15, "title": "\u003cb\u003eSam Pittman\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "barry-lunney-jr", "label": "Barry Lunney Jr.", "shape": "dot", "size": 15, "title": "\u003cb\u003eBarry Lunney Jr.\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "kevin-wilson", "label": "Kevin Wilson", "shape": "dot", "size": 15, "title": "\u003cb\u003eKevin Wilson\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "geoff-collins", "label": "Geoff Collins", "shape": "dot", "size": 15, "title": "\u003cb\u003eGeoff Collins\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "tony-hughes", "label": "Tony Hughes", "shape": "dot", "size": 15, "title": "\u003cb\u003eTony Hughes\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "major-applewhite", "label": "Major Applewhite", "shape": "dot", "size": 15, "title": "\u003cb\u003eMajor Applewhite\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "mario-cristobal", "label": "Mario Cristobal", "shape": "dot", "size": 15, "title": "\u003cb\u003eMario Cristobal\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "kyle-flood", "label": "Kyle Flood", "shape": "dot", "size": 15, "title": "\u003cb\u003eKyle Flood\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "joe-susan", "label": "Joe Susan", "shape": "dot", "size": 15, "title": "\u003cb\u003eJoe Susan\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "pj-fleck", "label": "P.J. Fleck", "shape": "dot", "size": 15, "title": "\u003cb\u003eP.J. Fleck\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "clay-helton", "label": "Clay Helton", "shape": "dot", "size": 15, "title": "\u003cb\u003eClay Helton\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "hugh-freeze", "label": "Hugh Freeze", "shape": "dot", "size": 15, "title": "\u003cb\u003eHugh Freeze\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "dave-aranda", "label": "Dave Aranda", "shape": "dot", "size": 15, "title": "\u003cb\u003eDave Aranda\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "bo-pelini", "label": "Bo Pelini", "shape": "dot", "size": 15, "title": "\u003cb\u003eBo Pelini\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "james-franklin", "label": "James Franklin", "shape": "dot", "size": 15, "title": "\u003cb\u003eJames Franklin\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "mike-locksley", "label": "Mike Locksley", "shape": "dot", "size": 15, "title": "\u003cb\u003eMike Locksley\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "bill-obrien", "label": "Bill O\u0027Brien", "shape": "dot", "size": 15, "title": "\u003cb\u003eBill O\u0027Brien\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "jim-caldwell", "label": "Jim Caldwell", "shape": "dot", "size": 15, "title": "\u003cb\u003eJim Caldwell\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "leslie-frazier", "label": "Leslie Frazier", "shape": "dot", "size": 15, "title": "\u003cb\u003eLeslie Frazier\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "bruce-arians", "label": "Bruce Arians", "shape": "dot", "size": 15, "title": "\u003cb\u003eBruce Arians\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "gary-kubiak", "label": "Gary Kubiak", "shape": "dot", "size": 15, "title": "\u003cb\u003eGary Kubiak\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "david-culley", "label": "David Culley", "shape": "dot", "size": 15, "title": "\u003cb\u003eDavid Culley\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "ron-rivera", "label": "Ron Rivera", "shape": "dot", "size": 15, "title": "\u003cb\u003eRon Rivera\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "todd-haley", "label": "Todd Haley", "shape": "dot", "size": 15, "title": "\u003cb\u003eTodd Haley\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "mike-nolan", "label": "Mike Nolan", "shape": "dot", "size": 15, "title": "\u003cb\u003eMike Nolan\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "doug-marrone", "label": "Doug Marrone", "shape": "dot", "size": 15, "title": "\u003cb\u003eDoug Marrone\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "dirk-koetter", "label": "Dirk Koetter", "shape": "dot", "size": 15, "title": "\u003cb\u003eDirk Koetter\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "mike-mularkey", "label": "Mike Mularkey", "shape": "dot", "size": 15, "title": "\u003cb\u003eMike Mularkey\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "matt-wells", "label": "Matt Wells", "shape": "dot", "size": 15, "title": "\u003cb\u003eMatt Wells\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "eliah-drinkwitz", "label": "Eliah Drinkwitz", "shape": "dot", "size": 15, "title": "\u003cb\u003eEliah Drinkwitz\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "matt-canada", "label": "Matt Canada", "shape": "dot", "size": 15, "title": "\u003cb\u003eMatt Canada\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "jim-leonhard", "label": "Jim Leonhard", "shape": "dot", "size": 15, "title": "\u003cb\u003eJim Leonhard\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "matt-campbell", "label": "Matt Campbell", "shape": "dot", "size": 15, "title": "\u003cb\u003eMatt Campbell\u003c/b\u003e\u003cbr\u003eGeneration: 3"}, {"color": "#AE9142", "font": {"color": "white"}, "id": "tony-petersen", "label": "Tony Petersen", "shape": "dot", "size": 15, "title": "\u003cb\u003eTony Petersen\u003c/b\u003e\u003cbr\u003eGeneration: 3"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": "#555555", "dashes": false, "from": "lou-holtz", "title": "William \u0026 Mary 1970-1970", "to": "bobby-ross", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "lou-holtz", "title": "New York Jets 1976-1976", "to": "dan-henning", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "NC State 1972-1975", "to": "chuck-amato", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "NC State 1972-1974", "to": "bo-rein", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Arkansas 1977-1979", "to": "monte-kiffin", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Arkansas 1977-1977", "to": "pete-carroll", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "South Carolina 2004-2004", "to": "rick-minter", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1986-1990", "to": "pete-cordelli", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1987-1989", "to": "jim-strong", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1987-1989", "to": "barry-alvarez", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1994-1996", "to": "bob-davie", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1996-1996", "to": "urban-meyer", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "South Carolina 1999-2002", "to": "charlie-strong", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1990-1991", "to": "gary-darnell", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "South Carolina 1999-2004", "to": "skip-holtz", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "South Carolina 2004-2004", "to": "ron-cooper", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1994-1996", "to": "dave-roberts", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1988-1989", "to": "john-palermo", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1990-1991", "to": "peter-vaas", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1986-1990", "to": "greg-davis", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1988-1996", "to": "joe-moore", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1986-1988", "to": "george-stewart", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1986-1991", "to": "vinny-cerrato", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1994-1996", "to": "bob-chmiel", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "lou-holtz", "title": "Notre Dame 1994-1994", "to": "dean-pees", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "South Carolina 1999-2001", "to": "buddy-pough", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "South Carolina 2002-2002", "to": "joker-phillips", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "South Carolina 2004-2004", "to": "rick-stockstill", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Arkansas 1977-1978", "to": "jimmy-johnson", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Arkansas 1977-1983", "to": "ken-hatfield", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lou-holtz", "title": "Arkansas 1978-1979", "to": "joe-gibbs", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "forest-evashevski", "title": "Iowa 1960-1961", "to": "lou-holtz", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "woody-hayes", "title": "Ohio State 1968-1968", "to": "lou-holtz", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "paul-dietzel", "title": "South Carolina 1966-1967", "to": "lou-holtz", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "milt-drewer", "title": "William \u0026 Mary 1961-1963", "to": "lou-holtz", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "rick-forzano", "title": "Connecticut 1964-1965", "to": "lou-holtz", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "barry-alvarez", "title": "Wisconsin 1990-1994", "to": "dan-mccarney", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "barry-alvarez", "title": "Wisconsin 1993-1998", "to": "brad-childress", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "barry-alvarez", "title": "Wisconsin 2004-2005", "to": "bret-bielema", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "barry-alvarez", "title": "Wisconsin 2005-2005", "to": "paul-chryst", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "barry-alvarez", "title": "Wisconsin 2000-2002", "to": "gary-andersen", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "barry-alvarez", "title": "Wisconsin 2001-2005", "to": "dave-doeren", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "barry-alvarez", "title": "Wisconsin 2000-2005", "to": "don-treadwell", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "barry-alvarez", "title": "Wisconsin 1995-2003", "to": "kevin-cosgrove", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 1999-2001", "to": "steve-addazio", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 2001-2001", "to": "joker-phillips", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 1999-2000", "to": "jerry-rosburg", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 1997-2001", "to": "greg-mattison", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 1997-1998", "to": "jim-colletto", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "Notre Dame 1999-2001", "to": "kevin-rogers", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "New Mexico 2012-2016", "to": "bob-debusse", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bob-davie", "title": "New Mexico 2017-2019", "to": "chip-long", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "urban-meyer", "title": "multiple 2001-2008", "to": "dan-mullen", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "urban-meyer", "title": "Ohio State 2012-2016", "to": "luke-fickell", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "urban-meyer", "title": "Ohio State 2012-2014", "to": "tom-herman", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "urban-meyer", "title": "Ohio State 2017-2018", "to": "ryan-day", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "urban-meyer", "title": "Ohio State 2016-2018", "to": "greg-schiano", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "urban-meyer", "title": "Ohio State 2014-2015", "to": "chris-ash", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "urban-meyer", "title": "Ohio State 2012-2013", "to": "everett-withers", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "urban-meyer", "title": "multiple 2005-2015", "to": "dj-durkin", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "urban-meyer", "title": "Bowling Green 2001-2002", "to": "tim-beckman", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "urban-meyer", "title": "Bowling Green 2001-2002", "to": "gregg-brandon", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "urban-meyer", "title": "Ohio State 2012-2018", "to": "stan-drayton", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "urban-meyer", "title": "Ohio State 2015-2016", "to": "tim-beck", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "urban-meyer", "title": "Ohio State 2012-2017", "to": "kerry-coombs", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "charlie-strong", "title": "Texas 2015-2015", "to": "jay-norvell", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "charlie-strong", "title": "Texas 2016-2016", "to": "sterlin-gilbert", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "charlie-strong", "title": "Louisville 2010-2011", "to": "mike-sanford-sr", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "rick-minter", "title": "Cincinnati 1994-1996", "to": "john-harbaugh", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "rick-minter", "title": "Cincinnati 1996-1997", "to": "rex-ryan", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "rick-minter", "title": "Cincinnati 1999-2000", "to": "mike-tomlin", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "rick-minter", "title": "Cincinnati 1997-2000", "to": "mark-dantonio", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "rick-minter", "title": "Cincinnati 1997-2003", "to": "pat-narduzzi", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "rick-minter", "title": "Cincinnati 1994-1996", "to": "brian-kelly", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "skip-holtz", "title": "Connecticut 1995-1998", "to": "clifford-snow", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "gary-darnell", "title": "Western Michigan 1997-1999", "to": "bill-cubit", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "gary-darnell", "title": "Western Michigan 2000-2002", "to": "dan-enos", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "pete-cordelli", "title": "Kent State 1998-1999", "to": "greg-colby", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "jim-strong", "title": "UNLV 1990-1991", "to": "chuck-pagano", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "jim-strong", "title": "UNLV 1991-1991", "to": "scott-linehan", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "jim-strong", "title": "UNLV 1991-1991", "to": "tom-cable", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "jim-strong", "title": "UNLV 1990-1991", "to": "jeff-horton", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ron-cooper", "title": "Eastern Michigan 1995-1996", "to": "dan-henson", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bobby-ross", "title": "Maryland 1982-1986", "to": "ralph-friedgen", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "bobby-ross", "title": "Maryland 1986-1986", "to": "mike-smith-hc", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "chuck-amato", "title": "NC State 2000-2002", "to": "doc-holliday", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "chuck-amato", "title": "NC State 2000-2006", "to": "curt-cignetti", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "chuck-amato", "title": "NC State 2002-2003", "to": "manny-diaz", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "chuck-amato", "title": "NC State 2000-2000", "to": "norm-chow", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "chuck-amato", "title": "NC State 2001-2006", "to": "jason-swepson", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "chuck-amato", "title": "NC State 2002-2006", "to": "reggie-herring", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "chuck-amato", "title": "NC State 2000-2006", "to": "ted-roof", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "chuck-amato", "title": "NC State 2003-2005", "to": "joe-pate", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "monte-kiffin", "title": "NFL None-None", "to": "lovie-smith", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "monte-kiffin", "title": "NFL None-None", "to": "herm-edwards", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "monte-kiffin", "title": "NFL None-None", "to": "raheem-morris", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "monte-kiffin", "title": "NFL None-None", "to": "gus-bradley", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "monte-kiffin", "title": "NFL None-None", "to": "rod-marinelli", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "monte-kiffin", "title": "Minnesota Vikings 1986-1986", "to": "tony-dungy", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "monte-kiffin", "title": "USC 2010-2012", "to": "lane-kiffin", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "monte-kiffin", "title": "USC 2010-2013", "to": "ed-orgeron", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "pete-carroll", "title": "USC 2001-2006", "to": "steve-sarkisian", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "pete-carroll", "title": "Seattle Seahawks 2013-2014", "to": "dan-quinn", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "pete-carroll", "title": "Seattle Seahawks 2011-2017", "to": "darrell-bevell", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "pete-carroll", "title": "USC 2005-2006", "to": "lane-kiffin", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "pete-carroll", "title": "USC 2001-2004", "to": "ed-orgeron", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "pete-carroll", "title": "USC 2001-2004", "to": "norm-chow", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "pete-carroll", "title": "Seattle Seahawks 2010-2012", "to": "gus-bradley", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "dan-henning", "title": "San Diego Chargers 1989-1991", "to": "ted-tollner", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "dan-henning", "title": "San Diego Chargers 1989-1991", "to": "jim-mora-jr", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "dan-henning", "title": "San Diego Chargers 1989-1990", "to": "gunther-cunningham", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bret-bielema", "title": "Wisconsin 2008-2012", "to": "charlie-partridge", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bret-bielema", "title": "Arkansas 2013-2015", "to": "sam-pittman", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "bret-bielema", "title": "Arkansas 2013-2019", "to": "barry-lunney-jr", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bret-bielema", "title": "Wisconsin 2006-2011", "to": "paul-chryst", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bret-bielema", "title": "Wisconsin 2006-2010", "to": "dave-doeren", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "bret-bielema", "title": "Wisconsin 2010-2012", "to": "chris-ash", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "paul-chryst", "title": "Wisconsin 2017-2022", "to": "jim-leonhard", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "brad-childress", "title": "Minnesota Vikings 2007-2010", "to": "leslie-frazier", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "gary-andersen", "title": "Wisconsin 2013-2014", "to": "dave-aranda", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "gary-andersen", "title": "Utah State 2011-2012", "to": "matt-wells", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "dave-doeren", "title": "NC State 2015-2015", "to": "eliah-drinkwitz", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "dave-doeren", "title": "NC State 2013-2015", "to": "matt-canada", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "dan-mullen", "title": "Mississippi State 2011-2014", "to": "geoff-collins", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "dan-mullen", "title": "Mississippi State 2009-2015", "to": "tony-hughes", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "dan-mullen", "title": "Mississippi State 2010-2015", "to": "manny-diaz", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "luke-fickell", "title": "Cincinnati 2017-2020", "to": "marcus-freeman", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "luke-fickell", "title": "Cincinnati 2021-2022", "to": "mike-tressel", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "tom-herman", "title": "Houston 2015-2016", "to": "major-applewhite", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ryan-day", "title": "Ohio State 2019-2019", "to": "jeff-hafley", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ryan-day", "title": "Ohio State 2019-2025", "to": "brian-hartline", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ryan-day", "title": "Ohio State 2019-2022", "to": "kevin-wilson", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "greg-schiano", "title": "Rutgers 2001-2003", "to": "mario-cristobal", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "greg-schiano", "title": "Rutgers 2005-2011", "to": "kyle-flood", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "greg-schiano", "title": "Rutgers 2001-2009", "to": "joe-susan", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "greg-schiano", "title": "Tampa Bay Buccaneers 2012-2012", "to": "pj-fleck", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "tim-beckman", "title": "Toledo 2009-2011", "to": "matt-campbell", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "steve-addazio", "title": "Boston College 2013-2014", "to": "ryan-day", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "john-harbaugh", "title": "Baltimore Ravens 2014-2014", "to": "gary-kubiak", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "john-harbaugh", "title": "Baltimore Ravens 2019-2020", "to": "david-culley", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "john-harbaugh", "title": "Baltimore Ravens 2008-2011", "to": "chuck-pagano", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "mike-tomlin", "title": "Pittsburgh Steelers 2007-2011", "to": "bruce-arians", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "doc-holliday", "title": "Marshall 2010-2012", "to": "tony-petersen", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lovie-smith", "title": "Chicago Bears 2004-2006", "to": "ron-rivera", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "herm-edwards", "title": "New York Jets 2001-2003", "to": "todd-haley", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "herm-edwards", "title": "New York Jets 2001-2004", "to": "mike-nolan", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "gus-bradley", "title": "Jacksonville Jaguars 2015-2016", "to": "doug-marrone", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "mark-dantonio", "title": "Michigan State 2007-2017", "to": "harlon-barnett", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "mark-dantonio", "title": "Michigan State 2007-2019", "to": "mike-tressel", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "mark-dantonio", "title": "Michigan State 2007-2014", "to": "pat-narduzzi", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "mark-dantonio", "title": "Michigan State 2007-2010", "to": "don-treadwell", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "pat-narduzzi", "title": "Pittsburgh 2016-2016", "to": "matt-canada", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "brian-kelly", "title": "Grand Valley State 2000-2003", "to": "chuck-martin", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "brian-kelly", "title": "Central Michigan 2004-2006", "to": "butch-jones", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "brian-kelly", "title": "Cincinnati 2007-2009", "to": "jeff-quinn", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "brian-kelly", "title": "Notre Dame 2010-2013", "to": "bob-diaco", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "brian-kelly", "title": "Notre Dame 2017-2017", "to": "mike-elko", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "brian-kelly", "title": "Notre Dame 2018-2020", "to": "clark-lea", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "brian-kelly", "title": "Notre Dame 2012-2016", "to": "brian-polian", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "tony-dungy", "title": "Indianapolis Colts 2002-2008", "to": "jim-caldwell", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "tony-dungy", "title": "Indianapolis Colts 2005-2006", "to": "leslie-frazier", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "tony-dungy", "title": "Tampa Bay Buccaneers 1996-2000", "to": "lovie-smith", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "tony-dungy", "title": "Tampa Bay Buccaneers 1996-2000", "to": "herm-edwards", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "lane-kiffin", "title": "USC 2010-2013", "to": "clay-helton", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ed-orgeron", "title": "Ole Miss 2006-2007", "to": "hugh-freeze", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ed-orgeron", "title": "LSU 2016-2019", "to": "dave-aranda", "width": 2.5}, {"arrows": "to", "color": "#555555", "dashes": false, "from": "ed-orgeron", "title": "LSU 2020-2020", "to": "bo-pelini", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ed-orgeron", "title": "USC 2013-2013", "to": "clay-helton", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ralph-friedgen", "title": "Maryland 2008-2010", "to": "james-franklin", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ralph-friedgen", "title": "Maryland 1997-2002", "to": "mike-locksley", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ralph-friedgen", "title": "Maryland 2003-2004", "to": "bill-obrien", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "mike-smith-hc", "title": "Atlanta Falcons 2012-2014", "to": "dirk-koetter", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "mike-smith-hc", "title": "Atlanta Falcons 2008-2011", "to": "mike-mularkey", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "jimmy-johnson", "title": "multiple 1979-1992", "to": "butch-davis", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "jimmy-johnson", "title": "multiple 1979-1992", "to": "dave-wannstedt", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "jimmy-johnson", "title": "Miami (FL) 1986-1987", "to": "tommy-tuberville", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "jimmy-johnson", "title": "Dallas Cowboys 1991-1993", "to": "norv-turner", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ken-hatfield", "title": "Arkansas 1989-1989", "to": "houston-nutt", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ken-hatfield", "title": "Clemson 1990-1992", "to": "tommy-west", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "ken-hatfield", "title": "Rice 2001-2003", "to": "david-bailiff", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "joe-gibbs", "title": "Washington Redskins 1981-1992", "to": "richie-petitbon", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "joe-gibbs", "title": "Washington Redskins 1981-1989", "to": "joe-bugel", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "joe-gibbs", "title": "Washington Redskins 1981-1982", "to": "al-saunders", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "joe-gibbs", "title": "Washington Redskins 2004-2007", "to": "gregg-williams", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "joe-gibbs", "title": "Washington Redskins 2005-2007", "to": "bill-callahan", "width": 2.5}, {"arrows": "to", "color": "#888888", "dashes": false, "from": "joe-gibbs", "title": "Washington Redskins 1981-1982", "to": "dan-henning", "width": 2.5}]);
 
-  labelG.append("text")
-    .attr("class", "node-label-name")
-    .attr("x", xOff)
-    .attr("dy", "-0.6em")
-    .attr("text-anchor", textAnchor)
-    .text(d.data.name);
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
 
-  labelG.append("text")
-    .attr("class", "node-label-role")
-    .attr("x", xOff)
-    .attr("dy", "0.5em")
-    .attr("text-anchor", textAnchor)
-    .text(d.data.role);
+                  var options = {"nodes": {"borderWidth": 2, "borderWidthSelected": 4, "shape": "dot"}, "edges": {"smooth": {"type": "continuous"}}, "interaction": {"hover": true, "tooltipDelay": 100, "navigationButtons": true}, "physics": {"barnesHut": {"gravitationalConstant": -3000, "centralGravity": 0.3, "springLength": 200, "springConstant": 0.05, "avoidOverlap": 0.5}}};
 
-  if (d.data.hc) {
-    labelG.append("text")
-      .attr("class", "node-label-hc")
-      .attr("x", xOff)
-      .attr("dy", "1.7em")
-      .attr("text-anchor", textAnchor)
-      .text(d.data.hc);
-  }
-});
+                  
 
-// ── Labels for leaf nodes (no children, but have HC) — small circle + text ──
-const hcLeafData = nodes.filter(d => d.data.children.length === 0 && d.data.hc && d.data.hc.startsWith("HC:"));
-const hcLeafG = g.selectAll(".hc-leaf-node")
-  .data(hcLeafData)
-  .join("g")
-  .attr("class", "hc-leaf-node")
-  .attr("transform", d => `translate(${d.px},${d.py})`);
 
-hcLeafG.append("circle")
-  .attr("r", d => d.depth === 1 ? 7 : d.depth === 2 ? 5 : 4)
-  .attr("fill", d => d.depth === 1 ? "#1e40af" : d.depth === 2 ? "#166534" : "#5b21b6")
-  .attr("stroke", d => d.depth === 1 ? "#3b82f6" : d.depth === 2 ? "#22c55e" : "#a78bfa")
-  .attr("stroke-width", 1.5);
+                  
 
-hcLeafG.each(function(d) {
-  const el = d3.select(this);
-  const angleDeg = (d.angle * 180 / Math.PI) - 90;
-  const isRight = angleDeg > -90 && angleDeg < 90;
-  const textAnchor = isRight ? "start" : "end";
-  const xOff = isRight ? 12 : -12;
-  const flipAngle = isRight ? angleDeg : angleDeg + 180;
+                  network = new vis.Network(container, data, options);
 
-  const labelG = el.append("g")
-    .attr("transform", `rotate(${flipAngle})`);
+                  
 
-  labelG.append("text")
-    .attr("class", "node-label-name")
-    .attr("x", xOff)
-    .attr("dy", "-0.6em")
-    .attr("text-anchor", textAnchor)
-    .text(d.data.name);
+                  
 
-  labelG.append("text")
-    .attr("class", "node-label-role")
-    .attr("x", xOff)
-    .attr("dy", "0.5em")
-    .attr("text-anchor", textAnchor)
-    .text(d.data.role);
+                  
 
-  if (d.data.hc) {
-    labelG.append("text")
-      .attr("class", "node-label-hc")
-      .attr("x", xOff)
-      .attr("dy", "1.7em")
-      .attr("text-anchor", textAnchor)
-      .text(d.data.hc);
-  }
-});
 
-// ── Labels for pure leaf nodes (no HC, no children) — text only, no circle ──
-const pureLeafData = nodes.filter(d => d.data.children.length === 0 && (!d.data.hc || !d.data.hc.startsWith("HC:")));
-const pureLeafG = g.selectAll(".pure-leaf")
-  .data(pureLeafData)
-  .join("g")
-  .attr("class", "pure-leaf")
-  .attr("transform", d => `translate(${d.px},${d.py})`);
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
 
-pureLeafG.each(function(d) {
-  const el = d3.select(this);
-  const angleDeg = (d.angle * 180 / Math.PI) - 90;
-  const isRight = angleDeg > -90 && angleDeg < 90;
-  const textAnchor = isRight ? "start" : "end";
-  const xOff = isRight ? 4 : -4;
-  const flipAngle = isRight ? angleDeg : angleDeg + 180;
+                  return network;
 
-  const labelG = el.append("g")
-    .attr("transform", `rotate(${flipAngle})`);
-
-  labelG.append("text")
-    .attr("class", "leaf-name")
-    .attr("x", xOff)
-    .attr("dy", "-0.2em")
-    .attr("text-anchor", textAnchor)
-    .text(d.data.name);
-
-  if (d.data.role) {
-    labelG.append("text")
-      .attr("class", "leaf-role")
-      .attr("x", xOff)
-      .attr("dy", "1em")
-      .attr("text-anchor", textAnchor)
-      .text(d.data.role);
-  }
-
-  if (d.data.hc) {
-    labelG.append("text")
-      .attr("class", "leaf-role")
-      .attr("x", xOff)
-      .attr("dy", d.data.role ? "2.1em" : "1em")
-      .attr("text-anchor", textAnchor)
-      .text(d.data.hc);
-  }
-});
-
-// ── Center node: Lou Holtz ──
-g.append("circle")
-  .attr("class", "center-circle")
-  .attr("cx", 0).attr("cy", 0)
-  .attr("r", centerRadius);
-
-g.append("text")
-  .attr("class", "center-label")
-  .attr("dy", "-0.2em")
-  .text("Lou Holtz");
-
-g.append("text")
-  .attr("class", "center-sub")
-  .attr("dy", "1.2em")
-  .text("7 HC stops, 1988 Natl Champ");
-
-// ── Zoom / pan ──
-const zoom = d3.zoom()
-  .scaleExtent([0.3, 3])
-  .on("zoom", (event) => {
-    g.attr("transform", `translate(${event.transform.x},${event.transform.y}) scale(${event.transform.k})`);
-  });
-
-svg.call(zoom);
-svg.call(zoom.transform, d3.zoomIdentity.translate(cx, cy));
-
-</script>
-</body>
+              }
+              drawGraph();
+        </script>
+    </body>
 </html>
