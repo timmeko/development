@@ -1,0 +1,709 @@
+#!/usr/bin/env python3
+"""
+Coaching Tree Research Automation
+Runs all research queries through the OpenAI API and saves results to markdown files.
+
+Usage:
+    # Set your API key
+    export OPENAI_API_KEY="sk-..."
+
+    # Run all queries
+    python run_research.py
+
+    # Run a specific query by number
+    python run_research.py --query 1
+
+    # Run a range of queries
+    python run_research.py --from 7 --to 20
+
+    # List all queries without running them
+    python run_research.py --list
+
+    # Use a different model (default: gpt-4o)
+    python run_research.py --model gpt-4o-mini
+"""
+
+import os
+import sys
+import time
+import json
+import argparse
+from pathlib import Path
+
+try:
+    from openai import OpenAI
+except ImportError:
+    print("Error: openai package not installed. Run: pip install openai")
+    sys.exit(1)
+
+# Output directory
+SCRIPT_DIR = Path(__file__).parent
+OUTPUT_DIR = SCRIPT_DIR / "research" / "chatgpt"
+PROGRESS_FILE = OUTPUT_DIR / "_progress.json"
+
+# System prompt for all queries
+SYSTEM_PROMPT = """You are a college football coaching history expert. You are helping build a comprehensive coaching tree database tracing Lou Holtz's coaching lineage.
+
+IMPORTANT RULES:
+- Only include connections you are reasonably confident about
+- Mark each entry with a confidence level: high, medium, or low
+- If you are uncertain about specific years, give your best estimate and mark as medium/low confidence
+- Do NOT fabricate connections — if you don't know, say "None found" or mark as low confidence
+- Include coaches at ALL levels: NFL, FBS, FCS, D2, D3, NAIA
+- "Head coach" includes interim head coaches — mark those as (interim) in the HC stops column
+
+OUTPUT FORMAT:
+- Use markdown tables as specified in the prompt
+- After the table, add a "## Notes" section for any caveats, uncertain connections, or additional context
+- If a coach had no assistants who became HCs, explicitly state "None found"
+"""
+
+# All research queries — each is a tuple of (filename, prompt)
+QUERIES = [
+    # === PHASE 1: Gen 1 Gaps ===
+    (
+        "01_pete_carroll",
+        """I'm building a coaching tree database for college football, specifically tracing Lou Holtz's coaching lineage. Pete Carroll was a graduate assistant under Holtz at Arkansas in 1977 before going on to a legendary coaching career.
+
+I need to identify all assistant coaches who worked under Pete Carroll during his head coaching career and later became head coaches themselves (at any level: NFL, FBS, FCS, D2, NAIA).
+
+Pete Carroll was head coach at:
+- New York Jets (1994, 1 season)
+- New England Patriots (1997-99)
+- USC (2001-09)
+- Seattle Seahawks (2010-2023)
+- Las Vegas Raiders (2025-)
+
+For each assistant who later became a head coach, provide a markdown table organized by team:
+
+### [Team Name]
+
+| Name | Role Under Carroll | Years | Later HC Stops | Confidence |
+|------|-------------------|-------|----------------|------------|
+
+Focus on verifiable connections. Include low-confidence entries rather than omitting them."""
+    ),
+    (
+        "02_jimmy_johnson",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. Jimmy Johnson was Holtz's defensive coordinator at Arkansas (1977-78) before becoming one of the most successful coaches in football history.
+
+I need to identify all assistant coaches who worked under Jimmy Johnson during his head coaching career and later became head coaches themselves (NFL, FBS, FCS, D2, or lower).
+
+Jimmy Johnson was head coach at:
+- Oklahoma State (1979-83)
+- Miami, FL (1984-88)
+- Dallas Cowboys (1989-93)
+- Miami Dolphins (1996-99)
+
+For each assistant who later became a head coach, provide a markdown table organized by team:
+
+### [Team Name]
+
+| Name | Role Under Johnson | Years | Later HC Stops | Confidence |
+|------|-------------------|-------|----------------|------------|
+
+The Miami (FL) and Dallas staffs are especially important — those programs produced many future head coaches."""
+    ),
+    (
+        "03_joe_gibbs",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. Joe Gibbs was Holtz's offensive coordinator at Arkansas (1978-79) before becoming a Pro Football Hall of Fame head coach.
+
+I need to identify all assistant coaches who worked under Joe Gibbs during his head coaching career and later became head coaches themselves (NFL, FBS, FCS, or lower).
+
+Joe Gibbs was head coach at:
+- Washington Redskins (1981-92, first tenure)
+- Washington Redskins (2004-07, second tenure)
+
+For each assistant who later became a head coach, provide a markdown table:
+
+### First Tenure (1981-92)
+
+| Name | Role Under Gibbs | Years | Later HC Stops | Confidence |
+|------|-----------------|-------|----------------|------------|
+
+### Second Tenure (2004-07)
+
+| Name | Role Under Gibbs | Years | Later HC Stops | Confidence |
+|------|-----------------|-------|----------------|------------|"""
+    ),
+    (
+        "04_ken_hatfield",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. Ken Hatfield was an assistant under Holtz at Arkansas (1977-83) before a long head coaching career.
+
+I need to identify all assistant coaches who worked under Ken Hatfield during his head coaching career and later became head coaches themselves (NFL, FBS, FCS, D2, or lower).
+
+Ken Hatfield was head coach at:
+- Air Force (1979-83)
+- Arkansas (1984-89)
+- Clemson (1990-93)
+- Rice (1994-2005)
+
+For each assistant who later became a head coach, provide a markdown table organized by school:
+
+### [School Name]
+
+| Name | Role Under Hatfield | Years | Later HC Stops | Confidence |
+|------|-------------------|-------|----------------|------------|"""
+    ),
+    (
+        "05_batch_gen1_medium",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following head coaches (all former Holtz assistants), I need to know which of THEIR assistants later became head coaches.
+
+For each coach, list any assistants who later became head coaches at any level (NFL, FBS, FCS, D2, NAIA). If none found, say "None found."
+
+1. Skip Holtz (Lou's son) — HC at Connecticut (1994-98), East Carolina (2005-09), South Florida (2010-12), Louisiana Tech (2013-21), Marshall (2023-present)
+2. Dave Roberts — HC at Western Kentucky, Northeast Louisiana, Baylor
+3. Joker Phillips — HC at Kentucky (2010-12)
+4. Rick Stockstill — HC at Middle Tennessee (2006-23)
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|"""
+    ),
+    (
+        "06_batch_gen1_small",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following head coaches (all former Holtz assistants), I need to know which of THEIR assistants later became head coaches.
+
+These are mostly small-program coaches so it's entirely possible some had no proteges who became HCs. If none found, say "None found."
+
+1. Buddy Pough — HC at South Carolina State (2002-23, HBCU/FCS)
+2. John Palermo — HC at Austin Peay (FCS, approximate years late 1990s-2000s)
+3. Peter Vaas — HC at Holy Cross (1994-98, FCS)
+4. Bo Rein — HC at NC State (1976-79, died in plane crash Jan 1980)
+5. Ron Cooper — HC at Eastern Michigan (1993-94), Louisville (1995-97), Alabama A&M, Florida International
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|"""
+    ),
+
+    # === PHASE 2: Gen 2 → Gen 3 — College Big Trees ===
+    (
+        "07_brian_kelly",
+        """I'm building a coaching tree database. Brian Kelly has been a head coach at multiple schools. I need to identify all assistant coaches who worked under Kelly and later became head coaches themselves.
+
+Brian Kelly was head coach at:
+- Grand Valley State (1991-2003, D2)
+- Central Michigan (2004-06)
+- Cincinnati (2007-09)
+- Notre Dame (2010-21)
+- LSU (2022-present)
+
+For each assistant who later became a head coach, provide a markdown table organized by school:
+
+### [School Name]
+
+| Name | Role Under Kelly | Years | Later HC Stops | Confidence |
+|------|-----------------|-------|----------------|------------|
+
+The Notre Dame and LSU staffs are best documented but don't neglect the earlier stops."""
+    ),
+    (
+        "08_mark_dantonio",
+        """I'm building a coaching tree database. Mark Dantonio had a long career as a head coach. I need to identify all assistant coaches who worked under him and later became head coaches.
+
+Mark Dantonio was head coach at:
+- Cincinnati (2004-06)
+- Michigan State (2007-19)
+
+For each assistant who later became a head coach, provide a markdown table organized by school:
+
+### [School Name]
+
+| Name | Role Under Dantonio | Years | Later HC Stops | Confidence |
+|------|-------------------|-------|----------------|------------|
+
+The Michigan State tenure (13 seasons) is the primary focus as it likely produced the most coaching branches."""
+    ),
+    (
+        "09_bret_bielema",
+        """I'm building a coaching tree database. Bret Bielema was a head coach at multiple schools. I need to identify all assistant coaches who worked under him and later became head coaches.
+
+Bret Bielema was head coach at:
+- Wisconsin (2006-12)
+- Arkansas (2013-17)
+- Illinois (2021-24)
+
+For each assistant who later became a head coach, provide a markdown table organized by school:
+
+### [School Name]
+
+| Name | Role Under Bielema | Years | Later HC Stops | Confidence |
+|------|-------------------|-------|----------------|------------|"""
+    ),
+    (
+        "10_luke_fickell",
+        """I'm building a coaching tree database. I already have Marcus Freeman listed as a Luke Fickell protege (DC at Cincinnati, 2017-20 → Notre Dame HC). I need to identify any OTHER assistant coaches who worked under Fickell and later became head coaches.
+
+Luke Fickell was head coach at:
+- Ohio State (2011, interim)
+- Cincinnati (2017-22)
+- Wisconsin (2023-present)
+
+For each assistant (BESIDES Marcus Freeman) who later became a head coach, provide:
+
+| Name | School Under Fickell | Role | Years | Later HC Stops | Confidence |
+|------|---------------------|------|-------|----------------|------------|"""
+    ),
+    (
+        "11_ryan_day",
+        """I'm building a coaching tree database. I already have Jeff Hafley (co-DC 2019 → Boston College HC) and Brian Hartline (WR coach → South Florida HC) listed as Ryan Day proteges. I need to identify any OTHER assistant coaches who worked under Day and later became head coaches.
+
+Ryan Day has been head coach at:
+- Ohio State (2019-present)
+
+For each assistant (BESIDES Hafley and Hartline) who later became a head coach, provide:
+
+| Name | Role Under Day | Years | Later HC Stops | Confidence |
+|------|---------------|-------|----------------|------------|"""
+    ),
+    (
+        "12_dan_mullen",
+        """I'm building a coaching tree database. I need to identify all assistant coaches who worked under Dan Mullen and later became head coaches.
+
+Dan Mullen was head coach at:
+- Mississippi State (2009-17)
+- Florida (2018-21)
+- UNLV (2024-present)
+
+For each assistant who later became a head coach, provide a markdown table organized by school:
+
+### [School Name]
+
+| Name | Role Under Mullen | Years | Later HC Stops | Confidence |
+|------|------------------|-------|----------------|------------|"""
+    ),
+    (
+        "13_tom_herman",
+        """I'm building a coaching tree database. I need to identify all assistant coaches who worked under Tom Herman and later became head coaches.
+
+Tom Herman was head coach at:
+- Houston (2015-16)
+- Texas (2017-20)
+
+For each assistant who later became a head coach, provide a markdown table organized by school:
+
+### [School Name]
+
+| Name | Role Under Herman | Years | Later HC Stops | Confidence |
+|------|------------------|-------|----------------|------------|"""
+    ),
+    (
+        "14_greg_schiano",
+        """I'm building a coaching tree database. I need to identify all assistant coaches who worked under Greg Schiano and later became head coaches.
+
+Greg Schiano was head coach at:
+- Rutgers (2001-11, first tenure)
+- Tampa Bay Buccaneers (2012-13)
+- Rutgers (2020-present, second tenure)
+
+For each assistant who later became a head coach, provide a markdown table organized by team/school:
+
+### [Team/School Name]
+
+| Name | Role Under Schiano | Years | Later HC Stops | Confidence |
+|------|-------------------|-------|----------------|------------|"""
+    ),
+    (
+        "15_pat_narduzzi",
+        """I'm building a coaching tree database. I need to identify all assistant coaches who worked under Pat Narduzzi and later became head coaches.
+
+Pat Narduzzi has been head coach at:
+- Pittsburgh (2015-present)
+
+For each assistant who later became a head coach, provide:
+
+| Name | Role Under Narduzzi | Years | Later HC Stops | Confidence |
+|------|-------------------|-------|----------------|------------|"""
+    ),
+    (
+        "16_lane_kiffin",
+        """I'm building a coaching tree database. I need to identify all assistant coaches who worked under Lane Kiffin and later became head coaches.
+
+Lane Kiffin was head coach at:
+- Oakland Raiders (2007-08)
+- Tennessee (2009, 1 season)
+- USC (2010-13, fired midseason)
+- Florida Atlantic (2017-19)
+- Ole Miss (2020-present)
+
+For each assistant who later became a head coach, provide a markdown table organized by team/school:
+
+### [Team/School Name]
+
+| Name | Role Under Kiffin | Years | Later HC Stops | Confidence |
+|------|------------------|-------|----------------|------------|"""
+    ),
+    (
+        "17_ed_orgeron",
+        """I'm building a coaching tree database. I need to identify all assistant coaches who worked under Ed Orgeron and later became head coaches.
+
+Ed Orgeron was head coach at:
+- Ole Miss (2005-07)
+- USC (2013, interim)
+- LSU (2016-21, including 2019 national championship)
+
+For each assistant who later became a head coach, provide a markdown table organized by school:
+
+### [School Name]
+
+| Name | Role Under Orgeron | Years | Later HC Stops | Confidence |
+|------|-------------------|-------|----------------|------------|
+
+The 2019 LSU championship staff is especially notable."""
+    ),
+    (
+        "18_jim_mora_jr",
+        """I'm building a coaching tree database. I need to identify all assistant coaches who worked under Jim Mora Jr. and later became head coaches.
+
+Jim Mora Jr. was head coach at:
+- Atlanta Falcons (2004-06)
+- Seattle Seahawks (2009, interim)
+- UCLA (2012-17)
+- UConn (2022-23)
+
+For each assistant who later became a head coach, provide a markdown table organized by team/school:
+
+### [Team/School Name]
+
+| Name | Role Under Mora | Years | Later HC Stops | Confidence |
+|------|----------------|-------|----------------|------------|"""
+    ),
+    (
+        "19_ralph_friedgen",
+        """I'm building a coaching tree database. I need to identify all assistant coaches who worked under Ralph Friedgen and later became head coaches.
+
+Ralph Friedgen was head coach at:
+- Maryland (2001-10)
+
+For each assistant who later became a head coach, provide:
+
+| Name | Role Under Friedgen | Years | Later HC Stops | Confidence |
+|------|-------------------|-------|----------------|------------|"""
+    ),
+    (
+        "20_steve_addazio",
+        """I'm building a coaching tree database. I need to identify all assistant coaches who worked under Steve Addazio and later became head coaches.
+
+Steve Addazio was head coach at:
+- Temple (2011-12)
+- Boston College (2013-19)
+- Colorado State (2020-21)
+
+For each assistant who later became a head coach, provide a markdown table organized by school:
+
+### [School Name]
+
+| Name | Role Under Addazio | Years | Later HC Stops | Confidence |
+|------|-------------------|-------|----------------|------------|"""
+    ),
+
+    # === PHASE 3: NFL + Small College Batches ===
+    (
+        "21_batch_nfl_big",
+        """I'm building a coaching tree database. For each of the following NFL head coaches, list any assistant coaches who worked under them and later became head coaches themselves (NFL or college, any level). I only need their direct-report assistants who became HCs.
+
+1. Tony Dungy — HC at Tampa Bay Buccaneers (1996-2001), Indianapolis Colts (2002-08)
+2. Mike Tomlin — HC at Pittsburgh Steelers (2007-present)
+3. John Harbaugh — HC at Baltimore Ravens (2008-2024), New York Giants (2025-present)
+4. Lovie Smith — HC at Chicago Bears (2004-12), Tampa Bay Buccaneers (2014-15), Houston Texans (2022)
+5. Rex Ryan — HC at New York Jets (2009-14), Buffalo Bills (2015-16)
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+If none found for a coach, say "None found." """
+    ),
+    (
+        "22_batch_nfl_small",
+        """I'm building a coaching tree database. For each of the following NFL head coaches, list any assistant coaches who worked under them and later became head coaches themselves. I only need direct-report assistants who became HCs.
+
+1. Herm Edwards — HC at New York Jets (2001-05), Kansas City Chiefs (2006-08)
+2. Raheem Morris — HC at Tampa Bay Buccaneers (2009-11), Atlanta Falcons (2024-present)
+3. Gus Bradley — HC at Jacksonville Jaguars (2013-16)
+4. Rod Marinelli — HC at Detroit Lions (2006-08)
+5. Brad Childress — HC at Minnesota Vikings (2006-10)
+6. Chuck Pagano — HC at Indianapolis Colts (2012-17)
+7. Scott Linehan — HC at St. Louis Rams (2006-08)
+8. Tom Cable — HC at Oakland Raiders (2008-10)
+9. Gunther Cunningham — HC at Kansas City Chiefs (1999-2000)
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+If none found, say "None found." """
+    ),
+    (
+        "23_batch_college_small_a",
+        """I'm building a coaching tree database. For each of the following college head coaches, list any assistant coaches who worked under them and later became head coaches (any level). If none found, say "None found."
+
+1. Dan McCarney — HC at Iowa State (1995-2006), North Texas (2011-15)
+2. Paul Chryst — HC at Pittsburgh (2012-14), Wisconsin (2015-22)
+3. Gary Andersen — HC at Utah State (2009-12), Wisconsin (2013-14), Oregon State (2015-17)
+4. Dave Doeren — HC at Northern Illinois (2011-12), NC State (2013-present)
+5. Don Treadwell — HC at Miami of Ohio (2011, 1 season)
+6. Chris Ash — HC at Rutgers (2016-19)
+7. Everett Withers — HC at James Madison (2014-15), Texas State (2016-18)
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|"""
+    ),
+    (
+        "24_batch_college_small_b",
+        """I'm building a coaching tree database. For each of the following college head coaches, list any assistant coaches who worked under them and later became head coaches (any level). If none found, say "None found."
+
+1. D.J. Durkin — HC at Maryland (2016-18)
+2. Tim Beckman — HC at Toledo (2009-11), Illinois (2012-14)
+3. Gregg Brandon — HC at Bowling Green (2003-08)
+4. Stan Drayton — HC at Temple (2022-23)
+5. Tim Beck — HC at Coastal Carolina (2023-present)
+6. Jay Norvell — HC at Nevada (2017-21), Colorado State (2022-present)
+7. Sterlin Gilbert — HC at McNeese State (2021-present)
+8. Mike Sanford Sr. — HC at Indiana State (approximate years 2000s)
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|"""
+    ),
+    (
+        "25_batch_college_small_c",
+        """I'm building a coaching tree database. For each of the following college head coaches, list any assistant coaches who worked under them and later became head coaches (any level). If none found, say "None found."
+
+1. Doc Holliday — HC at Marshall (2010-19)
+2. Curt Cignetti — HC at IUP (D2), Elon (FCS), James Madison (2019-23), Indiana (2024-present)
+3. Manny Diaz — HC at Miami FL (2019-21), Duke (2024-present)
+4. Norm Chow — HC at Hawaii (2012-15)
+5. Bill Cubit — HC at Western Michigan (2000-04), Illinois (2015, interim)
+6. Dan Enos — HC at Central Michigan (2010-14)
+7. Kevin Cosgrove — HC at New Mexico (interim)
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|"""
+    ),
+    (
+        "26_batch_college_small_d",
+        """I'm building a coaching tree database. For each of the following coaches, list any assistant coaches who worked under them and later became head coaches (any level). If none found, say "None found."
+
+1. Ted Roof — HC at Duke (2003-07)
+2. Jeff Horton — HC at UNLV (approximate years early 1990s-2000s)
+3. Ted Tollner — HC at San Diego State (approximate years 1994-2001)
+4. Mike Smith — HC at Atlanta Falcons (2008-14)
+5. Jason Swepson — HC at Elon (approximate years 2010s)
+6. Reggie Herring — HC at Houston (interim, approximate 2012)
+7. Joe Pate — HC at Tennessee Tech (approximate years 2000s)
+8. Bob DeBesse — HC at Southwest Minnesota State (D2)
+9. Chip Long — HC at Tulane (2024-present)
+10. Greg Colby — HC at Millersville (D2)
+11. Dan Henson — HC at Eastern Illinois (approximate years 2000s)
+12. Clifford Snow — HC at Connecticut (interim, approximate 1998)
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|"""
+    ),
+]
+
+
+def load_progress():
+    """Load progress tracker."""
+    if PROGRESS_FILE.exists():
+        with open(PROGRESS_FILE) as f:
+            return json.load(f)
+    return {}
+
+
+def save_progress(progress):
+    """Save progress tracker."""
+    with open(PROGRESS_FILE, "w") as f:
+        json.dump(progress, f, indent=2)
+
+
+def run_query(client, model, query_num, filename, prompt):
+    """Run a single query and save results."""
+    output_path = OUTPUT_DIR / f"{filename}.md"
+
+    print(f"\n{'='*60}")
+    print(f"Query {query_num}/{len(QUERIES)}: {filename}")
+    print(f"{'='*60}")
+
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0.3,  # Lower temperature for factual recall
+            max_tokens=4096,
+        )
+
+        content = response.choices[0].message.content
+
+        # Write response with metadata header
+        with open(output_path, "w") as f:
+            f.write(f"# Query {query_num}: {filename}\n\n")
+            f.write(f"**Model:** {model}  \n")
+            f.write(f"**Date:** {time.strftime('%Y-%m-%d %H:%M:%S')}  \n")
+            f.write(f"**Tokens:** {response.usage.total_tokens} "
+                    f"(prompt: {response.usage.prompt_tokens}, "
+                    f"completion: {response.usage.completion_tokens})  \n\n")
+            f.write("---\n\n")
+            f.write(content)
+            f.write("\n")
+
+        print(f"  Saved to: {output_path}")
+        print(f"  Tokens used: {response.usage.total_tokens}")
+        return True
+
+    except Exception as e:
+        print(f"  ERROR: {e}")
+        return False
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Run coaching tree research queries via OpenAI API")
+    parser.add_argument("--query", type=int, help="Run a specific query number (1-indexed)")
+    parser.add_argument("--from", dest="from_q", type=int, help="Start from this query number")
+    parser.add_argument("--to", dest="to_q", type=int, help="End at this query number (inclusive)")
+    parser.add_argument("--list", action="store_true", help="List all queries without running them")
+    parser.add_argument("--model", default="gpt-4o", help="OpenAI model to use (default: gpt-4o)")
+    parser.add_argument("--delay", type=float, default=2.0, help="Seconds to wait between queries (default: 2)")
+    parser.add_argument("--skip-completed", action="store_true", default=True,
+                        help="Skip queries that already have output files (default: true)")
+    parser.add_argument("--force", action="store_true", help="Re-run even if output file exists")
+    args = parser.parse_args()
+
+    # List mode
+    if args.list:
+        print(f"\n{'#':>3}  {'Filename':<35}  {'Status'}")
+        print(f"{'─'*3}  {'─'*35}  {'─'*10}")
+        for i, (filename, _) in enumerate(QUERIES, 1):
+            output_path = OUTPUT_DIR / f"{filename}.md"
+            status = "DONE" if output_path.exists() else "TODO"
+            print(f"{i:>3}  {filename:<35}  {status}")
+        total = len(QUERIES)
+        done = sum(1 for fn, _ in QUERIES if (OUTPUT_DIR / f"{fn}.md").exists())
+        print(f"\n{done}/{total} complete")
+        return
+
+    # Validate API key
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        print("Error: OPENAI_API_KEY environment variable not set.")
+        print("Set it with: export OPENAI_API_KEY='sk-...'")
+        sys.exit(1)
+
+    client = OpenAI(api_key=api_key)
+
+    # Create output directory
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Determine which queries to run
+    if args.query:
+        indices = [args.query - 1]
+    elif args.from_q or args.to_q:
+        start = (args.from_q or 1) - 1
+        end = args.to_q or len(QUERIES)
+        indices = list(range(start, end))
+    else:
+        indices = list(range(len(QUERIES)))
+
+    # Filter completed if not forcing
+    if not args.force:
+        filtered = []
+        for i in indices:
+            filename = QUERIES[i][0]
+            output_path = OUTPUT_DIR / f"{filename}.md"
+            if output_path.exists():
+                print(f"Skipping query {i+1} ({filename}) — already complete. Use --force to re-run.")
+            else:
+                filtered.append(i)
+        indices = filtered
+
+    if not indices:
+        print("\nNo queries to run. All selected queries are complete.")
+        print("Use --force to re-run completed queries, or --list to see status.")
+        return
+
+    print(f"\nRunning {len(indices)} queries using model: {args.model}")
+    print(f"Output directory: {OUTPUT_DIR}")
+    print(f"Delay between queries: {args.delay}s")
+
+    # Estimate cost
+    est_cost = len(indices) * 0.08  # rough estimate for gpt-4o
+    print(f"Estimated cost: ~${est_cost:.2f} (rough estimate)")
+
+    # Confirm
+    response = input(f"\nProceed with {len(indices)} queries? [y/N] ")
+    if response.lower() != "y":
+        print("Aborted.")
+        return
+
+    # Run queries
+    progress = load_progress()
+    successes = 0
+    failures = 0
+
+    for idx, i in enumerate(indices):
+        filename, prompt = QUERIES[i]
+        query_num = i + 1
+
+        success = run_query(client, args.model, query_num, filename, prompt)
+
+        if success:
+            successes += 1
+            progress[filename] = {
+                "status": "complete",
+                "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "model": args.model,
+            }
+            save_progress(progress)
+        else:
+            failures += 1
+            progress[filename] = {
+                "status": "failed",
+                "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            save_progress(progress)
+
+        # Delay between queries (but not after the last one)
+        if idx < len(indices) - 1:
+            print(f"  Waiting {args.delay}s before next query...")
+            time.sleep(args.delay)
+
+    print(f"\n{'='*60}")
+    print(f"COMPLETE: {successes} succeeded, {failures} failed")
+    print(f"Results saved to: {OUTPUT_DIR}")
+    print(f"{'='*60}")
+
+
+if __name__ == "__main__":
+    main()
