@@ -64,7 +64,6 @@
     "confidence": "medium",
     "notes": "Holtz was assistant under Forzano at Connecticut"
   },
-
   {
     "id": "holtz-to-ross",
     "mentor_id": "lou-holtz",
@@ -141,7 +140,7 @@
     "protege_role": "graduate_assistant",
     "generation_gap": 1,
     "confidence": "high",
-    "notes": "Pete Carroll was a GA at Arkansas under Holtz in 1977 — his first coaching job"
+    "notes": "Pete Carroll was a GA at Arkansas under Holtz in 1977 \u2014 his first coaching job"
   },
   {
     "id": "holtz-to-minter-arkansas",
@@ -520,7 +519,6 @@
     "confidence": "high",
     "notes": "Asst at South Carolina 2004; later HC at Middle Tennessee (2006-23)"
   },
-
   {
     "id": "alvarez-to-mccarney",
     "mentor_id": "barry-alvarez",
@@ -1119,7 +1117,6 @@
     "confidence": "high",
     "notes": "WR coach/OC at Ohio State under Day 2019-25; hired as HC at South Florida (2026)"
   },
-
   {
     "id": "alvarez-to-cosgrove",
     "mentor_id": "barry-alvarez",
@@ -1133,7 +1130,6 @@
     "confidence": "high",
     "notes": "Interim HC at New Mexico 2009"
   },
-
   {
     "id": "amato-to-swepson",
     "mentor_id": "chuck-amato",
@@ -1147,7 +1143,6 @@
     "confidence": "high",
     "notes": "HC at Elon 2017-18"
   },
-
   {
     "id": "amato-to-herring",
     "mentor_id": "chuck-amato",
@@ -1161,7 +1156,6 @@
     "confidence": "high",
     "notes": "Interim HC at Houston 2014"
   },
-
   {
     "id": "amato-to-roof",
     "mentor_id": "chuck-amato",
@@ -1175,7 +1169,6 @@
     "confidence": "high",
     "notes": "HC at Duke 2004-07"
   },
-
   {
     "id": "amato-to-pate",
     "mentor_id": "chuck-amato",
@@ -1189,7 +1182,6 @@
     "confidence": "high",
     "notes": "HC at Tennessee Tech 2017-present"
   },
-
   {
     "id": "davie-to-debusse",
     "mentor_id": "bob-davie",
@@ -1203,7 +1195,6 @@
     "confidence": "high",
     "notes": "HC at Southwest Minnesota State 1993-2005"
   },
-
   {
     "id": "davie-to-long",
     "mentor_id": "bob-davie",
@@ -1217,7 +1208,6 @@
     "confidence": "high",
     "notes": "HC at Tulane 2023-present"
   },
-
   {
     "id": "minter-to-dantonio",
     "mentor_id": "rick-minter",
@@ -1231,7 +1221,6 @@
     "confidence": "high",
     "notes": "HC at Central Michigan (2004-06), Cincinnati (2007), Michigan State (2007-19)"
   },
-
   {
     "id": "minter-to-narduzzi",
     "mentor_id": "rick-minter",
@@ -1245,7 +1234,6 @@
     "confidence": "high",
     "notes": "HC at Pittsburgh 2015-present"
   },
-
   {
     "id": "minter-to-kelly",
     "mentor_id": "rick-minter",
@@ -1259,7 +1247,6 @@
     "confidence": "high",
     "notes": "HC at Grand Valley, Central Michigan, Cincinnati, Notre Dame (2010-21), LSU (2022-present)"
   },
-
   {
     "id": "kiffin-to-dungy",
     "mentor_id": "monte-kiffin",
@@ -1273,7 +1260,6 @@
     "confidence": "high",
     "notes": "HC at Tampa Bay (1996-01), Indianapolis Colts (2002-11)"
   },
-
   {
     "id": "kiffin-to-lane-kiffin",
     "mentor_id": "monte-kiffin",
@@ -1287,7 +1273,6 @@
     "confidence": "high",
     "notes": "HC at Oakland Raiders (2007-08), Tennessee (2009), USC (2010-13), FAU (2017-19), Ole Miss (2020-present). Son of Monte Kiffin."
   },
-
   {
     "id": "kiffin-to-orgeron",
     "mentor_id": "monte-kiffin",
@@ -1301,7 +1286,6 @@
     "confidence": "high",
     "notes": "HC at Ole Miss (2005-07), LSU (2016-21)"
   },
-
   {
     "id": "ross-to-friedgen",
     "mentor_id": "bobby-ross",
@@ -1315,7 +1299,6 @@
     "confidence": "high",
     "notes": "HC at Maryland 2001-10"
   },
-
   {
     "id": "ross-to-smith",
     "mentor_id": "bobby-ross",
@@ -1329,7 +1312,6 @@
     "confidence": "medium",
     "notes": "HC at Atlanta Falcons 2008-14"
   },
-
   {
     "id": "henning-to-tollner",
     "mentor_id": "dan-henning",
@@ -1343,7 +1325,6 @@
     "confidence": "high",
     "notes": "HC at San Diego State 1994-2001"
   },
-
   {
     "id": "henning-to-mora-jr",
     "mentor_id": "dan-henning",
@@ -1357,7 +1338,6 @@
     "confidence": "high",
     "notes": "HC at Falcons (2004-06), Seahawks (2009), UCLA (2012-17), UConn (2016-19)"
   },
-
   {
     "id": "henning-to-cunningham",
     "mentor_id": "dan-henning",
@@ -1371,7 +1351,6 @@
     "confidence": "high",
     "notes": "HC at Kansas City Chiefs 1999-00"
   },
-
   {
     "id": "holtz-to-jimmy-johnson",
     "mentor_id": "lou-holtz",
@@ -1385,7 +1364,6 @@
     "confidence": "high",
     "notes": "HC at Oklahoma State (1979-83), Miami (1984-88), Dallas Cowboys (1989-93), Miami Dolphins (1996-99)"
   },
-
   {
     "id": "holtz-to-ken-hatfield",
     "mentor_id": "lou-holtz",
@@ -1399,7 +1377,6 @@
     "confidence": "high",
     "notes": "HC at Air Force (1984-89), Arkansas (1990-97), Clemson (1990-93 parallel), Rice (1994-05)"
   },
-
   {
     "id": "holtz-to-joe-gibbs",
     "mentor_id": "lou-holtz",
@@ -1413,7 +1390,6 @@
     "confidence": "high",
     "notes": "HC at Washington Redskins 1981-92; 2004-07. Pro Football Hall of Fame"
   },
-
   {
     "id": "strong-jim-to-pagano",
     "mentor_id": "jim-strong",
@@ -1427,7 +1403,6 @@
     "confidence": "high",
     "notes": "HC at Indianapolis Colts 2012-17"
   },
-
   {
     "id": "strong-jim-to-linehan",
     "mentor_id": "jim-strong",
@@ -1441,7 +1416,6 @@
     "confidence": "high",
     "notes": "HC at St. Louis Rams 2006-08"
   },
-
   {
     "id": "strong-jim-to-cable",
     "mentor_id": "jim-strong",
@@ -1455,7 +1429,6 @@
     "confidence": "high",
     "notes": "HC at Oakland Raiders 2008-10"
   },
-
   {
     "id": "strong-jim-to-horton",
     "mentor_id": "jim-strong",
@@ -1469,7 +1442,6 @@
     "confidence": "high",
     "notes": "HC at Nevada (Reno) 1993; UNLV 1994-98"
   },
-
   {
     "id": "cordelli-to-colby",
     "mentor_id": "pete-cordelli",
@@ -1483,7 +1455,6 @@
     "confidence": "high",
     "notes": "HC at Millersville 2008-12"
   },
-
   {
     "id": "cooper-to-henson",
     "mentor_id": "ron-cooper",
@@ -1497,7 +1468,6 @@
     "confidence": "high",
     "notes": "QB coach at Eastern Michigan under Cooper 1995-96; later HC at Eastern Illinois (2002-12)"
   },
-
   {
     "id": "skip-holtz-to-snow",
     "mentor_id": "skip-holtz",
@@ -1510,5 +1480,1032 @@
     "generation_gap": 1,
     "confidence": "high",
     "notes": "DL coach at UConn under Skip Holtz 1995-98; served as interim HC at UConn 1998"
+  },
+  {
+    "id": "carroll-to-sarkisian",
+    "mentor_id": "pete-carroll",
+    "protege_id": "steve-sarkisian",
+    "school": "USC",
+    "year_start": 2001,
+    "year_end": 2006,
+    "relationship_type": "direct_report",
+    "protege_role": "QB Coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "QB coach at USC under Carroll 2001-03, 2005-06; later HC at Washington, USC, Texas"
+  },
+  {
+    "id": "carroll-to-quinn",
+    "mentor_id": "pete-carroll",
+    "protege_id": "dan-quinn",
+    "school": "Seattle Seahawks",
+    "year_start": 2013,
+    "year_end": 2014,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Seattle under Carroll 2013-14; later HC at Atlanta Falcons, Dallas Cowboys"
+  },
+  {
+    "id": "carroll-to-bevell",
+    "mentor_id": "pete-carroll",
+    "protege_id": "darrell-bevell",
+    "school": "Seattle Seahawks",
+    "year_start": 2011,
+    "year_end": 2017,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Seattle under Carroll 2011-17; later interim HC at Detroit and Jacksonville"
+  },
+  {
+    "id": "carroll-to-lane-kiffin-usc",
+    "mentor_id": "pete-carroll",
+    "protege_id": "lane-kiffin",
+    "school": "USC",
+    "year_start": 2005,
+    "year_end": 2006,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Lane Kiffin was OC at USC under Carroll 2005-06 before his first HC job at Oakland Raiders"
+  },
+  {
+    "id": "carroll-to-orgeron-usc",
+    "mentor_id": "pete-carroll",
+    "protege_id": "ed-orgeron",
+    "school": "USC",
+    "year_start": 2001,
+    "year_end": 2004,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_line_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Orgeron was DL coach under Carroll at USC 2001-04, preceding his Ole Miss HC stint"
+  },
+  {
+    "id": "carroll-to-chow-usc",
+    "mentor_id": "pete-carroll",
+    "protege_id": "norm-chow",
+    "school": "USC",
+    "year_start": 2001,
+    "year_end": 2004,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Norm Chow was OC at USC under Carroll 2001-04 before Hawaii HC job"
+  },
+  {
+    "id": "carroll-to-gus-bradley-sea",
+    "mentor_id": "pete-carroll",
+    "protege_id": "gus-bradley",
+    "school": "Seattle Seahawks",
+    "year_start": 2010,
+    "year_end": 2012,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Gus Bradley was DC at Seattle under Carroll 2010-12 before Jacksonville HC job"
+  },
+  {
+    "id": "johnson-to-butch-davis",
+    "mentor_id": "jimmy-johnson",
+    "protege_id": "butch-davis",
+    "school": "multiple",
+    "year_start": 1979,
+    "year_end": 1992,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_line_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DL coach under Johnson at Oklahoma State 1979-83, Miami 1984-88, Dallas 1989-92"
+  },
+  {
+    "id": "johnson-to-wannstedt",
+    "mentor_id": "jimmy-johnson",
+    "protege_id": "dave-wannstedt",
+    "school": "multiple",
+    "year_start": 1979,
+    "year_end": 1992,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC under Johnson at Oklahoma State 1979-82, Miami 1986-88, Dallas 1989-92"
+  },
+  {
+    "id": "johnson-to-tuberville",
+    "mentor_id": "jimmy-johnson",
+    "protege_id": "tommy-tuberville",
+    "school": "Miami (FL)",
+    "year_start": 1986,
+    "year_end": 1987,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_line_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DL coach at Miami (FL) under Johnson 1986-87; later HC at Ole Miss, Auburn, Texas Tech, Cincinnati"
+  },
+  {
+    "id": "johnson-to-norv-turner",
+    "mentor_id": "jimmy-johnson",
+    "protege_id": "norv-turner",
+    "school": "Dallas Cowboys",
+    "year_start": 1991,
+    "year_end": 1993,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Dallas under Johnson 1991-93; later HC at Washington, Oakland Raiders, San Diego Chargers"
+  },
+  {
+    "id": "gibbs-to-petitbon",
+    "mentor_id": "joe-gibbs",
+    "protege_id": "richie-petitbon",
+    "school": "Washington Redskins",
+    "year_start": 1981,
+    "year_end": 1992,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Washington under Gibbs 1981-92; succeeded him as interim HC in 1993"
+  },
+  {
+    "id": "gibbs-to-bugel",
+    "mentor_id": "joe-gibbs",
+    "protege_id": "joe-bugel",
+    "school": "Washington Redskins",
+    "year_start": 1981,
+    "year_end": 1989,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_line_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OL coach at Washington under Gibbs 1981-89; later HC at Phoenix Cardinals, Oakland Raiders"
+  },
+  {
+    "id": "gibbs-to-al-saunders",
+    "mentor_id": "joe-gibbs",
+    "protege_id": "al-saunders",
+    "school": "Washington Redskins",
+    "year_start": 1981,
+    "year_end": 1982,
+    "relationship_type": "direct_report",
+    "protege_role": "position_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "WR coach at Washington 1981-82; also Associate HC 2006-07; HC at San Diego Chargers 1986-88"
+  },
+  {
+    "id": "gibbs-to-gregg-williams",
+    "mentor_id": "joe-gibbs",
+    "protege_id": "gregg-williams",
+    "school": "Washington Redskins",
+    "year_start": 2004,
+    "year_end": 2007,
+    "relationship_type": "direct_report",
+    "protege_role": "assistant_head_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "AHC/Defense at Washington under Gibbs 2004-07; earlier HC at Buffalo Bills"
+  },
+  {
+    "id": "gibbs-to-callahan",
+    "mentor_id": "joe-gibbs",
+    "protege_id": "bill-callahan",
+    "school": "Washington Redskins",
+    "year_start": 2005,
+    "year_end": 2007,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_line_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OL coach at Washington under Gibbs 2005-07; earlier HC at Oakland Raiders, Nebraska"
+  },
+  {
+    "id": "gibbs-to-henning",
+    "mentor_id": "joe-gibbs",
+    "protege_id": "dan-henning",
+    "school": "Washington Redskins",
+    "year_start": 1981,
+    "year_end": 1982,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Dan Henning was OC at Washington under Gibbs 1981-82; cross-reference (also in Holtz tree)"
+  },
+  {
+    "id": "hatfield-to-houston-nutt",
+    "mentor_id": "ken-hatfield",
+    "protege_id": "houston-nutt",
+    "school": "Arkansas",
+    "year_start": 1989,
+    "year_end": 1989,
+    "relationship_type": "direct_report",
+    "protege_role": "position_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "WR coach at Arkansas under Hatfield 1989; later HC at Boise State, Arkansas, Ole Miss"
+  },
+  {
+    "id": "hatfield-to-tommy-west",
+    "mentor_id": "ken-hatfield",
+    "protege_id": "tommy-west",
+    "school": "Clemson",
+    "year_start": 1990,
+    "year_end": 1992,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Clemson under Hatfield 1990-92; later HC at Clemson (interim), Memphis, Chattanooga"
+  },
+  {
+    "id": "hatfield-to-bailiff",
+    "mentor_id": "ken-hatfield",
+    "protege_id": "david-bailiff",
+    "school": "Rice",
+    "year_start": 2001,
+    "year_end": 2003,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Rice under Hatfield 2001-03; later HC at Texas State, Rice"
+  },
+  {
+    "id": "kelly-to-chuck-martin",
+    "mentor_id": "brian-kelly",
+    "protege_id": "chuck-martin",
+    "school": "Grand Valley State",
+    "year_start": 2000,
+    "year_end": 2003,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Grand Valley State 2000-03; also OC at Notre Dame 2012-13 under Kelly; HC at Miami (OH)"
+  },
+  {
+    "id": "kelly-to-butch-jones",
+    "mentor_id": "brian-kelly",
+    "protege_id": "butch-jones",
+    "school": "Central Michigan",
+    "year_start": 2004,
+    "year_end": 2006,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Central Michigan under Kelly 2004-06; later HC at CMU, Cincinnati, Tennessee, Arkansas State"
+  },
+  {
+    "id": "kelly-to-jeff-quinn",
+    "mentor_id": "brian-kelly",
+    "protege_id": "jeff-quinn",
+    "school": "Cincinnati",
+    "year_start": 2007,
+    "year_end": 2009,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Cincinnati under Kelly 2007-09; later HC at Buffalo"
+  },
+  {
+    "id": "kelly-to-bob-diaco",
+    "mentor_id": "brian-kelly",
+    "protege_id": "bob-diaco",
+    "school": "Notre Dame",
+    "year_start": 2010,
+    "year_end": 2013,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Notre Dame under Kelly 2010-13; later HC at UConn"
+  },
+  {
+    "id": "kelly-to-mike-elko",
+    "mentor_id": "brian-kelly",
+    "protege_id": "mike-elko",
+    "school": "Notre Dame",
+    "year_start": 2017,
+    "year_end": 2017,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Notre Dame under Kelly 2017; later HC at Duke, Texas A&M"
+  },
+  {
+    "id": "kelly-to-clark-lea",
+    "mentor_id": "brian-kelly",
+    "protege_id": "clark-lea",
+    "school": "Notre Dame",
+    "year_start": 2018,
+    "year_end": 2020,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Notre Dame under Kelly 2018-20; later HC at Vanderbilt"
+  },
+  {
+    "id": "kelly-to-brian-polian",
+    "mentor_id": "brian-kelly",
+    "protege_id": "brian-polian",
+    "school": "Notre Dame",
+    "year_start": 2012,
+    "year_end": 2016,
+    "relationship_type": "direct_report",
+    "protege_role": "special_teams_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "ST coordinator at Notre Dame under Kelly 2012-16; later HC at Nevada"
+  },
+  {
+    "id": "dantonio-to-harlon-barnett",
+    "mentor_id": "mark-dantonio",
+    "protege_id": "harlon-barnett",
+    "school": "Michigan State",
+    "year_start": 2007,
+    "year_end": 2017,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_backs_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DB/Co-DC at Michigan State under Dantonio 2007-17; interim HC at MSU 2023"
+  },
+  {
+    "id": "dantonio-to-mike-tressel",
+    "mentor_id": "mark-dantonio",
+    "protege_id": "mike-tressel",
+    "school": "Michigan State",
+    "year_start": 2007,
+    "year_end": 2019,
+    "relationship_type": "direct_report",
+    "protege_role": "position_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "LB/ST/Co-DC at MSU under Dantonio 2007-19; interim HC at MSU 2019; interim HC at Wisconsin 2023"
+  },
+  {
+    "id": "dantonio-to-narduzzi-msu",
+    "mentor_id": "mark-dantonio",
+    "protege_id": "pat-narduzzi",
+    "school": "Michigan State",
+    "year_start": 2007,
+    "year_end": 2014,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at MSU under Dantonio 2007-14; cross-reference (primary mentor: rick-minter at Cincinnati)"
+  },
+  {
+    "id": "dantonio-to-treadwell-msu",
+    "mentor_id": "mark-dantonio",
+    "protege_id": "don-treadwell",
+    "school": "Michigan State",
+    "year_start": 2007,
+    "year_end": 2010,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at MSU under Dantonio 2007-10; cross-reference (primary mentor: barry-alvarez)"
+  },
+  {
+    "id": "bielema-to-partridge",
+    "mentor_id": "bret-bielema",
+    "protege_id": "charlie-partridge",
+    "school": "Wisconsin",
+    "year_start": 2008,
+    "year_end": 2012,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_line_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DL coach at Wisconsin under Bielema 2008-12; later HC at Florida Atlantic"
+  },
+  {
+    "id": "bielema-to-pittman",
+    "mentor_id": "bret-bielema",
+    "protege_id": "sam-pittman",
+    "school": "Arkansas",
+    "year_start": 2013,
+    "year_end": 2015,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_line_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OL coach at Arkansas under Bielema 2013-15; later HC at Arkansas"
+  },
+  {
+    "id": "bielema-to-lunney",
+    "mentor_id": "bret-bielema",
+    "protege_id": "barry-lunney-jr",
+    "school": "Arkansas",
+    "year_start": 2013,
+    "year_end": 2019,
+    "relationship_type": "direct_report",
+    "protege_role": "position_coach",
+    "generation_gap": 1,
+    "confidence": "medium",
+    "notes": "TE coach at Arkansas under Bielema 2013-19; interim HC at Arkansas, later HC at UTSA"
+  },
+  {
+    "id": "bielema-to-chryst",
+    "mentor_id": "bret-bielema",
+    "protege_id": "paul-chryst",
+    "school": "Wisconsin",
+    "year_start": 2006,
+    "year_end": 2011,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Wisconsin under Bielema 2006-11; cross-reference (primary mentor: barry-alvarez)"
+  },
+  {
+    "id": "bielema-to-doeren",
+    "mentor_id": "bret-bielema",
+    "protege_id": "dave-doeren",
+    "school": "Wisconsin",
+    "year_start": 2006,
+    "year_end": 2010,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Wisconsin under Bielema 2006-10; cross-reference (primary mentor: barry-alvarez)"
+  },
+  {
+    "id": "bielema-to-ash",
+    "mentor_id": "bret-bielema",
+    "protege_id": "chris-ash",
+    "school": "Wisconsin",
+    "year_start": 2010,
+    "year_end": 2012,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_backs_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DB coach at Wisconsin under Bielema 2010-12; cross-reference (primary mentor: urban-meyer)"
+  },
+  {
+    "id": "day-to-kevin-wilson",
+    "mentor_id": "ryan-day",
+    "protege_id": "kevin-wilson",
+    "school": "Ohio State",
+    "year_start": 2019,
+    "year_end": 2022,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC/TE at Ohio State under Day 2019-22; later HC at Tulsa"
+  },
+  {
+    "id": "addazio-to-ryan-day",
+    "mentor_id": "steve-addazio",
+    "protege_id": "ryan-day",
+    "school": "Boston College",
+    "year_start": 2013,
+    "year_end": 2014,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Ryan Day was OC/QB at Boston College under Addazio 2013-14; cross-reference (primary mentor: urban-meyer)"
+  },
+  {
+    "id": "mullen-to-geoff-collins",
+    "mentor_id": "dan-mullen",
+    "protege_id": "geoff-collins",
+    "school": "Mississippi State",
+    "year_start": 2011,
+    "year_end": 2014,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Co-DC/LB coach at MSU under Mullen 2011-14; later HC at Temple, Georgia Tech"
+  },
+  {
+    "id": "mullen-to-tony-hughes",
+    "mentor_id": "dan-mullen",
+    "protege_id": "tony-hughes",
+    "school": "Mississippi State",
+    "year_start": 2009,
+    "year_end": 2015,
+    "relationship_type": "direct_report",
+    "protege_role": "position_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Safeties coach at MSU under Mullen 2009-15; later HC at Jackson State, Mississippi Valley State"
+  },
+  {
+    "id": "mullen-to-manny-diaz",
+    "mentor_id": "dan-mullen",
+    "protege_id": "manny-diaz",
+    "school": "Mississippi State",
+    "year_start": 2010,
+    "year_end": 2015,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at MSU under Mullen 2010 and 2015; cross-reference (primary mentor: chuck-amato)"
+  },
+  {
+    "id": "herman-to-applewhite",
+    "mentor_id": "tom-herman",
+    "protege_id": "major-applewhite",
+    "school": "Houston",
+    "year_start": 2015,
+    "year_end": 2016,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Houston under Herman 2015-16; succeeded Herman as HC at Houston"
+  },
+  {
+    "id": "schiano-to-cristobal",
+    "mentor_id": "greg-schiano",
+    "protege_id": "mario-cristobal",
+    "school": "Rutgers",
+    "year_start": 2001,
+    "year_end": 2003,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_line_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OL coach at Rutgers under Schiano 2001-03; later HC at FIU, Oregon, Miami (FL)"
+  },
+  {
+    "id": "schiano-to-kyle-flood",
+    "mentor_id": "greg-schiano",
+    "protege_id": "kyle-flood",
+    "school": "Rutgers",
+    "year_start": 2005,
+    "year_end": 2011,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_line_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OL coach at Rutgers under Schiano 2005-11; succeeded him as HC at Rutgers"
+  },
+  {
+    "id": "schiano-to-joe-susan",
+    "mentor_id": "greg-schiano",
+    "protege_id": "joe-susan",
+    "school": "Rutgers",
+    "year_start": 2001,
+    "year_end": 2009,
+    "relationship_type": "direct_report",
+    "protege_role": "position_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "TE coach at Rutgers under Schiano 2001-09; later HC at Bucknell"
+  },
+  {
+    "id": "schiano-to-pj-fleck",
+    "mentor_id": "greg-schiano",
+    "protege_id": "pj-fleck",
+    "school": "Tampa Bay Buccaneers",
+    "year_start": 2012,
+    "year_end": 2012,
+    "relationship_type": "direct_report",
+    "protege_role": "position_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "WR coach at Tampa Bay under Schiano 2012; later HC at Western Michigan, Minnesota"
+  },
+  {
+    "id": "lane-kiffin-to-helton",
+    "mentor_id": "lane-kiffin",
+    "protege_id": "clay-helton",
+    "school": "USC",
+    "year_start": 2010,
+    "year_end": 2013,
+    "relationship_type": "direct_report",
+    "protege_role": "QB Coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "QB coach at USC under Lane Kiffin 2010-13; later interim then HC at USC"
+  },
+  {
+    "id": "orgeron-to-hugh-freeze",
+    "mentor_id": "ed-orgeron",
+    "protege_id": "hugh-freeze",
+    "school": "Ole Miss",
+    "year_start": 2006,
+    "year_end": 2007,
+    "relationship_type": "direct_report",
+    "protege_role": "assistant_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Asst/TE coach at Ole Miss under Orgeron 2006-07; later HC at Arkansas State, Ole Miss, Liberty, Auburn"
+  },
+  {
+    "id": "orgeron-to-dave-aranda",
+    "mentor_id": "ed-orgeron",
+    "protege_id": "dave-aranda",
+    "school": "LSU",
+    "year_start": 2016,
+    "year_end": 2019,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at LSU under Orgeron 2016-19; later HC at Baylor"
+  },
+  {
+    "id": "orgeron-to-bo-pelini",
+    "mentor_id": "ed-orgeron",
+    "protege_id": "bo-pelini",
+    "school": "LSU",
+    "year_start": 2020,
+    "year_end": 2020,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "medium",
+    "notes": "DC at LSU under Orgeron 2020; had prior HC career at Nebraska 2008-14"
+  },
+  {
+    "id": "orgeron-to-helton-usc",
+    "mentor_id": "ed-orgeron",
+    "protege_id": "clay-helton",
+    "school": "USC",
+    "year_start": 2013,
+    "year_end": 2013,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at USC under Orgeron (interim) 2013; cross-reference (primary mentor: lane-kiffin)"
+  },
+  {
+    "id": "andersen-to-dave-aranda",
+    "mentor_id": "gary-andersen",
+    "protege_id": "dave-aranda",
+    "school": "Wisconsin",
+    "year_start": 2013,
+    "year_end": 2014,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Wisconsin under Andersen 2013-14; cross-reference (primary mentor: ed-orgeron at LSU)"
+  },
+  {
+    "id": "friedgen-to-james-franklin",
+    "mentor_id": "ralph-friedgen",
+    "protege_id": "james-franklin",
+    "school": "Maryland",
+    "year_start": 2008,
+    "year_end": 2010,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Maryland under Friedgen 2008-10; later HC at Vanderbilt, Penn State"
+  },
+  {
+    "id": "friedgen-to-mike-locksley",
+    "mentor_id": "ralph-friedgen",
+    "protege_id": "mike-locksley",
+    "school": "Maryland",
+    "year_start": 1997,
+    "year_end": 2002,
+    "relationship_type": "direct_report",
+    "protege_role": "position_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "RB coach at Maryland under Friedgen 1997-2002; later HC at New Mexico, Maryland"
+  },
+  {
+    "id": "friedgen-to-bill-obrien",
+    "mentor_id": "ralph-friedgen",
+    "protege_id": "bill-obrien",
+    "school": "Maryland",
+    "year_start": 2003,
+    "year_end": 2004,
+    "relationship_type": "direct_report",
+    "protege_role": "position_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "RB coach at Maryland under Friedgen 2003-04; later HC at Penn State, Houston Texans"
+  },
+  {
+    "id": "dungy-to-jim-caldwell",
+    "mentor_id": "tony-dungy",
+    "protege_id": "jim-caldwell",
+    "school": "Indianapolis Colts",
+    "year_start": 2002,
+    "year_end": 2008,
+    "relationship_type": "direct_report",
+    "protege_role": "assistant_head_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "AHC/QB coach at Indianapolis under Dungy 2002-08; succeeded him as HC, won Super Bowl XLV"
+  },
+  {
+    "id": "dungy-to-leslie-frazier",
+    "mentor_id": "tony-dungy",
+    "protege_id": "leslie-frazier",
+    "school": "Indianapolis Colts",
+    "year_start": 2005,
+    "year_end": 2006,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_backs_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DB coach at Indianapolis under Dungy 2005-06; later HC at Minnesota Vikings 2010-13"
+  },
+  {
+    "id": "dungy-to-lovie-smith",
+    "mentor_id": "tony-dungy",
+    "protege_id": "lovie-smith",
+    "school": "Tampa Bay Buccaneers",
+    "year_start": 1996,
+    "year_end": 2000,
+    "relationship_type": "direct_report",
+    "protege_role": "linebackers_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "LB coach at Tampa Bay under Dungy 1996-2000; cross-reference (primary mentor: monte-kiffin)"
+  },
+  {
+    "id": "dungy-to-herm-edwards",
+    "mentor_id": "tony-dungy",
+    "protege_id": "herm-edwards",
+    "school": "Tampa Bay Buccaneers",
+    "year_start": 1996,
+    "year_end": 2000,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_backs_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DB coach at Tampa Bay under Dungy 1996-2000; cross-reference (primary mentor: monte-kiffin)"
+  },
+  {
+    "id": "tomlin-to-bruce-arians",
+    "mentor_id": "mike-tomlin",
+    "protege_id": "bruce-arians",
+    "school": "Pittsburgh Steelers",
+    "year_start": 2007,
+    "year_end": 2011,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Pittsburgh under Tomlin 2007-11; later HC at Arizona Cardinals, Tampa Bay Buccaneers"
+  },
+  {
+    "id": "harbaugh-to-gary-kubiak",
+    "mentor_id": "john-harbaugh",
+    "protege_id": "gary-kubiak",
+    "school": "Baltimore Ravens",
+    "year_start": 2014,
+    "year_end": 2014,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Baltimore under Harbaugh 2014; also HC at Houston Texans (2006-13), Denver Broncos (2015-16)"
+  },
+  {
+    "id": "harbaugh-to-david-culley",
+    "mentor_id": "john-harbaugh",
+    "protege_id": "david-culley",
+    "school": "Baltimore Ravens",
+    "year_start": 2019,
+    "year_end": 2020,
+    "relationship_type": "direct_report",
+    "protege_role": "assistant_head_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "AHC/WR coach at Baltimore under Harbaugh 2019-20; later HC at Houston Texans"
+  },
+  {
+    "id": "harbaugh-to-pagano",
+    "mentor_id": "john-harbaugh",
+    "protege_id": "chuck-pagano",
+    "school": "Baltimore Ravens",
+    "year_start": 2008,
+    "year_end": 2011,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Baltimore under Harbaugh 2008-11; cross-reference (primary mentor: jim-strong)"
+  },
+  {
+    "id": "lovie-to-ron-rivera",
+    "mentor_id": "lovie-smith",
+    "protege_id": "ron-rivera",
+    "school": "Chicago Bears",
+    "year_start": 2004,
+    "year_end": 2006,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Chicago under Lovie Smith 2004-06; later HC at Carolina Panthers, Washington Commanders"
+  },
+  {
+    "id": "childress-to-leslie-frazier",
+    "mentor_id": "brad-childress",
+    "protege_id": "leslie-frazier",
+    "school": "Minnesota Vikings",
+    "year_start": 2007,
+    "year_end": 2010,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Minnesota under Childress 2007-10; succeeded him as HC 2010-13; cross-reference (primary mentor: tony-dungy)"
+  },
+  {
+    "id": "edwards-to-todd-haley",
+    "mentor_id": "herm-edwards",
+    "protege_id": "todd-haley",
+    "school": "New York Jets",
+    "year_start": 2001,
+    "year_end": 2003,
+    "relationship_type": "direct_report",
+    "protege_role": "position_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "WR coach at NY Jets under Edwards 2001-03; later HC at Kansas City Chiefs 2009-11"
+  },
+  {
+    "id": "edwards-to-mike-nolan",
+    "mentor_id": "herm-edwards",
+    "protege_id": "mike-nolan",
+    "school": "New York Jets",
+    "year_start": 2001,
+    "year_end": 2004,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at NY Jets under Edwards 2001-04; later HC at San Francisco 49ers 2005-08"
+  },
+  {
+    "id": "bradley-to-doug-marrone",
+    "mentor_id": "gus-bradley",
+    "protege_id": "doug-marrone",
+    "school": "Jacksonville Jaguars",
+    "year_start": 2015,
+    "year_end": 2016,
+    "relationship_type": "direct_report",
+    "protege_role": "assistant_head_coach",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "AHC/OL at Jacksonville under Bradley 2015-16; succeeded him as HC at Jacksonville"
+  },
+  {
+    "id": "mikesmith-to-dirk-koetter",
+    "mentor_id": "mike-smith-hc",
+    "protege_id": "dirk-koetter",
+    "school": "Atlanta Falcons",
+    "year_start": 2012,
+    "year_end": 2014,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Atlanta under Mike Smith 2012-14; later HC at Tampa Bay Buccaneers"
+  },
+  {
+    "id": "mikesmith-to-mike-mularkey",
+    "mentor_id": "mike-smith-hc",
+    "protege_id": "mike-mularkey",
+    "school": "Atlanta Falcons",
+    "year_start": 2008,
+    "year_end": 2011,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Atlanta under Mike Smith 2008-11; later HC at Jacksonville Jaguars, Tennessee Titans"
+  },
+  {
+    "id": "andersen-to-matt-wells",
+    "mentor_id": "gary-andersen",
+    "protege_id": "matt-wells",
+    "school": "Utah State",
+    "year_start": 2011,
+    "year_end": 2012,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Utah State under Andersen 2011-12; succeeded him as HC at Utah State; later HC at Texas Tech"
+  },
+  {
+    "id": "doeren-to-eliah-drinkwitz",
+    "mentor_id": "dave-doeren",
+    "protege_id": "eliah-drinkwitz",
+    "school": "NC State",
+    "year_start": 2015,
+    "year_end": 2015,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at NC State under Doeren 2015; later HC at Appalachian State, Missouri"
+  },
+  {
+    "id": "doeren-to-matt-canada",
+    "mentor_id": "dave-doeren",
+    "protege_id": "matt-canada",
+    "school": "NC State",
+    "year_start": 2013,
+    "year_end": 2015,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at NC State under Doeren 2013-15; interim HC at Maryland 2018"
+  },
+  {
+    "id": "narduzzi-to-matt-canada",
+    "mentor_id": "pat-narduzzi",
+    "protege_id": "matt-canada",
+    "school": "Pittsburgh",
+    "year_start": 2016,
+    "year_end": 2016,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Pittsburgh under Narduzzi 2016; cross-reference (primary mentor: dave-doeren)"
+  },
+  {
+    "id": "chryst-to-jim-leonhard",
+    "mentor_id": "paul-chryst",
+    "protege_id": "jim-leonhard",
+    "school": "Wisconsin",
+    "year_start": 2017,
+    "year_end": 2022,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Wisconsin under Chryst 2017-22; interim HC at Wisconsin 2022"
+  },
+  {
+    "id": "beckman-to-matt-campbell",
+    "mentor_id": "tim-beckman",
+    "protege_id": "matt-campbell",
+    "school": "Toledo",
+    "year_start": 2009,
+    "year_end": 2011,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "OC at Toledo under Beckman 2009-11; succeeded him as HC at Toledo; later HC at Iowa State"
+  },
+  {
+    "id": "fickell-to-mike-tressel",
+    "mentor_id": "luke-fickell",
+    "protege_id": "mike-tressel",
+    "school": "Cincinnati",
+    "year_start": 2021,
+    "year_end": 2022,
+    "relationship_type": "direct_report",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "DC at Cincinnati under Fickell 2021-22; served as interim HC at Wisconsin when Fickell was hired"
+  },
+  {
+    "id": "holliday-to-tony-petersen",
+    "mentor_id": "doc-holliday",
+    "protege_id": "tony-petersen",
+    "school": "Marshall",
+    "year_start": 2010,
+    "year_end": 2012,
+    "relationship_type": "direct_report",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "medium",
+    "notes": "OC at Marshall under Holliday 2010-12; later interim HC at East Carolina 2022"
   }
 ]
