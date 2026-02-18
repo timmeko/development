@@ -1,0 +1,132 @@
+{
+  "01_pete_carroll": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:34:04",
+    "model": "gpt-4o"
+  },
+  "02_jimmy_johnson": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:34:18",
+    "model": "gpt-4o"
+  },
+  "03_joe_gibbs": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:34:33",
+    "model": "gpt-4o"
+  },
+  "04_ken_hatfield": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:34:44",
+    "model": "gpt-4o"
+  },
+  "05_batch_gen1_medium": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:34:51",
+    "model": "gpt-4o"
+  },
+  "06_batch_gen1_small": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:34:57",
+    "model": "gpt-4o"
+  },
+  "07_brian_kelly": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:35:13",
+    "model": "gpt-4o"
+  },
+  "08_mark_dantonio": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:35:24",
+    "model": "gpt-4o"
+  },
+  "09_bret_bielema": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:35:37",
+    "model": "gpt-4o"
+  },
+  "10_luke_fickell": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:35:46",
+    "model": "gpt-4o"
+  },
+  "11_ryan_day": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:35:55",
+    "model": "gpt-4o"
+  },
+  "12_dan_mullen": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:36:09",
+    "model": "gpt-4o"
+  },
+  "13_tom_herman": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:36:17",
+    "model": "gpt-4o"
+  },
+  "14_greg_schiano": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:36:29",
+    "model": "gpt-4o"
+  },
+  "15_pat_narduzzi": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:36:37",
+    "model": "gpt-4o"
+  },
+  "16_lane_kiffin": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:36:42",
+    "model": "gpt-4o"
+  },
+  "17_ed_orgeron": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:36:50",
+    "model": "gpt-4o"
+  },
+  "18_jim_mora_jr": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:36:57",
+    "model": "gpt-4o"
+  },
+  "19_ralph_friedgen": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:37:15",
+    "model": "gpt-4o"
+  },
+  "20_steve_addazio": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:37:24",
+    "model": "gpt-4o"
+  },
+  "21_batch_nfl_big": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:37:36",
+    "model": "gpt-4o"
+  },
+  "22_batch_nfl_small": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:37:46",
+    "model": "gpt-4o"
+  },
+  "23_batch_college_small_a": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:37:53",
+    "model": "gpt-4o"
+  },
+  "24_batch_college_small_b": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:38:02",
+    "model": "gpt-4o"
+  },
+  "25_batch_college_small_c": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:38:13",
+    "model": "gpt-4o"
+  },
+  "26_batch_college_small_d": {
+    "status": "complete",
+    "timestamp": "2026-02-18 09:38:22",
+    "model": "gpt-4o"
+  }
+}
