@@ -128,5 +128,85 @@
     "status": "complete",
     "timestamp": "2026-02-18 09:38:22",
     "model": "gpt-4o"
+  },
+  "27_steve_sarkisian": {
+    "status": "complete",
+    "timestamp": "2026-02-19 09:58:46",
+    "model": "gpt-4o"
+  },
+  "28_dan_quinn_batch": {
+    "status": "complete",
+    "timestamp": "2026-02-19 09:58:54",
+    "model": "gpt-4o"
+  },
+  "29_bruce_arians": {
+    "status": "complete",
+    "timestamp": "2026-02-19 09:58:59",
+    "model": "gpt-4o"
+  },
+  "30_ron_rivera": {
+    "status": "complete",
+    "timestamp": "2026-02-19 09:59:08",
+    "model": "gpt-4o"
+  },
+  "31_james_franklin": {
+    "status": "complete",
+    "timestamp": "2026-02-19 09:59:21",
+    "model": "gpt-4o"
+  },
+  "32_bill_obrien": {
+    "status": "complete",
+    "timestamp": "2026-02-19 09:59:30",
+    "model": "gpt-4o"
+  },
+  "33_gen3_nfl_batch_a": {
+    "status": "complete",
+    "timestamp": "2026-02-19 09:59:39",
+    "model": "gpt-4o"
+  },
+  "34_gen3_gibbs_proteges": {
+    "status": "complete",
+    "timestamp": "2026-02-19 09:59:46",
+    "model": "gpt-4o"
+  },
+  "35_gen3_nfl_small": {
+    "status": "complete",
+    "timestamp": "2026-02-19 09:59:57",
+    "model": "gpt-4o"
+  },
+  "36_gen3_active_college_a": {
+    "status": "complete",
+    "timestamp": "2026-02-19 10:00:02",
+    "model": "gpt-4o"
+  },
+  "37_gen3_active_college_b": {
+    "status": "complete",
+    "timestamp": "2026-02-19 10:00:13",
+    "model": "gpt-4o"
+  },
+  "38_gen3_college_histories": {
+    "status": "complete",
+    "timestamp": "2026-02-19 10:00:33",
+    "model": "gpt-4o"
+  },
+  "39_gen3_college_batch_a": {
+    "status": "complete",
+    "timestamp": "2026-02-19 10:00:38",
+    "model": "gpt-4o"
+  },
+  "40_gen3_college_batch_b": {
+    "status": "complete",
+    "timestamp": "2026-02-19 10:00:52",
+    "model": "gpt-4o"
+  },
+  "41_gen3_college_medium": {
+    "status": "complete",
+    "timestamp": "2026-02-19 10:01:02",
+    "model": "gpt-4o"
+  },
+  "42_gen3_small_misc": {
+    "status": "complete",
+    "timestamp": "2026-02-19 10:01:10",
+    "model": "gpt-4o"
   }
 }
