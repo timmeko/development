@@ -529,6 +529,307 @@ For each coach, provide a section:
 | Assistant Name | Role | Years | Later HC Stops | Confidence |
 |---------------|------|-------|----------------|------------|"""
     ),
+
+    # === PHASE 4: Gen 2 Remaining ===
+    (
+        "27_steve_sarkisian",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. Steve Sarkisian worked under Pete Carroll at USC (2001-09) as offensive coordinator before becoming a head coach himself. Carroll worked under Lou Holtz at Arkansas (1977).
+
+I need to identify all assistant coaches who worked under Sarkisian during his head coaching career and later became head coaches themselves (any level: NFL, FBS, FCS, D2, NAIA).
+
+Steve Sarkisian was head coach at:
+- Washington (2009-13)
+- Texas (2021-present)
+
+Note: His Alabama tenure (2016-20) was as offensive coordinator under Nick Saban, not as head coach.
+
+For each assistant who later became a head coach, provide a markdown table organized by school:
+
+### [School Name]
+
+| Name | Role Under Sarkisian | Years | Later HC Stops | Confidence |
+|------|---------------------|-------|----------------|------------|"""
+    ),
+    (
+        "28_dan_quinn_batch",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. I need to identify assistants who worked under the following Gen 2 head coaches and later became head coaches themselves.
+
+1. Dan Quinn — HC at Atlanta Falcons (2015-20), Dallas Cowboys (2024-present). Quinn worked under Pete Carroll at Seattle as defensive coordinator (2013-14).
+2. Jim Colletto — HC at Purdue (1997-2001). Colletto worked under Barry Alvarez at Wisconsin as defensive line coach.
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+If no assistants became head coaches, say "None found." """
+    ),
+
+    # === PHASE 5: Gen 3 Notable Individuals ===
+    (
+        "29_bruce_arians",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. Bruce Arians worked under Mike Tomlin at Pittsburgh (2004-06) as offensive coordinator. Tomlin worked under Rick Minter (Cincinnati), who worked under Lou Holtz.
+
+I need to identify all assistant coaches who worked under Bruce Arians during his head coaching career and later became head coaches themselves.
+
+Bruce Arians was head coach at:
+- Indianapolis Colts (interim, 2012)
+- Arizona Cardinals (2013-17)
+- Tampa Bay Buccaneers (2019-21)
+
+For each assistant who later became a head coach, provide a markdown table organized by team:
+
+### [Team Name]
+
+| Name | Role Under Arians | Years | Later HC Stops | Confidence |
+|------|------------------|-------|----------------|------------|
+
+Notable assistants to check: Todd Bowles (DC → Jets HC, Chiefs HC), Byron Leftwich (OC), Harold Goodwin, others."""
+    ),
+    (
+        "30_ron_rivera",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. Ron Rivera worked under Lovie Smith (Chicago Bears, 2004-12) as defensive coordinator. Smith worked under Monte Kiffin, who was a Lou Holtz assistant at Arkansas.
+
+I need to identify all assistant coaches who worked under Ron Rivera during his head coaching career and later became head coaches themselves.
+
+Ron Rivera was head coach at:
+- Carolina Panthers (2011-19)
+- Washington Commanders (2020-23)
+
+For each assistant who later became a head coach, provide a markdown table organized by team:
+
+### [Team Name]
+
+| Name | Role Under Rivera | Years | Later HC Stops | Confidence |
+|------|------------------|-------|----------------|------------|"""
+    ),
+    (
+        "31_james_franklin",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. James Franklin worked under Ralph Friedgen at Maryland (2007-10) as offensive coordinator. Friedgen worked under Bobby Ross, who was a Lou Holtz assistant at William & Mary.
+
+I need to identify all assistant coaches who worked under James Franklin during his head coaching career and later became head coaches themselves (any level).
+
+James Franklin was head coach at:
+- Vanderbilt (2011-13)
+- Penn State (2014-present)
+
+For each assistant who later became a head coach, provide a markdown table organized by school:
+
+### [School Name]
+
+| Name | Role Under Franklin | Years | Later HC Stops | Confidence |
+|------|-------------------|-------|----------------|------------|
+
+Penn State is the primary focus given the 10+ year tenure."""
+    ),
+    (
+        "32_bill_obrien",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. Bill O'Brien worked under Ralph Friedgen at Maryland as offensive coordinator (2002-04). Friedgen worked under Bobby Ross, who was a Lou Holtz assistant.
+
+I need to identify all assistant coaches who worked under Bill O'Brien during his head coaching career and later became head coaches themselves.
+
+Bill O'Brien was head coach at:
+- Penn State (2012-13)
+- Houston Texans (2014-19)
+- Alabama (2023-present)
+
+For each assistant who later became a head coach, provide a markdown table organized by team/school:
+
+### [Team/School Name]
+
+| Name | Role Under O'Brien | Years | Later HC Stops | Confidence |
+|------|------------------|-------|----------------|------------|"""
+    ),
+
+    # === PHASE 6: Gen 3 NFL Batches ===
+    (
+        "33_gen3_nfl_batch_a",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following NFL head coaches (Generation 3 in the Holtz tree), identify assistants who worked under them and later became head coaches themselves.
+
+1. Gary Kubiak — HC at Houston Texans (2006-13), Denver Broncos (2015-16). Connection: worked under John Harbaugh at Baltimore.
+2. Jim Caldwell — HC at Indianapolis Colts (2009-11), Detroit Lions (2014-17). Connection: worked under Tony Dungy at Indianapolis.
+3. Leslie Frazier — HC at Minnesota Vikings (2010-13, including interim). Connection: worked under Tony Dungy at Indianapolis and Tampa Bay.
+4. Mike Mularkey — HC at Buffalo Bills (2004-05), Jacksonville Jaguars (2011-12), Tennessee Titans (2015-17). Connection: worked under Mike Smith at Atlanta.
+5. Todd Haley — HC at Kansas City Chiefs (2009-11). Connection: worked under Herm Edwards at Kansas City.
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+If none found, say "None found." """
+    ),
+    (
+        "34_gen3_gibbs_proteges",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. Joe Gibbs worked under Lou Holtz at Arkansas (1978-79) as offensive coordinator. The following coaches all worked under Gibbs at Washington and later became head coaches. Now I need to know if THEIR assistants also became head coaches.
+
+1. Joe Bugel — HC at Phoenix/Arizona Cardinals (1990-93), Oakland Raiders (1997). Bugel was Gibbs's offensive line coach.
+2. Bill Callahan — HC at Oakland Raiders (2002-03), Nebraska (2004-07). Callahan worked in the Gibbs coaching tree.
+3. Gregg Williams — HC at Buffalo Bills (2001-03); interim roles at New Orleans Saints and Cleveland Browns. Williams was Gibbs's defensive coordinator.
+4. Richie Petitbon — HC at Washington Redskins (1993, 1 season). Petitbon was Gibbs's defensive coordinator.
+5. Al Saunders — Please confirm if and when Saunders was a head coach (he was a long-time OC/WR coach). Connection: worked under Gibbs at Washington.
+
+For each confirmed HC, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+If never a head coach (for Saunders — clarify), note that. If no proteges became HCs, say "None found." """
+    ),
+    (
+        "35_gen3_nfl_small",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following coaches (Generation 3, shorter or interim HC tenures), identify any assistants who later became head coaches. Also clarify their HC records where noted.
+
+1. Mike Nolan — HC at San Francisco 49ers (2005-08). Connection: worked under Lovie Smith's defensive staff.
+2. David Culley — HC at Houston Texans (2021, 1 season). Connection: worked under John Harbaugh at Baltimore as assistant HC/WR coach.
+3. Matt Canada — Confirm if he had any HC role (listed as interim at Maryland, 2015). Connection: worked under Dave Doeren at NC State.
+4. Jim Leonhard — HC at Wisconsin (interim, 2022). Connection: worked under Paul Chryst at Wisconsin.
+5. Harlon Barnett — HC at Michigan State (interim, 2023). Connection: worked under Mark Dantonio at Michigan State.
+6. Mike Tressel — Confirm HC roles (listed as having interim stops). Connection: worked under Mark Dantonio at Michigan State.
+
+For each confirmed HC, provide:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+If no assistants became HCs (likely for most of these given brief tenures), say "None found." """
+    ),
+
+    # === PHASE 7: Gen 3 College Batches ===
+    (
+        "36_gen3_active_college_a",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following active college head coaches (Generation 3), identify any assistants who worked under them and later became head coaches (any level).
+
+1. Mario Cristobal — HC at FIU (2013-15), Oregon (2017-21), Miami FL (2022-present). Connection: worked under Greg Schiano at Rutgers.
+2. Sam Pittman — HC at Arkansas (2020-present). Connection: worked under Bret Bielema at Arkansas as offensive line coach.
+3. Eliah Drinkwitz — HC at Appalachian State (2019), Missouri (2020-present). Connection: worked under Dave Doeren at NC State as offensive coordinator.
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+These are newer HC tenures; it's possible few proteges have moved to HC roles yet. If none found, say "None found." """
+    ),
+    (
+        "37_gen3_active_college_b",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following active college head coaches (Generation 3), identify any assistants who worked under them and later became head coaches (any level).
+
+1. P.J. Fleck — HC at Western Michigan (2013-16), Minnesota (2017-present). Connection: worked under Greg Schiano at Rutgers.
+2. Matt Campbell — HC at Toledo (2015), Iowa State (2016-present). Connection: worked under Tim Beckman at Illinois as offensive coordinator.
+3. Dave Aranda — HC at Baylor (2020-present). Connection: worked under Ed Orgeron at LSU as defensive coordinator.
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|"""
+    ),
+    (
+        "38_gen3_college_histories",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following college head coaches (Generation 3, longer careers), identify assistants who worked under them and later became head coaches (any level).
+
+1. Hugh Freeze — HC at Arkansas State (2011), Ole Miss (2012-17), Liberty (2019-21), Auburn (2023-present). Connection: worked under Ed Orgeron at Ole Miss.
+2. Houston Nutt — HC at Boise State (1997), Arkansas (1998-2007), Ole Miss (2008-11). Connection: worked under Ken Hatfield at Arkansas.
+3. Bo Pelini — HC at Nebraska (2008-14), Youngstown State (2015-17, 2019-22). Connection: worked under Ed Orgeron at LSU as defensive coordinator.
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+Houston Nutt had 14 seasons as HC and is the most likely to have produced head coaches. Include any levels."""
+    ),
+    (
+        "39_gen3_college_batch_a",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following college head coaches (Generation 3), identify assistants who worked under them and later became head coaches (any level). If none found, say "None found."
+
+1. Mike Locksley — HC at New Mexico (2009-11), Maryland (2019-present). Connection: worked under Ralph Friedgen at Maryland.
+2. Marcus Freeman — HC at Notre Dame (2022-present). Connection: worked under Luke Fickell at Cincinnati as defensive coordinator.
+3. Mike Elko — HC at Duke (2022), Texas A&M (2023-present). Connection: worked under Brian Kelly at Notre Dame as defensive coordinator.
+4. Butch Jones — HC at Central Michigan (2009-11), Cincinnati (2012), Tennessee (2013-17), Arkansas State (2021). Connection: worked under Brian Kelly at Grand Valley State and Central Michigan.
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|"""
+    ),
+    (
+        "40_gen3_college_batch_b",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following college/pro head coaches (Generation 3), identify assistants who worked under them and later became head coaches (any level). If none found, say "None found."
+
+1. Clay Helton — HC at USC (2015-21). Connection: worked under Lane Kiffin at USC.
+2. Dirk Koetter — HC at Arizona State (2007-11), Tampa Bay Buccaneers (2016-18). Connection: worked under Mike Smith at Atlanta.
+3. Doug Marrone — HC at Syracuse (2009-12), Jacksonville Jaguars (2017-20). Connection: worked under Gus Bradley.
+4. Kevin Wilson — HC at Indiana (2011-16), Tulsa (2024-present). Connection: worked under Ryan Day at Ohio State.
+5. Matt Wells — HC at Utah State (2016-18), Texas Tech (2019-21). Connection: worked under Gary Andersen at Utah State.
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|"""
+    ),
+    (
+        "41_gen3_college_medium",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following college head coaches (Generation 3), identify assistants who worked under them and later became head coaches (any level). If none found, say "None found."
+
+1. Geoff Collins — HC at Temple (2018), Georgia Tech (2019-22). Connection: worked under Dan Mullen at Mississippi State.
+2. Jeff Hafley — HC at Boston College (2020-22). Connection: worked under Ryan Day at Ohio State as co-defensive coordinator.
+3. Jeff Quinn — HC at Buffalo (2010-12). Connection: worked under Brian Kelly at Cincinnati.
+4. Chuck Martin — HC at Grand Valley State (D2, interim then HC), Miami (OH) (2013-present). Connection: worked under Brian Kelly at Grand Valley State and Notre Dame.
+5. David Bailiff — HC at Texas State (2007-08), Rice (2007-17). Connection: worked under Ken Hatfield at Rice.
+6. Tommy West — HC at Memphis (2001-07), Chattanooga (2009-15). Connection: worked under Ken Hatfield at Clemson and Rice.
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|"""
+    ),
+    (
+        "42_gen3_small_misc",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following coaches (Generation 3, shorter or smaller-program tenures), identify any assistants who became head coaches. Most will likely be "None found" given brief tenures, but please check all levels including FCS and D2.
+
+1. Bob Diaco — HC at UConn (2015-17). Connection: worked under Brian Kelly at Notre Dame as defensive coordinator.
+2. Charlie Partridge — HC at Florida Atlantic (2014-15). Connection: worked under Bret Bielema at Wisconsin as defensive line coach.
+3. Clark Lea — HC at Vanderbilt (2021-present). Connection: worked under Brian Kelly at Notre Dame as linebackers coach/DC.
+4. Barry Lunney Jr. — HC at Arkansas (interim, 2019), UTSA (2022-present). Connection: worked under Bret Bielema at Arkansas.
+5. Kyle Flood — HC at Rutgers (2012-15). Connection: worked under Greg Schiano at Rutgers.
+6. Major Applewhite — HC at Houston (2017-18). Connection: worked under Tom Herman at Houston and Texas.
+7. Brian Hartline — HC at South Florida (2024-present). Connection: worked under Ryan Day at Ohio State as wide receivers coach.
+8. Brian Polian — HC at Nevada (2013-15). Connection: worked under Brian Kelly at Notre Dame as special teams coordinator.
+9. Joe Susan — HC at Colgate (2013-17). Connection: worked under Greg Schiano at Rutgers as defensive coordinator.
+10. Matt Canada — HC at Maryland (interim, 2015). Connection: worked under Dave Doeren at NC State.
+11. Tony Petersen — HC at East Carolina (interim, 2019). Connection: worked under Doc Holliday at Marshall as offensive coordinator.
+12. Tony Hughes — HC at Jackson State (2015-17), Mississippi Valley State (2018-present). Connection: worked under Dan Mullen at Mississippi State.
+
+For each coach, provide a section:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+If no assistants became HCs, say "None found." """
+    ),
 ]
 
 
