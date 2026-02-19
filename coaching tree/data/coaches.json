@@ -1150,21 +1150,6 @@
     "mentor": "dan-henning",
     "mentor_context": "DL Coach at San Diego Chargers, 1989-90"
   },
-  "jimmy-johnson": {
-    "name": "Jimmy Johnson",
-    "born": 1943,
-    "alma_mater": "Arkansas",
-    "current_status": "retired",
-    "generation": 2,
-    "hc_schools": [
-      "Oklahoma State",
-      "Miami (FL)",
-      "Dallas Cowboys",
-      "Miami Dolphins"
-    ],
-    "mentor": "lou-holtz",
-    "mentor_context": "DC at Arkansas, 1977-78"
-  },
   "ken-hatfield": {
     "name": "Ken Hatfield",
     "born": 1941,
@@ -1352,64 +1337,6 @@
     ],
     "mentor": "pete-carroll",
     "mentor_context": "OC at Seattle Seahawks, 2011-2017"
-  },
-  "butch-davis": {
-    "name": "Butch Davis",
-    "born": 1951,
-    "alma_mater": "Arkansas",
-    "current_status": "active",
-    "generation": 3,
-    "hc_schools": [
-      "Miami (FL)",
-      "Cleveland Browns",
-      "North Carolina",
-      "FIU"
-    ],
-    "mentor": "jimmy-johnson",
-    "mentor_context": "DL Coach at Oklahoma State 1979-83, Miami (FL) 1984-88, Dallas Cowboys 1989-92"
-  },
-  "dave-wannstedt": {
-    "name": "Dave Wannstedt",
-    "born": 1952,
-    "alma_mater": "Pittsburgh",
-    "current_status": "retired",
-    "generation": 3,
-    "hc_schools": [
-      "Chicago Bears",
-      "Miami Dolphins",
-      "Pittsburgh"
-    ],
-    "mentor": "jimmy-johnson",
-    "mentor_context": "DC at Oklahoma State 1979-82, Miami (FL) 1986-88, Dallas Cowboys 1989-92"
-  },
-  "tommy-tuberville": {
-    "name": "Tommy Tuberville",
-    "born": 1954,
-    "alma_mater": "Southern Arkansas",
-    "current_status": "retired",
-    "generation": 3,
-    "hc_schools": [
-      "Ole Miss",
-      "Auburn",
-      "Texas Tech",
-      "Cincinnati"
-    ],
-    "mentor": "jimmy-johnson",
-    "mentor_context": "DL Coach at Miami (FL), 1986-87"
-  },
-  "norv-turner": {
-    "name": "Norv Turner",
-    "born": 1952,
-    "alma_mater": "Oregon",
-    "current_status": "retired",
-    "generation": 3,
-    "hc_schools": [
-      "Washington Redskins",
-      "Oakland Raiders",
-      "San Diego Chargers"
-    ],
-    "mentor": "jimmy-johnson",
-    "mentor_context": "OC at Dallas Cowboys, 1991-93"
   },
   "richie-petitbon": {
     "name": "Richie Petitbon",

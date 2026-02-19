@@ -1352,19 +1352,6 @@
     "notes": "HC at Kansas City Chiefs 1999-00"
   },
   {
-    "id": "holtz-to-jimmy-johnson",
-    "mentor_id": "lou-holtz",
-    "protege_id": "jimmy-johnson",
-    "school": "Arkansas",
-    "year_start": 1977,
-    "year_end": 1978,
-    "relationship_type": "direct_report",
-    "protege_role": "DC",
-    "generation_gap": 1,
-    "confidence": "high",
-    "notes": "HC at Oklahoma State (1979-83), Miami (1984-88), Dallas Cowboys (1989-93), Miami Dolphins (1996-99)"
-  },
-  {
     "id": "holtz-to-ken-hatfield",
     "mentor_id": "lou-holtz",
     "protege_id": "ken-hatfield",
@@ -1571,58 +1558,6 @@
     "generation_gap": 1,
     "confidence": "high",
     "notes": "Gus Bradley was DC at Seattle under Carroll 2010-12 before Jacksonville HC job"
-  },
-  {
-    "id": "johnson-to-butch-davis",
-    "mentor_id": "jimmy-johnson",
-    "protege_id": "butch-davis",
-    "school": "multiple",
-    "year_start": 1979,
-    "year_end": 1992,
-    "relationship_type": "direct_report",
-    "protege_role": "defensive_line_coach",
-    "generation_gap": 1,
-    "confidence": "high",
-    "notes": "DL coach under Johnson at Oklahoma State 1979-83, Miami 1984-88, Dallas 1989-92"
-  },
-  {
-    "id": "johnson-to-wannstedt",
-    "mentor_id": "jimmy-johnson",
-    "protege_id": "dave-wannstedt",
-    "school": "multiple",
-    "year_start": 1979,
-    "year_end": 1992,
-    "relationship_type": "direct_report",
-    "protege_role": "defensive_coordinator",
-    "generation_gap": 1,
-    "confidence": "high",
-    "notes": "DC under Johnson at Oklahoma State 1979-82, Miami 1986-88, Dallas 1989-92"
-  },
-  {
-    "id": "johnson-to-tuberville",
-    "mentor_id": "jimmy-johnson",
-    "protege_id": "tommy-tuberville",
-    "school": "Miami (FL)",
-    "year_start": 1986,
-    "year_end": 1987,
-    "relationship_type": "direct_report",
-    "protege_role": "defensive_line_coach",
-    "generation_gap": 1,
-    "confidence": "high",
-    "notes": "DL coach at Miami (FL) under Johnson 1986-87; later HC at Ole Miss, Auburn, Texas Tech, Cincinnati"
-  },
-  {
-    "id": "johnson-to-norv-turner",
-    "mentor_id": "jimmy-johnson",
-    "protege_id": "norv-turner",
-    "school": "Dallas Cowboys",
-    "year_start": 1991,
-    "year_end": 1993,
-    "relationship_type": "direct_report",
-    "protege_role": "offensive_coordinator",
-    "generation_gap": 1,
-    "confidence": "high",
-    "notes": "OC at Dallas under Johnson 1991-93; later HC at Washington, Oakland Raiders, San Diego Chargers"
   },
   {
     "id": "gibbs-to-petitbon",
