@@ -191,6 +191,13 @@ ABB = {
     "FIU":                     "FIU",
     "Buffalo":                 "UB",
     "San Diego State":         "SDSU",
+    "Los Angeles Chargers":    "LAC",
+    "Cleveland Browns":        "CLE",
+    "Philadelphia Eagles":     "PHI",
+    "Green Bay Packers":       "GB",
+    "Arizona":                 "Ariz",
+    "Tennessee Titans":        "TEN",
+    "Cincinnati Bengals":      "CIN",
 }
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
@@ -311,6 +318,15 @@ def compute_positions(coaches: dict):
 
     gen1_sorted = sorted(gen1, key=chrono_key)
 
+    # ── Selective Gen 1 reordering to improve comb alignment ─────────────────
+    # Charlie Strong's Gen-2 children cluster near Dean Pees's natural position;
+    # swapping them brings the comb trunk much closer to its children.
+    def _swap(lst, a, b):
+        if a in lst and b in lst:
+            i, j = lst.index(a), lst.index(b)
+            lst[i], lst[j] = lst[j], lst[i]
+    _swap(gen1_sorted, "charlie-strong", "dean-pees")
+
     # ── Gen 1 ring: all coaches equally spaced, one group (all connect to Holtz)
     gen1_groups_ordered = [("lou-holtz", gen1_sorted)]
     pos_g1, angle_map_g1, _ = assign_ring_positions(gen1_groups_ordered, RADII[1], gap_slots=0)
@@ -391,12 +407,17 @@ def draw_comb(ax, pos, angle_map, parent_id,
       - Gen 2 → Gen 3   (r_parent=RADII[2], r_children=RADII[3])
 
     Uses pre-computed raw layout angles (angle_map) to avoid atan2 wraparound issues.
+
+    When the parent's radial angle is far from its children's angular centre, the trunk
+    uses circuit-board routing: radial segment out → circular arc → radial segment to
+    junction.  This avoids ugly diagonal lines and keeps "vertical" lines on radii and
+    "horizontal" lines on circular arcs.
     """
     if not children or parent_id not in pos:
         return
 
     px, py     = pos[parent_id]
-    par_angle  = math.atan2(py, px)   # parent's radial angle for trunk direction
+    par_angle  = math.atan2(py, px)   # parent's radial angle
     r_junc     = r_parent + (r_children - r_parent) * junction_frac
 
     # Collect children that have positions, keep them in their raw layout angle order
@@ -419,22 +440,71 @@ def draw_comb(ax, pos, angle_map, parent_id,
                 solid_capstyle="round", zorder=1)
         return
 
-    # ── Trunk: parent node → junction point (along parent's radial direction) ──
-    jx = r_junc * math.cos(par_angle)
-    jy = r_junc * math.sin(par_angle)
-    ax.plot([px, jx], [py, jy],
-            color=color, alpha=edge_a + 0.05, linewidth=edge_w + 0.2,
-            solid_capstyle="round", zorder=1)
-
     # ── Arc bar at junction radius spanning all children ──
     theta_min = child_data[0][1]
     theta_max = child_data[-1][1]
 
-    # Handle angles that have wrapped past 2π (layout goes counterclockwise from π/2)
     # Normalise to [θ_min, θ_max] by unwrapping
     while theta_max < theta_min:
         theta_max += 2 * math.pi
 
+    children_center_angle = (theta_min + theta_max) / 2
+
+    # Normalise par_angle into the same unwrapped frame as children_center_angle
+    norm_par = par_angle
+    while norm_par < children_center_angle - math.pi:
+        norm_par += 2 * math.pi
+    while norm_par > children_center_angle + math.pi:
+        norm_par -= 2 * math.pi
+
+    angle_diff = abs(norm_par - children_center_angle)
+
+    # ── Trunk: circuit-board or straight ─────────────────────────────────────
+    # Circuit-board threshold: if parent angle differs from children centre by
+    # more than ~14 degrees use the zig-zag route.
+    CIRCUIT_THRESHOLD = 0.25  # radians
+
+    trunk_w = edge_w + 0.2
+    trunk_a = edge_a + 0.05
+
+    if angle_diff > CIRCUIT_THRESHOLD:
+        # Intermediate radius for the horizontal arc (30 % of way from parent to junction)
+        r_step = r_parent + (r_junc - r_parent) * 0.30
+
+        # Segment 1 — radial outward from parent to r_step (along parent's angle)
+        ax1 = r_step * math.cos(norm_par)
+        ay1 = r_step * math.sin(norm_par)
+        ax.plot([px, ax1], [py, ay1],
+                color=color, alpha=trunk_a, linewidth=trunk_w,
+                solid_capstyle="round", zorder=1)
+
+        # Segment 2 — circular arc at r_step from parent's angle to children_center_angle
+        n_step = max(20, int(abs(children_center_angle - norm_par) * 30))
+        step_ts = [norm_par + (children_center_angle - norm_par) * i / (n_step - 1)
+                   for i in range(n_step)]
+        ax.plot([r_step * math.cos(t) for t in step_ts],
+                [r_step * math.sin(t) for t in step_ts],
+                color=color, alpha=trunk_a, linewidth=trunk_w,
+                solid_capstyle="round", zorder=1)
+
+        # Segment 3 — radial outward from r_step to r_junc at children_center_angle
+        bx1 = r_step  * math.cos(children_center_angle)
+        by1 = r_step  * math.sin(children_center_angle)
+        jx  = r_junc  * math.cos(children_center_angle)
+        jy  = r_junc  * math.sin(children_center_angle)
+        ax.plot([bx1, jx], [by1, jy],
+                color=color, alpha=trunk_a, linewidth=trunk_w,
+                solid_capstyle="round", zorder=1)
+
+    else:
+        # Straight trunk along parent's radial direction to junction
+        jx = r_junc * math.cos(norm_par)
+        jy = r_junc * math.sin(norm_par)
+        ax.plot([px, jx], [py, jy],
+                color=color, alpha=trunk_a, linewidth=trunk_w,
+                solid_capstyle="round", zorder=1)
+
+    # ── Arc bar at junction radius spanning all children ──────────────────────
     n_arc = max(30, int(abs(theta_max - theta_min) * 40))
     arc_thetas = [theta_min + (theta_max - theta_min) * i / (n_arc - 1)
                   for i in range(n_arc)]

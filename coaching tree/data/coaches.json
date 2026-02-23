@@ -2000,5 +2000,242 @@
     ],
     "mentor": "doc-holliday",
     "mentor_context": "OC at Marshall, 2010-12"
+  },
+  "robert-saleh": {
+    "name": "Robert Saleh",
+    "born": 1979,
+    "alma_mater": "Northern Michigan",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "New York Jets"
+    ],
+    "mentor": "gus-bradley",
+    "mentor_context": "LB coach at Jacksonville, 2014-16"
+  },
+  "anthony-lynn": {
+    "name": "Anthony Lynn",
+    "born": 1968,
+    "alma_mater": "Texas Tech",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Los Angeles Chargers"
+    ],
+    "mentor": "rex-ryan",
+    "mentor_context": "RB coach at NY Jets, 2009-10"
+  },
+  "mike-pettine": {
+    "name": "Mike Pettine",
+    "born": 1967,
+    "alma_mater": "West Chester",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Cleveland Browns"
+    ],
+    "mentor": "rex-ryan",
+    "mentor_context": "DC at NY Jets, 2009-12"
+  },
+  "norv-turner": {
+    "name": "Norv Turner",
+    "born": 1952,
+    "alma_mater": "Oregon",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Washington Redskins",
+      "Oakland Raiders",
+      "San Diego Chargers"
+    ],
+    "mentor": "joe-gibbs",
+    "mentor_context": "OC at Washington, 1991-93"
+  },
+  "ray-rhodes": {
+    "name": "Ray Rhodes",
+    "born": 1950,
+    "alma_mater": "Tulsa",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Philadelphia Eagles",
+      "Green Bay Packers"
+    ],
+    "mentor": "joe-gibbs",
+    "mentor_context": "DB coach at Washington, 1981-83"
+  },
+  "mike-macdonald": {
+    "name": "Mike Macdonald",
+    "born": 1987,
+    "alma_mater": "Cincinnati",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Seattle Seahawks"
+    ],
+    "mentor": "john-harbaugh",
+    "mentor_context": "DC at Baltimore, 2022-23"
+  },
+  "jedd-fisch": {
+    "name": "Jedd Fisch",
+    "born": 1975,
+    "alma_mater": "Florida",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Arizona",
+      "Washington"
+    ],
+    "mentor": "jim-mora-jr",
+    "mentor_context": "OC at UCLA, 2017"
+  },
+  "jeff-lebby": {
+    "name": "Jeff Lebby",
+    "born": 1984,
+    "alma_mater": "Oklahoma",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Mississippi State"
+    ],
+    "mentor": "lane-kiffin",
+    "mentor_context": "OC at Ole Miss, 2020-21"
+  },
+  "kevin-steele": {
+    "name": "Kevin Steele",
+    "born": 1963,
+    "alma_mater": "Tennessee",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Baylor"
+    ],
+    "mentor": "ed-orgeron",
+    "mentor_context": "DC at LSU, 2018-20"
+  },
+  "kevin-stefanski": {
+    "name": "Kevin Stefanski",
+    "born": 1982,
+    "alma_mater": "Pennsylvania",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Cleveland Browns"
+    ],
+    "mentor": "brad-childress",
+    "mentor_context": "Asst coach at Minnesota, 2006-10"
+  },
+  "kyle-shanahan": {
+    "name": "Kyle Shanahan",
+    "born": 1979,
+    "alma_mater": "Texas",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "San Francisco 49ers"
+    ],
+    "mentor": "dan-quinn",
+    "mentor_context": "OC at Atlanta, 2015-16"
+  },
+  "lance-taylor": {
+    "name": "Lance Taylor",
+    "born": 1983,
+    "alma_mater": "Notre Dame",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Western Michigan"
+    ],
+    "mentor": "brian-kelly",
+    "mentor_context": "WR coach at Notre Dame, 2013-16"
+  },
+  "mike-vrabel": {
+    "name": "Mike Vrabel",
+    "born": 1975,
+    "alma_mater": "Ohio State",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Tennessee Titans",
+      "New England Patriots"
+    ],
+    "mentor": "luke-fickell",
+    "mentor_context": "LB coach at Ohio State, 2011-15"
+  },
+  "frank-reich": {
+    "name": "Frank Reich",
+    "born": 1961,
+    "alma_mater": "Maryland",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Indianapolis Colts",
+      "Carolina Panthers"
+    ],
+    "mentor": "chuck-pagano",
+    "mentor_context": "OC at Indianapolis, 2015-17"
+  },
+  "dennis-allen": {
+    "name": "Dennis Allen",
+    "born": 1972,
+    "alma_mater": "Georgia",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Oakland Raiders",
+      "New Orleans Saints"
+    ],
+    "mentor": "mike-smith-hc",
+    "mentor_context": "DC at Atlanta, 2011"
+  },
+  "gene-chizik": {
+    "name": "Gene Chizik",
+    "born": 1961,
+    "alma_mater": "Florida",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Iowa State",
+      "Auburn"
+    ],
+    "mentor": "dan-mccarney",
+    "mentor_context": "DC at Iowa State, 2002-06"
+  },
+  "jonathan-smith": {
+    "name": "Jonathan Smith",
+    "born": 1981,
+    "alma_mater": "Oregon State",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Oregon State",
+      "Michigan State"
+    ],
+    "mentor": "steve-sarkisian",
+    "mentor_context": "OC at Washington, 2012-13"
+  },
+  "melvin-tucker": {
+    "name": "Melvin Tucker",
+    "born": 1971,
+    "alma_mater": "Wisconsin",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Michigan State"
+    ],
+    "mentor": "mark-dantonio",
+    "mentor_context": "DC at Michigan State, 2015-16"
+  },
+  "ken-wilson": {
+    "name": "Ken Wilson",
+    "born": 1968,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Nevada"
+    ],
+    "mentor": "jay-norvell",
+    "mentor_context": "OC at Nevada, 2017-21"
   }
 }
