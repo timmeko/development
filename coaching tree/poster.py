@@ -436,7 +436,9 @@ def draw_comb(ax, pos, angle_map, parent_id,
     child_data.sort(key=lambda x: x[1])
 
     # ── Shared threshold for circuit-board routing ────────────────────────────
-    CIRCUIT_THRESHOLD = 0.25  # radians (~14°)
+    # Nearly every comb should route "out (radial) THEN over (arc)".
+    # Only perfectly aligned trunks (< ~1°) skip circuit-board routing.
+    CIRCUIT_THRESHOLD = 0.02  # radians (~1°)
     trunk_w = edge_w + 0.2
     trunk_a = edge_a + 0.05
 
@@ -491,7 +493,7 @@ def draw_comb(ax, pos, angle_map, parent_id,
         if diff > CIRCUIT_THRESHOLD:
             # Temporarily set norm_par so _circuit_board can reference it
             norm_par = norm_par_s
-            r_step = r_parent + (r_children - r_parent) * 0.30
+            r_step = r_parent + (r_children - r_parent) * 0.65
             _circuit_board(c_angle, r_step, math.hypot(cx, cy))
         else:
             ax.plot([px, cx], [py, cy],
@@ -516,7 +518,7 @@ def draw_comb(ax, pos, angle_map, parent_id,
     # ── Trunk: circuit-board or straight ─────────────────────────────────────
     # The trunk ALWAYS arrives at children_center_angle on the junction arc so
     # there is never a floating / orphaned segment disconnected from the arc bar.
-    r_step = r_parent + (r_junc - r_parent) * 0.30
+    r_step = r_parent + (r_junc - r_parent) * 0.65
 
     if angle_diff > CIRCUIT_THRESHOLD:
         _circuit_board(children_center_angle, r_step, r_junc)
