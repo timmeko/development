@@ -15,6 +15,9 @@ from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
+# Embed fonts as TrueType in PDF so text remains searchable/selectable
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype']  = 42
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
@@ -432,74 +435,96 @@ def draw_comb(ax, pos, angle_map, parent_id,
     # Sort by raw layout angle (monotonically increasing — no wraparound ambiguity)
     child_data.sort(key=lambda x: x[1])
 
-    if len(child_data) == 1:
-        cid, _ = child_data[0]
-        cx, cy = pos[cid]
-        ax.plot([px, cx], [py, cy],
-                color=color, alpha=edge_a, linewidth=edge_w,
+    # ── Shared threshold for circuit-board routing ────────────────────────────
+    CIRCUIT_THRESHOLD = 0.25  # radians (~14°)
+    trunk_w = edge_w + 0.2
+    trunk_a = edge_a + 0.05
+
+    def _normalise_angle(a, reference):
+        """Shift a into (reference - π, reference + π]."""
+        while a < reference - math.pi:
+            a += 2 * math.pi
+        while a > reference + math.pi:
+            a -= 2 * math.pi
+        return a
+
+    def _circuit_board(target_angle, r_out, r_dest, start_angle=None):
+        """
+        Draw a circuit-board trunk from the parent node to (r_dest, target_angle).
+
+        r_out  : intermediate "horizontal arc" radius
+        r_dest : final destination radius (e.g. r_junc or r_children for single child)
+        start_angle : if None, starts from the parent node (px, py); otherwise
+                      from (r_out, start_angle) and only draws the arc + final radial.
+        """
+        if start_angle is None:
+            # Segment 1 — radial from parent outward to r_out along par_angle
+            ax.plot([px, r_out * math.cos(norm_par)],
+                    [py, r_out * math.sin(norm_par)],
+                    color=color, alpha=trunk_a, linewidth=trunk_w,
+                    solid_capstyle="round", zorder=1)
+            a_from = norm_par
+        else:
+            a_from = start_angle
+
+        # Segment 2 — circular arc at r_out from a_from → target_angle
+        span = target_angle - a_from
+        n    = max(20, int(abs(span) * 30))
+        ts   = [a_from + span * i / (n - 1) for i in range(n)]
+        ax.plot([r_out * math.cos(t) for t in ts],
+                [r_out * math.sin(t) for t in ts],
+                color=color, alpha=trunk_a, linewidth=trunk_w,
                 solid_capstyle="round", zorder=1)
+
+        # Segment 3 — radial from r_out to r_dest at target_angle
+        ax.plot([r_out * math.cos(target_angle), r_dest * math.cos(target_angle)],
+                [r_out * math.sin(target_angle), r_dest * math.sin(target_angle)],
+                color=color, alpha=trunk_a, linewidth=trunk_w,
+                solid_capstyle="round", zorder=1)
+
+    # ── Single-child case ─────────────────────────────────────────────────────
+    if len(child_data) == 1:
+        cid, c_angle = child_data[0]
+        cx, cy = pos[cid]
+        norm_par_s = _normalise_angle(par_angle, c_angle)
+        diff = abs(norm_par_s - c_angle)
+        if diff > CIRCUIT_THRESHOLD:
+            # Temporarily set norm_par so _circuit_board can reference it
+            norm_par = norm_par_s
+            r_step = r_parent + (r_children - r_parent) * 0.30
+            _circuit_board(c_angle, r_step, math.hypot(cx, cy))
+        else:
+            ax.plot([px, cx], [py, cy],
+                    color=color, alpha=edge_a, linewidth=edge_w,
+                    solid_capstyle="round", zorder=1)
         return
 
-    # ── Arc bar at junction radius spanning all children ──
+    # ── Multi-child: compute angular span of children ─────────────────────────
     theta_min = child_data[0][1]
     theta_max = child_data[-1][1]
 
-    # Normalise to [θ_min, θ_max] by unwrapping
     while theta_max < theta_min:
         theta_max += 2 * math.pi
 
     children_center_angle = (theta_min + theta_max) / 2
 
     # Normalise par_angle into the same unwrapped frame as children_center_angle
-    norm_par = par_angle
-    while norm_par < children_center_angle - math.pi:
-        norm_par += 2 * math.pi
-    while norm_par > children_center_angle + math.pi:
-        norm_par -= 2 * math.pi
+    norm_par = _normalise_angle(par_angle, children_center_angle)
 
     angle_diff = abs(norm_par - children_center_angle)
 
     # ── Trunk: circuit-board or straight ─────────────────────────────────────
-    # Circuit-board threshold: if parent angle differs from children centre by
-    # more than ~14 degrees use the zig-zag route.
-    CIRCUIT_THRESHOLD = 0.25  # radians
-
-    trunk_w = edge_w + 0.2
-    trunk_a = edge_a + 0.05
+    # The trunk ALWAYS arrives at children_center_angle on the junction arc so
+    # there is never a floating / orphaned segment disconnected from the arc bar.
+    r_step = r_parent + (r_junc - r_parent) * 0.30
 
     if angle_diff > CIRCUIT_THRESHOLD:
-        # Intermediate radius for the horizontal arc (30 % of way from parent to junction)
-        r_step = r_parent + (r_junc - r_parent) * 0.30
-
-        # Segment 1 — radial outward from parent to r_step (along parent's angle)
-        ax1 = r_step * math.cos(norm_par)
-        ay1 = r_step * math.sin(norm_par)
-        ax.plot([px, ax1], [py, ay1],
-                color=color, alpha=trunk_a, linewidth=trunk_w,
-                solid_capstyle="round", zorder=1)
-
-        # Segment 2 — circular arc at r_step from parent's angle to children_center_angle
-        n_step = max(20, int(abs(children_center_angle - norm_par) * 30))
-        step_ts = [norm_par + (children_center_angle - norm_par) * i / (n_step - 1)
-                   for i in range(n_step)]
-        ax.plot([r_step * math.cos(t) for t in step_ts],
-                [r_step * math.sin(t) for t in step_ts],
-                color=color, alpha=trunk_a, linewidth=trunk_w,
-                solid_capstyle="round", zorder=1)
-
-        # Segment 3 — radial outward from r_step to r_junc at children_center_angle
-        bx1 = r_step  * math.cos(children_center_angle)
-        by1 = r_step  * math.sin(children_center_angle)
-        jx  = r_junc  * math.cos(children_center_angle)
-        jy  = r_junc  * math.sin(children_center_angle)
-        ax.plot([bx1, jx], [by1, jy],
-                color=color, alpha=trunk_a, linewidth=trunk_w,
-                solid_capstyle="round", zorder=1)
-
+        _circuit_board(children_center_angle, r_step, r_junc)
     else:
-        # Straight trunk along parent's radial direction to junction
-        jx = r_junc * math.cos(norm_par)
-        jy = r_junc * math.sin(norm_par)
+        # Straight trunk — but still land at children_center_angle, not par_angle,
+        # so the endpoint is guaranteed to sit on the arc bar.
+        jx = r_junc * math.cos(children_center_angle)
+        jy = r_junc * math.sin(children_center_angle)
         ax.plot([px, jx], [py, jy],
                 color=color, alpha=trunk_a, linewidth=trunk_w,
                 solid_capstyle="round", zorder=1)
@@ -567,45 +592,62 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
         draw_edge_label(ax, x1, y1, x2, y2, ctx, fs=4.8)
 
     # ── Gen 1 → Gen 2: comb edges ────────────────────────────────────────────
-    for g1, ch2 in gen2_groups.items():
-        if g1 == _HOLTZ_DIRECT:
-            # Gen 2 coaches directly under Holtz: straight lines from center
-            for g2 in ch2:
-                if g2 not in pos:
-                    continue
-                x2, y2 = pos[g2]
-                ctx = short_ctx(coaches[g2].get("mentor_context", ""))
-                ax.plot([0, x2], [0, y2],
-                        color=GEN_COLOR[2], alpha=EDGE_A[2], linewidth=EDGE_W[2],
-                        solid_capstyle="round", zorder=1)
-                draw_edge_label(ax, 0, 0, x2, y2, ctx, fs=4.2)
-            continue
+    # Sort active G1 parents by angle for consistent alternation.
+    active_g2 = [
+        (g1, ch2) for g1, ch2 in gen2_groups.items()
+        if g1 != _HOLTZ_DIRECT and g1 in pos and ch2
+    ]
+    active_g2.sort(key=lambda x: angle_map.get(x[0], 0))
 
-        if g1 not in pos or not ch2:
-            continue
+    G12_JFRAC_HI = 0.65
+    G12_JFRAC_LO = 0.55
 
+    # Draw Holtz-direct G2 coaches first (straight lines from center)
+    if _HOLTZ_DIRECT in gen2_groups:
+        for g2 in gen2_groups[_HOLTZ_DIRECT]:
+            if g2 not in pos:
+                continue
+            x2, y2 = pos[g2]
+            ctx = short_ctx(coaches[g2].get("mentor_context", ""))
+            ax.plot([0, x2], [0, y2],
+                    color=GEN_COLOR[2], alpha=EDGE_A[2], linewidth=EDGE_W[2],
+                    solid_capstyle="round", zorder=1)
+            draw_edge_label(ax, 0, 0, x2, y2, ctx, fs=4.2)
+
+    for i, (g1, ch2) in enumerate(active_g2):
+        jfrac = G12_JFRAC_HI if i % 2 == 0 else G12_JFRAC_LO
         draw_comb(
             ax, pos, angle_map,
             parent_id=g1, children=ch2,
             r_parent=RADII[1], r_children=RADII[2],
             color=GEN_COLOR[2],
             edge_w=EDGE_W[2], edge_a=EDGE_A[2],
+            junction_frac=jfrac,
         )
-
-        # Edge label on the trunk (parent to junction midpoint)
-        # Use the Gen 2 context from the first child as representative label
-        # Actually, label is on the Holtz→Gen1 line already. Skip here to avoid clutter.
+        # Labels live on the Holtz→Gen1 spokes; skip here to avoid clutter.
 
     # ── Gen 2 → Gen 3: comb edges ────────────────────────────────────────────
-    for g2, ch3 in gen3_groups.items():
-        if not ch3 or g2 not in pos:
-            continue
+    # Sort active G2 parents by angle so we can assign alternating junction heights,
+    # preventing adjacent combs from stacking their arc bars at the same radius.
+    active_g3 = [
+        (g2, ch3) for g2, ch3 in gen3_groups.items()
+        if ch3 and g2 in pos
+    ]
+    active_g3.sort(key=lambda x: angle_map.get(x[0], 0))
+
+    # Two alternating junction fractions create two "lanes" that don't overlap.
+    JFRAC_HI = COMB_JUNCTION_FRAC + 0.09   # outer lane  (≈ 69 % of gap)
+    JFRAC_LO = COMB_JUNCTION_FRAC - 0.06   # inner lane  (≈ 54 % of gap)
+
+    for i, (g2, ch3) in enumerate(active_g3):
+        jfrac = JFRAC_HI if i % 2 == 0 else JFRAC_LO
         draw_comb(
             ax, pos, angle_map,
             parent_id=g2, children=ch3,
             r_parent=RADII[2], r_children=RADII[3],
             color=GEN_COLOR[3],
             edge_w=EDGE_W[3], edge_a=EDGE_A[3],
+            junction_frac=jfrac,
         )
 
     # ── Nodes & labels ────────────────────────────────────────────────────────
