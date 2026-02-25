@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coaching Tree Verification Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-content">
+            <h1>Coaching Tree Verification</h1>
+            <div class="header-actions">
+                <button id="add-coach-btn" class="btn primary">Add Missing Coach</button>
+                <button id="export-feedback-btn" class="btn success">
+                    <span>Export Feedback</span>
+                    <span id="feedback-badge" class="badge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <!-- Sidebar: List of Coaches -->
+        <aside class="sidebar">
+            <div class="sidebar-search">
+                <input type="text" id="coach-search" placeholder="Search coaches...">
+            </div>
+            <ul id="coach-list" class="coach-list">
+                <!-- Populated by JS -->
+            </ul>
+        </aside>
+
+        <!-- Main Content: Coach Details -->
+        <main class="main-content" id="main-content">
+            <div class="empty-state" id="empty-state">
+                <h2>Select a coach to view their profile</h2>
+                <p>Or use the search bar to find someone specific.</p>
+            </div>
+            
+            <div class="coach-profile hidden" id="coach-profile">
+                <!-- Header -->
+                <div class="profile-header">
+                    <div class="profile-title-row">
+                        <h2 id="profile-name">Coach Name</h2>
+                        <span id="profile-status" class="status-badge">Status</span>
+                    </div>
+                    <div class="profile-meta">
+                        <p><strong>Born:</strong> <span id="profile-born"></span></p>
+                        <p><strong>Alma Mater:</strong> <span id="profile-alma-mater"></span></p>
+                        <p><strong>Generation:</strong> <span id="profile-generation"></span></p>
+                    </div>
+                    <button class="btn secondary sm mt-2" onclick="app.openFeedbackModal('coach', app.currentCoach.id)">Flag Incorrect Info</button>
+                </div>
+
+                <!-- Three Column Layout for lower sections -->
+                <div class="profile-grid">
+                    <!-- Column 1: Stints -->
+                    <div class="profile-section">
+                        <div class="section-header">
+                            <h3>Stints</h3>
+                            <button class="btn icon-btn" title="Add Missing Stint" onclick="app.openFeedbackModal('new_stint', app.currentCoach.id)">+ Add</button>
+                        </div>
+                        <div id="profile-stints" class="card-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Mentors (Worked Under) -->
+                    <div class="profile-section">
+                        <div class="section-header">
+                            <h3>Worked Under (Mentors)</h3>
+                            <button class="btn icon-btn" title="Add Missing Mentor" onclick="app.openFeedbackModal('new_mentor', app.currentCoach.id)">+ Add</button>
+                        </div>
+                        <div id="profile-mentors" class="card-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Proteges (Assistants) -->
+                    <div class="profile-section">
+                        <div class="section-header">
+                            <h3>Assistants (Proteges)</h3>
+                            <button class="btn icon-btn" title="Add Missing Assistant" onclick="app.openFeedbackModal('new_protege', app.currentCoach.id)">+ Add</button>
+                        </div>
+                        <div id="profile-proteges" class="card-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Leave Feedback</h3>
+                <button id="close-modal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-context" class="modal-context"></p>
+                <form id="feedback-form">
+                    <div class="form-group">
+                        <label for="feedback-type">Issue Type</label>
+                        <select id="feedback-type" required>
+                            <option value="incorrect_date">Incorrect Date / Year</option>
+                            <option value="missing_info">Missing Information</option>
+                            <option value="spelling">Spelling / Name Error</option>
+                            <option value="wrong_person">Wrong Person / Link</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback-notes">Details & Corrections</label>
+                        <textarea id="feedback-notes" rows="4" placeholder="Please provide the correct information or context..." required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn secondary" id="cancel-modal">Cancel</button>
+                        <button type="submit" class="btn primary">Save Feedback</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
