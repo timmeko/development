@@ -401,7 +401,8 @@ def draw_edge_label(ax, x1, y1, x2, y2, label, fs):
 def draw_comb(ax, pos, angle_map, parent_id,
               children, r_parent, r_children,
               color, edge_w, edge_a,
-              junction_frac=COMB_JUNCTION_FRAC):
+              junction_frac=COMB_JUNCTION_FRAC,
+              step_frac=0.65):
     """
     Generic comb-style edges: trunk from parent → junction arc → teeth to each child.
 
@@ -493,7 +494,7 @@ def draw_comb(ax, pos, angle_map, parent_id,
         if diff > CIRCUIT_THRESHOLD:
             # Temporarily set norm_par so _circuit_board can reference it
             norm_par = norm_par_s
-            r_step = r_parent + (r_children - r_parent) * 0.65
+            r_step = r_parent + (r_children - r_parent) * step_frac
             _circuit_board(c_angle, r_step, math.hypot(cx, cy))
         else:
             ax.plot([px, cx], [py, cy],
@@ -518,7 +519,7 @@ def draw_comb(ax, pos, angle_map, parent_id,
     # ── Trunk: circuit-board or straight ─────────────────────────────────────
     # The trunk ALWAYS arrives at children_center_angle on the junction arc so
     # there is never a floating / orphaned segment disconnected from the arc bar.
-    r_step = r_parent + (r_junc - r_parent) * 0.65
+    r_step = r_parent + (r_junc - r_parent) * step_frac
 
     if angle_diff > CIRCUIT_THRESHOLD:
         _circuit_board(children_center_angle, r_step, r_junc)
@@ -601,8 +602,10 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
     ]
     active_g2.sort(key=lambda x: angle_map.get(x[0], 0))
 
-    G12_JFRAC_HI = 0.65
-    G12_JFRAC_LO = 0.55
+    # 4-lane cycle: each adjacent comb turns at a different radius AND has
+    # a different junction height, so no two neighbours share geometry.
+    G12_JFRACS = [0.50, 0.58, 0.66, 0.74]
+    G12_SFRACS = [0.30, 0.47, 0.64, 0.81]
 
     # Draw Holtz-direct G2 coaches first (straight lines from center)
     if _HOLTZ_DIRECT in gen2_groups:
@@ -617,16 +620,16 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
             draw_edge_label(ax, 0, 0, x2, y2, ctx, fs=4.2)
 
     for i, (g1, ch2) in enumerate(active_g2):
-        jfrac = G12_JFRAC_HI if i % 2 == 0 else G12_JFRAC_LO
+        lane = i % 4
         draw_comb(
             ax, pos, angle_map,
             parent_id=g1, children=ch2,
             r_parent=RADII[1], r_children=RADII[2],
             color=GEN_COLOR[2],
             edge_w=EDGE_W[2], edge_a=EDGE_A[2],
-            junction_frac=jfrac,
+            junction_frac=G12_JFRACS[lane],
+            step_frac=G12_SFRACS[lane],
         )
-        # Labels live on the Holtz→Gen1 spokes; skip here to avoid clutter.
 
     # ── Gen 2 → Gen 3: comb edges ────────────────────────────────────────────
     # Sort active G2 parents by angle so we can assign alternating junction heights,
@@ -637,19 +640,21 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
     ]
     active_g3.sort(key=lambda x: angle_map.get(x[0], 0))
 
-    # Two alternating junction fractions create two "lanes" that don't overlap.
-    JFRAC_HI = COMB_JUNCTION_FRAC + 0.09   # outer lane  (≈ 69 % of gap)
-    JFRAC_LO = COMB_JUNCTION_FRAC - 0.06   # inner lane  (≈ 54 % of gap)
+    # 4-lane cycle: each adjacent comb turns at a different radius AND has
+    # a different junction (arc-bar) height, avoiding line-on-line overlap.
+    G23_JFRACS = [0.48, 0.56, 0.64, 0.72]
+    G23_SFRACS = [0.28, 0.44, 0.60, 0.76]
 
     for i, (g2, ch3) in enumerate(active_g3):
-        jfrac = JFRAC_HI if i % 2 == 0 else JFRAC_LO
+        lane = i % 4
         draw_comb(
             ax, pos, angle_map,
             parent_id=g2, children=ch3,
             r_parent=RADII[2], r_children=RADII[3],
             color=GEN_COLOR[3],
             edge_w=EDGE_W[3], edge_a=EDGE_A[3],
-            junction_frac=jfrac,
+            junction_frac=G23_JFRACS[lane],
+            step_frac=G23_SFRACS[lane],
         )
 
     # ── Nodes & labels ────────────────────────────────────────────────────────
