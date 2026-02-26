@@ -602,10 +602,14 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
     ]
     active_g2.sort(key=lambda x: angle_map.get(x[0], 0))
 
-    # 4-lane cycle: each adjacent comb turns at a different radius AND has
-    # a different junction height, so no two neighbours share geometry.
-    G12_JFRACS = [0.50, 0.58, 0.66, 0.74]
-    G12_SFRACS = [0.30, 0.47, 0.64, 0.81]
+    # Monotonically increasing turn radius: each successive comb (sorted by
+    # angle) gets a progressively longer radial "out" segment before its arc
+    # turn AND a progressively higher junction arc-bar.  This staircase /
+    # nested-bracket pattern guarantees no two combs share the same turn
+    # radius, eliminating overlap regardless of angular proximity.
+    G12_STEP_MIN, G12_STEP_MAX = 0.25, 0.85
+    G12_JUNC_MIN, G12_JUNC_MAX = 0.45, 0.80
+    n12 = len(active_g2)
 
     # Draw Holtz-direct G2 coaches first (straight lines from center)
     if _HOLTZ_DIRECT in gen2_groups:
@@ -620,15 +624,17 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
             draw_edge_label(ax, 0, 0, x2, y2, ctx, fs=4.2)
 
     for i, (g1, ch2) in enumerate(active_g2):
-        lane = i % 4
+        frac = i / max(1, n12 - 1)
+        step_f = G12_STEP_MIN + frac * (G12_STEP_MAX - G12_STEP_MIN)
+        junc_f = G12_JUNC_MIN + frac * (G12_JUNC_MAX - G12_JUNC_MIN)
         draw_comb(
             ax, pos, angle_map,
             parent_id=g1, children=ch2,
             r_parent=RADII[1], r_children=RADII[2],
             color=GEN_COLOR[2],
             edge_w=EDGE_W[2], edge_a=EDGE_A[2],
-            junction_frac=G12_JFRACS[lane],
-            step_frac=G12_SFRACS[lane],
+            junction_frac=junc_f,
+            step_frac=step_f,
         )
 
     # ── Gen 2 → Gen 3: comb edges ────────────────────────────────────────────
@@ -640,21 +646,23 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
     ]
     active_g3.sort(key=lambda x: angle_map.get(x[0], 0))
 
-    # 4-lane cycle: each adjacent comb turns at a different radius AND has
-    # a different junction (arc-bar) height, avoiding line-on-line overlap.
-    G23_JFRACS = [0.48, 0.56, 0.64, 0.72]
-    G23_SFRACS = [0.28, 0.44, 0.60, 0.76]
+    # Same monotonically increasing staircase rule for Gen 2 → Gen 3 combs.
+    G23_STEP_MIN, G23_STEP_MAX = 0.20, 0.82
+    G23_JUNC_MIN, G23_JUNC_MAX = 0.40, 0.78
+    n23 = len(active_g3)
 
     for i, (g2, ch3) in enumerate(active_g3):
-        lane = i % 4
+        frac = i / max(1, n23 - 1)
+        step_f = G23_STEP_MIN + frac * (G23_STEP_MAX - G23_STEP_MIN)
+        junc_f = G23_JUNC_MIN + frac * (G23_JUNC_MAX - G23_JUNC_MIN)
         draw_comb(
             ax, pos, angle_map,
             parent_id=g2, children=ch3,
             r_parent=RADII[2], r_children=RADII[3],
             color=GEN_COLOR[3],
             edge_w=EDGE_W[3], edge_a=EDGE_A[3],
-            junction_frac=G23_JFRACS[lane],
-            step_frac=G23_SFRACS[lane],
+            junction_frac=junc_f,
+            step_frac=step_f,
         )
 
     # ── Nodes & labels ────────────────────────────────────────────────────────
@@ -749,11 +757,95 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
     plt.close()
 
 
+def audit(coaches: dict):
+    """Print a detailed audit report of all coaches in the tree."""
+    by_gen = {g: [] for g in range(4)}
+    orphans = []
+
+    for cid, info in coaches.items():
+        gen = info.get("generation")
+        if gen is not None and gen in by_gen:
+            by_gen[gen].append((cid, info))
+        else:
+            orphans.append((cid, info))
+
+    total = sum(len(v) for v in by_gen.values())
+    print("=" * 72)
+    print("  LOU HOLTZ COACHING TREE — AUDIT REPORT")
+    print("=" * 72)
+    print(f"\n  Total coaches in coaches.json: {len(coaches)}")
+    print(f"  Gen 0 (root):  {len(by_gen[0]):>3}")
+    print(f"  Gen 1:         {len(by_gen[1]):>3}")
+    print(f"  Gen 2:         {len(by_gen[2]):>3}")
+    print(f"  Gen 3:         {len(by_gen[3]):>3}")
+    print(f"  ─────────────────────")
+    print(f"  Total placed:  {total:>3}")
+    if orphans:
+        print(f"  Unclassified:  {len(orphans):>3}")
+
+    # ── Mentor linkage check ────────────────────────────────────────────────
+    issues = []
+    for cid, info in coaches.items():
+        gen = info.get("generation", 0)
+        mentor = info.get("mentor")
+        schools = info.get("hc_schools", [])
+
+        if gen >= 2 and not mentor:
+            issues.append(f"  MISSING MENTOR: {info['name']} (gen {gen}, id: {cid})")
+        if gen >= 2 and mentor and mentor not in coaches:
+            issues.append(f"  BROKEN MENTOR LINK: {info['name']} → {mentor} (not in data)")
+        if gen >= 1 and not schools:
+            issues.append(f"  NO HC SCHOOLS: {info['name']} (gen {gen}, id: {cid})")
+
+    if issues:
+        print(f"\n  ⚠  DATA ISSUES ({len(issues)}):")
+        for iss in issues:
+            print(iss)
+    else:
+        print("\n  ✓  No data integrity issues found.")
+
+    # ── Detailed listing by generation ──────────────────────────────────────
+    for gen in range(4):
+        entries = sorted(by_gen[gen], key=lambda x: x[1]["name"])
+        gen_labels = {0: "ROOT", 1: "GEN 1 — Direct Holtz protégés",
+                      2: "GEN 2", 3: "GEN 3"}
+        print(f"\n{'─' * 72}")
+        print(f"  {gen_labels[gen]}  ({len(entries)} coaches)")
+        print(f"{'─' * 72}")
+        for cid, info in entries:
+            schools = ", ".join(info.get("hc_schools", [])) or "(none)"
+            mentor = info.get("mentor", "")
+            mentor_name = coaches[mentor]["name"] if mentor and mentor in coaches else ""
+            ctx = info.get("mentor_context") or info.get("holtz_connection") or ""
+            if gen == 0:
+                print(f"  {info['name']:30s}  Schools: {schools}")
+            elif gen == 1:
+                conn = info.get("holtz_connection", "")
+                print(f"  {info['name']:30s}  Schools: {schools}")
+                if conn:
+                    print(f"  {'':30s}  Holtz connection: {conn}")
+            else:
+                print(f"  {info['name']:30s}  Schools: {schools}")
+                if mentor_name:
+                    print(f"  {'':30s}  Mentor: {mentor_name}"
+                          + (f" ({ctx})" if ctx else ""))
+
+    # ── Summary line ─────────────────────────────────────────────────────────
+    print(f"\n{'=' * 72}")
+    print(f"  TOTAL: {total} coaches across {sum(1 for v in by_gen.values() if v)} generations")
+    print(f"{'=' * 72}\n")
+
+
 def main():
+    import sys
     with open(DATA_DIR / "coaches.json") as f:
         coaches = json.load(f)
     print(f"Loaded {len(coaches)} coaches")
-    render(coaches)
+
+    if "--audit" in sys.argv:
+        audit(coaches)
+    else:
+        render(coaches)
 
 
 if __name__ == "__main__":
