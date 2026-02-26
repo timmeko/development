@@ -276,9 +276,11 @@
     "alma_mater": "Nebraska",
     "current_status": "retired",
     "generation": 1,
-    "hc_schools": [],
+    "hc_schools": [
+      "NC State"
+    ],
     "holtz_connection": "DC at Arkansas, 1977-79",
-    "notes": "Never college HC; prolific NFL DC with massive coaching tree"
+    "notes": "HC at NC State (1980-82); prolific NFL DC with massive coaching tree"
   },
   "pete-carroll": {
     "name": "Pete Carroll",
@@ -346,45 +348,11 @@
     "alma_mater": null,
     "current_status": "retired",
     "generation": 1,
-    "hc_schools": [],
+    "hc_schools": [
+      "Tulane"
+    ],
     "holtz_connection": "Asst at Notre Dame",
-    "notes": "OC at Texas (2004-10), OC at Iowa (2012-16)"
-  },
-  "george-stewart": {
-    "name": "George Stewart",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1,
-    "hc_schools": [],
-    "holtz_connection": "GA at Arkansas 1983; TE at Notre Dame 1986-88; OL at Minnesota 1984-85"
-  },
-  "joe-moore": {
-    "name": "Joe Moore",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "deceased",
-    "generation": 1,
-    "hc_schools": [],
-    "holtz_connection": "OL Coach at Notre Dame, 1988-96"
-  },
-  "vinny-cerrato": {
-    "name": "Vinny Cerrato",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1,
-    "hc_schools": [],
-    "holtz_connection": "RC at Notre Dame 1986-91; GA at Minnesota 1984-85"
-  },
-  "bob-chmiel": {
-    "name": "Bob Chmiel",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 1,
-    "hc_schools": [],
-    "holtz_connection": "TE/RC at Notre Dame, 1994-96"
+    "notes": "HC at Tulane (1988-91); OC at Texas (2004-10), OC at Iowa (2012-16). Holtz connection needs verification."
   },
   "dean-pees": {
     "name": "Dean Pees",
@@ -392,9 +360,11 @@
     "alma_mater": null,
     "current_status": "retired",
     "generation": 1,
-    "hc_schools": [],
+    "hc_schools": [
+      "Kent State"
+    ],
     "holtz_connection": "DB at Notre Dame, 1994",
-    "notes": "NFL DC career: Patriots, Ravens, Titans, Falcons"
+    "notes": "HC at Kent State (1998-2003); NFL DC career: Patriots, Ravens, Titans, Falcons"
   },
   "dan-mccarney": {
     "name": "Dan McCarney",
@@ -879,45 +849,18 @@
     "mentor": "monte-kiffin",
     "mentor_context": "NFL Asst under Kiffin"
   },
-  "greg-mattison": {
-    "name": "Greg Mattison",
-    "born": 1949,
-    "alma_mater": null,
-    "current_status": "retired",
-    "generation": 2,
-    "hc_schools": [],
-    "mentor": "bob-davie",
-    "mentor_context": "DC at Notre Dame, 1997-2001"
-  },
   "jim-colletto": {
     "name": "Jim Colletto",
     "born": 1942,
     "alma_mater": null,
     "current_status": "retired",
     "generation": 2,
-    "hc_schools": [],
+    "hc_schools": [
+      "Cal State Fullerton",
+      "Purdue"
+    ],
     "mentor": "bob-davie",
     "mentor_context": "OC at Notre Dame, 1997-98"
-  },
-  "kevin-rogers": {
-    "name": "Kevin Rogers",
-    "born": null,
-    "alma_mater": null,
-    "current_status": null,
-    "generation": 2,
-    "hc_schools": [],
-    "mentor": "bob-davie",
-    "mentor_context": "OC/QB at Notre Dame, 1999-2001"
-  },
-  "kerry-coombs": {
-    "name": "Kerry Coombs",
-    "born": null,
-    "alma_mater": null,
-    "current_status": "active",
-    "generation": 2,
-    "hc_schools": [],
-    "mentor": "urban-meyer",
-    "mentor_context": "DB at Ohio State, 2012-17"
   },
   "kevin-cosgrove": {
     "name": "Kevin Cosgrove",
