@@ -977,7 +977,7 @@ def draw_node(ax, x, y, coach_id, coaches, gen):
         ha = "right"
 
     # Offset inward from the ring so names don't overlap outward HC stubs
-    off = -1.5
+    off = -1.0
     lx = x + (x / dist) * off
     ly = y + (y / dist) * off
 
@@ -1050,7 +1050,23 @@ def draw_hc_stubs(ax, pos, angle_map, coaches):
                     color=HC_TEXT_COLOR, alpha=HC_STUB_A, linewidth=HC_STUB_W,
                     solid_capstyle="round", zorder=1)
 
-            _draw_school_label(ax, math.hypot(ex, ey), sa, school, fontsize=fs)
+            # Place label directly at stub endpoint (not via origin-based polar)
+            sa_deg = math.degrees(sa)
+            tang_deg = sa_deg + 90
+            if tang_deg > 90:
+                tang_deg -= 180
+            elif tang_deg < -90:
+                tang_deg += 180
+            ax.text(ex, ey, abb(school).upper(),
+                    fontsize=fs,
+                    fontfamily=FONT_HC,
+                    fontweight="bold",
+                    color=SCHOOL_LABEL_COLOR,
+                    alpha=0.85,
+                    ha="center", va="center",
+                    rotation=tang_deg, rotation_mode="anchor",
+                    bbox=dict(boxstyle="round,pad=0.08", fc=BG, ec="none", alpha=0.7),
+                    zorder=5)
 
 
 # ── Main render ────────────────────────────────────────────────────────────────
