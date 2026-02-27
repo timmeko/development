@@ -575,11 +575,18 @@ def compute_positions(coaches: dict):
     Equal-spacing radial layout with Gen 1 grouped by primary Holtz school.
     """
     # ── Gather generations ──────────────────────────────────────────────────
-    gen1 = [cid for cid, info in coaches.items() if info.get("generation") == 1]
+    gen1_all = [cid for cid, info in coaches.items() if info.get("generation") == 1]
     gen2_direct = [
         cid for cid, info in coaches.items()
         if info.get("generation") == 2 and info.get("mentor") == "lou-holtz"
     ]
+
+    # Only keep Gen 1 coaches who have at least one Gen 2 protege (downstream tree)
+    gen2_mentors = {
+        info.get("mentor") for cid, info in coaches.items()
+        if info.get("generation") == 2 and info.get("mentor")
+    }
+    gen1 = [cid for cid in gen1_all if cid in gen2_mentors]
 
     # ── Sort Gen 1 chronologically by earliest Holtz contact year ──────────
     def chrono_key(cid):
@@ -977,8 +984,8 @@ def draw_hc_stubs(ax, pos, angle_map, coaches):
             continue
         info = coaches[cid]
         gen = info.get("generation", 99)
-        if gen not in (1, 2, 3):
-            continue
+        if gen not in (2, 3):
+            continue  # Skip Gen 1: their HC schools show as downstream comb labels
 
         hc_schools = info.get("hc_schools", [])
         if not hc_schools:
