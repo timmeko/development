@@ -1051,26 +1051,60 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
                 fontsize=7, color="#555566", ha="right", va="center",
                 fontstyle="italic", zorder=2)
 
-    # ── Holtz → Gen 1: straight lines + school group labels ─────────────────
-    # Simple radial lines from center to each Gen 1 coach
-    for cid in gen1_order:
-        if cid not in pos:
+    # ── Holtz → Gen 1: mini-combs per school group ─────────────────────────
+    for gid, cids in gen1_groups_ordered:
+        valid = [(c, angle_map[c]) for c in cids if c in pos and c in angle_map]
+        if not valid:
             continue
-        cx, cy = pos[cid]
-        ax.plot([0, cx], [0, cy],
+
+        school_name = gid.replace("holtz-", "")
+        trunk_w = EDGE_W[1] + 0.2
+        trunk_a = EDGE_A[1] + 0.05
+
+        if len(valid) == 1:
+            # Single coach: straight line with school label
+            cid, ca = valid[0]
+            cx, cy = pos[cid]
+            ax.plot([0, cx], [0, cy],
+                    color=GEN_COLOR[1], alpha=EDGE_A[1], linewidth=EDGE_W[1],
+                    solid_capstyle="round", zorder=1)
+            _draw_school_label(ax, RADII[1] * 0.45, ca, school_name)
+            continue
+
+        # Multiple coaches: mini-comb (trunk → arc → teeth)
+        valid.sort(key=lambda x: x[1])
+        theta_min = valid[0][1]
+        theta_max = valid[-1][1]
+        center_angle = sum(a for _, a in valid) / len(valid)
+        r_junc = RADII[1] * COMB_JUNCTION_FRAC
+
+        # Trunk: center → junction at group center angle
+        jx = r_junc * math.cos(center_angle)
+        jy = r_junc * math.sin(center_angle)
+        ax.plot([0, jx], [0, jy],
+                color=GEN_COLOR[1], alpha=trunk_a, linewidth=trunk_w,
+                solid_capstyle="round", zorder=1)
+
+        # Arc bar spanning the group
+        n_arc = max(30, int(abs(theta_max - theta_min) * 40))
+        arc_thetas = [theta_min + (theta_max - theta_min) * i / (n_arc - 1)
+                      for i in range(n_arc)]
+        ax.plot([r_junc * math.cos(t) for t in arc_thetas],
+                [r_junc * math.sin(t) for t in arc_thetas],
                 color=GEN_COLOR[1], alpha=EDGE_A[1], linewidth=EDGE_W[1],
                 solid_capstyle="round", zorder=1)
 
-    # One perpendicular school label per Holtz school group, at ~45% of radius
-    label_r = RADII[1] * 0.45
-    for gid, cids in gen1_groups_ordered:
-        valid = [c for c in cids if c in angle_map]
-        if not valid:
-            continue
-        angles = [angle_map[c] for c in valid]
-        center_a = sum(angles) / len(angles)
-        school_name = gid.replace("holtz-", "")
-        _draw_school_label(ax, label_r, center_a, school_name)
+        # Teeth: arc → individual coaches
+        for cid, ca in valid:
+            bx = r_junc * math.cos(ca)
+            by = r_junc * math.sin(ca)
+            cx, cy = pos[cid]
+            ax.plot([bx, cx], [by, cy],
+                    color=GEN_COLOR[1], alpha=EDGE_A[1], linewidth=EDGE_W[1],
+                    solid_capstyle="round", zorder=1)
+
+        # School label on the trunk
+        _draw_school_label(ax, r_junc, center_angle, school_name)
 
     # ── Gen 1 → Gen 2: school-grouped combs ───────────────────────────────
     active_g2 = [
