@@ -830,6 +830,87 @@ For each coach, provide a section:
 
 If no assistants became HCs, say "None found." """
     ),
+
+    # === PHASE 5: Uncovered Dead-End Gen 2 Coaches ===
+    (
+        "43_norv_turner",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. Norv Turner was an offensive coordinator under several coaches in the Holtz tree before a long NFL head coaching career.
+
+I need to identify all assistant coaches who worked under Norv Turner during his head coaching career and later became head coaches themselves (NFL, FBS, FCS, D2, or lower).
+
+Norv Turner was head coach at:
+- Washington Redskins (1994-2000)
+- Oakland Raiders (2004-05)
+- San Diego Chargers (2007-12)
+
+His Washington and San Diego tenures were long enough to produce significant coaching branches. For each assistant who later became a head coach, provide a markdown table organized by team:
+
+### [Team Name]
+
+| Name | Role Under Turner | Years | Later HC Stops | Confidence |
+|------|------------------|-------|----------------|------------|
+
+Focus on verifiable connections. Include low-confidence entries rather than omitting them."""
+    ),
+    (
+        "44_houston_nutt",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. Houston Nutt was a protege of Ken Hatfield (who was a Holtz assistant at Arkansas). Nutt had a long college head coaching career.
+
+I need to identify all assistant coaches who worked under Houston Nutt during his head coaching career and later became head coaches themselves (NFL, FBS, FCS, D2, or lower).
+
+Houston Nutt was head coach at:
+- Boise State (1997)
+- Arkansas (1998-2007)
+- Ole Miss (2008-11)
+
+His decade at Arkansas is the primary focus — those staffs likely produced multiple future head coaches. For each assistant who later became a head coach, provide a markdown table organized by school:
+
+### [School Name]
+
+| Name | Role Under Nutt | Years | Later HC Stops | Confidence |
+|------|----------------|-------|----------------|------------|
+
+Focus on verifiable connections. Include low-confidence entries rather than omitting them."""
+    ),
+    (
+        "45_batch_nfl_uncovered",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following NFL head coaches (all Generation 2 in the Holtz tree), list any assistant coaches who worked under them and later became head coaches themselves (NFL or college, any level). I only need their direct-report assistants who became HCs.
+
+1. Bill Callahan — HC at Oakland Raiders (2002-03), Nebraska (2004-07). Also longtime NFL offensive line coach/coordinator. Focus on his HC tenures.
+2. Ray Rhodes — HC at Philadelphia Eagles (1995-98), Green Bay Packers (1999). Long NFL defensive coaching career but focus on HC tenures.
+3. Joe Bugel — HC at Phoenix Cardinals (1990-93), Oakland Raiders (1997). Legendary offensive line coach but focus on HC tenures.
+4. Gregg Williams — HC at Buffalo Bills (2001-03), New Orleans Saints (interim, 2012). Long defensive coordinator career.
+5. Al Saunders — HC at San Diego Chargers (1986-88). Later a prominent offensive coordinator in NFL.
+
+For each, format as:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+If none found for a coach, say "None found." """
+    ),
+    (
+        "46_batch_college_uncovered",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following college/interim head coaches (all Generation 2 in the Holtz tree), list any assistant coaches who worked under them and later became head coaches (any level: NFL, FBS, FCS, D2, NAIA). If none found, say "None found."
+
+1. Tommy West — HC at Clemson (1993-98, initially as interim), Memphis (2001-09), Chattanooga (2010-12). His long Memphis tenure (9 seasons) is the most likely to have produced branches.
+2. Jim Colletto — HC at Cal State Fullerton (1984-86), Purdue (1991-96). Six seasons at Purdue is enough to produce coaching branches.
+3. David Bailiff — HC at Texas State (2004-06), Rice (2007-17). Eleven seasons at Rice — check for assistants who became HCs.
+4. Darrell Bevell — HC at Detroit Lions (interim, 2020), Jacksonville Jaguars (interim, 2021). Brief interim stints — probably no branches but check.
+5. Jerry Rosburg — HC at Denver Broncos (interim, 2023). Single-game interim, unlikely branches.
+6. Richie Petitbon — HC at Washington Redskins (1993, interim for 1 season after Gibbs retired). Brief tenure but check.
+
+For each, format as:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+If none found, say "None found." """
+    ),
 ]
 
 
