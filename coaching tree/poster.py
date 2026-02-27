@@ -338,6 +338,72 @@ def extract_mentor_schools(coach_id: str, coaches: dict) -> list:
     return parent_hc[:1] if parent_hc else ["Unknown"]
 
 
+def extract_roles_by_school(ctx: str) -> dict:
+    """
+    Parse a holtz_connection or mentor_context string into {school: role}.
+
+    Handles patterns like:
+      "DC at Notre Dame, 1987-89"
+      "WR/QB at Notre Dame, 1986-90; WR at Minnesota, 1984-85"
+      "NFL Asst under Kiffin (Tampa Bay era)"
+      "WR Coach on NY Jets, 1976"
+    """
+    if not ctx:
+        return {}
+    roles = {}
+    clauses = [c.strip() for c in ctx.split(";")]
+    for clause in clauses:
+        # "ROLE at SCHOOL under MENTOR, YEARS" — strip the "under X" part
+        cleaned = re.sub(r'\s+under\s+\w+', '', clause)
+
+        # "ROLE at/on SCHOOL, YEARS"
+        m = re.match(r'^(.+?)\s+(?:at|on)\s+(.+?)(?:,\s*\d{4}.*)?$', cleaned)
+        if m:
+            role = m.group(1).strip()
+            school = m.group(2).strip()
+            school = re.sub(r',\s*\d{4}.*$', '', school).strip()
+            roles[school] = _normalise_role(role)
+            continue
+
+        # "ROLE under Mentor (LOCATION, YEAR)"
+        m = re.match(r'^(.+?)\s+under\s+\w+\s*\(([^)]+)\)', clause)
+        if m:
+            role = m.group(1).strip()
+            loc = m.group(2).strip()
+            loc = re.sub(r',?\s*\d{4}.*$', '', loc).strip()
+            loc = re.sub(r'\s+era$', '', loc).strip()
+            roles[loc] = _normalise_role(role)
+            continue
+
+        # "ROLE under Mentor at SCHOOL, YEARS"
+        m = re.match(r'^(.+?)\s+under\s+\w+\s+at\s+(.+?)(?:,\s*\d{4}.*)?$',
+                     clause)
+        if m:
+            role = m.group(1).strip()
+            school = m.group(2).strip()
+            school = re.sub(r',\s*\d{4}.*$', '', school).strip()
+            roles[school] = _normalise_role(role)
+            continue
+
+        # "ROLE under Mentor" (no location — use _default)
+        m = re.match(r'^(.+?)\s+under\s+', clause)
+        if m:
+            role = m.group(1).strip()
+            roles["_default"] = _normalise_role(role)
+    return roles
+
+
+def _normalise_role(role: str) -> str:
+    """Shorten role titles for display: 'WR Coach' -> 'WR', etc."""
+    r = role.strip()
+    # Remove trailing "Coach" / "Coord" / "Coordinator"
+    r = re.sub(r'\s+(Coach|Coord|Coordinator)$', '', r, flags=re.I)
+    # Common abbreviations
+    r = r.replace("Asst HC", "AHC").replace("Associate HC", "AHC")
+    r = r.replace("Assistant", "Asst")
+    return r
+
+
 def primary_holtz_school(coach_id: str, coaches: dict) -> str:
     """For a Gen 1 coach, return their primary Holtz school for grouping."""
     schools = extract_mentor_schools(coach_id, coaches)
@@ -345,6 +411,22 @@ def primary_holtz_school(coach_id: str, coaches: dict) -> str:
     if "Notre Dame" in schools:
         return "Notre Dame"
     return schools[0] if schools else "Other"
+
+
+def get_role_at_school(coach_id: str, school: str, coaches: dict) -> str:
+    """Get a coach's role at a specific school from their connection context."""
+    info = coaches[coach_id]
+    ctx = info.get("holtz_connection", "") or info.get("mentor_context", "")
+    roles = extract_roles_by_school(ctx)
+    # Try exact match
+    if school in roles:
+        return roles[school]
+    # Try alias match (e.g. "NY Jets" in ctx vs "New York Jets" in school name)
+    for k, v in roles.items():
+        if k.lower() in school.lower() or school.lower() in k.lower():
+            return v
+    # Fallback to _default
+    return roles.get("_default", "")
 
 
 def earliest_year(ctx: str) -> int:
@@ -363,8 +445,13 @@ def build_school_groups(mentor_id: str, child_gen: int, coaches: dict) -> dict:
     for cid, info in coaches.items():
         if info.get("generation") != child_gen:
             continue
-        if info.get("mentor") != mentor_id:
-            continue
+        # Gen 1 coaches don't have an explicit "mentor" field — all are Holtz proteges
+        if child_gen == 1:
+            if mentor_id != "lou-holtz":
+                continue
+        else:
+            if info.get("mentor") != mentor_id:
+                continue
         schools = extract_mentor_schools(cid, coaches)
         for school in schools:
             groups.setdefault(school, [])
@@ -783,6 +870,16 @@ def draw_node(ax, x, y, coach_id, coaches, gen):
     lx = x + (x / dist) * off
     ly = y + (y / dist) * off
 
+    # For Gen 1: build a role subtitle from their Holtz connection
+    role_text = ""
+    if gen == 1:
+        ctx = info.get("holtz_connection", "")
+        roles_dict = extract_roles_by_school(ctx)
+        if roles_dict:
+            # Show unique roles, compact
+            unique_roles = list(dict.fromkeys(roles_dict.values()))
+            role_text = "/".join(unique_roles)
+
     # Name in Granesta font, rotated radially
     ax.text(lx, ly, name,
             fontsize=FONT_SZ[gen],
@@ -792,6 +889,17 @@ def draw_node(ax, x, y, coach_id, coaches, gen):
             rotation=rot, rotation_mode="anchor",
             zorder=4)
 
+    # Role subtitle for Gen 1 (e.g. "DC" or "WR/QB")
+    if role_text:
+        ax.text(lx, ly, role_text,
+                fontsize=HC_FONT_SZ.get(gen, 3.8) - 0.5,
+                fontfamily=FONT_HC,
+                color=GEN_COLOR[1],
+                alpha=0.70,
+                ha=ha, va="top",
+                rotation=rot, rotation_mode="anchor",
+                zorder=4)
+
     # HC position text — same radial rotation, positioned just below the name
     # (closer to center = "below" in the radial sense)
     if hc_schools and gen <= 3:
@@ -800,7 +908,15 @@ def draw_node(ax, x, y, coach_id, coaches, gen):
             shorts = shorts[:3] + [f"+{len(shorts) - 3}"]
         hc_text = ", ".join(shorts).upper()
 
-        ax.text(lx, ly, hc_text,
+        # For Gen 1 with role text, push HC text further inward
+        if role_text:
+            hc_inward = 0.35
+            hx = x - (x / dist) * hc_inward
+            hy = y - (y / dist) * hc_inward
+        else:
+            hx, hy = lx, ly
+
+        ax.text(hx, hy, hc_text,
                 fontsize=HC_FONT_SZ.get(gen, 3.8),
                 fontfamily=FONT_HC,
                 fontweight="bold",
@@ -843,18 +959,41 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
                 fontsize=7, color="#555566", ha="right", va="center",
                 fontstyle="italic", zorder=2)
 
-    # ── Holtz school group labels on Gen 1 ring ────────────────────────────
-    # (Small labels between groups indicating which Holtz school)
-    # We'll draw these at the midpoint of each group's angular span
+    # ── Holtz → Gen 1: school-grouped combs ─────────────────────────────────
+    holtz_sg = build_school_groups("lou-holtz", 1, coaches)
 
-    # ── Holtz → Gen 1: straight radial lines ──────────────────────────────
-    for g1 in gen1_order:
-        if g1 not in pos:
+    # Order schools by Holtz tenure chronology
+    HOLTZ_SCHOOL_ORDER = [
+        "William & Mary", "NC State", "New York Jets",
+        "Arkansas", "Minnesota", "Notre Dame", "South Carolina",
+    ]
+    holtz_school_list = []
+    for school in HOLTZ_SCHOOL_ORDER:
+        if school in holtz_sg:
+            holtz_school_list.append((school, holtz_sg[school]))
+    # Add any remaining schools not in the predefined order
+    for school, cids in holtz_sg.items():
+        if school not in HOLTZ_SCHOOL_ORDER:
+            holtz_school_list.append((school, cids))
+
+    n_hschools = len(holtz_school_list)
+    for i, (school, cids) in enumerate(holtz_school_list):
+        valid_cids = [c for c in cids if c in pos and c in angle_map]
+        if not valid_cids:
             continue
-        x2, y2 = pos[g1]
-        ax.plot([0, x2], [0, y2],
-                color=GEN_COLOR[1], alpha=EDGE_A[1], linewidth=EDGE_W[1],
-                solid_capstyle="round", zorder=1)
+
+        # Stagger junction fractions for each school comb
+        frac = i / max(1, n_hschools - 1) if n_hschools > 1 else 0.5
+        junc_f = 0.40 + frac * 0.35
+        step_f = 0.30 + frac * 0.45
+
+        _draw_simple_comb(ax, pos, angle_map,
+                          parent_id="lou-holtz", children=valid_cids,
+                          r_parent=RADII[0], r_children=RADII[1],
+                          color=GEN_COLOR[1],
+                          edge_w=EDGE_W[1], edge_a=EDGE_A[1],
+                          junction_frac=junc_f, step_frac=step_f,
+                          school_label=school)
 
     # ── Gen 1 → Gen 2: school-grouped combs ───────────────────────────────
     active_g2 = [
