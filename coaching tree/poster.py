@@ -857,11 +857,17 @@ def _draw_simple_comb(ax, pos, angle_map, parent_id, children,
                     color=color, alpha=edge_a, linewidth=edge_w,
                     solid_capstyle="round", zorder=1)
 
-        # School label on the midpoint of the line
+        # School label on the connecting line
         if school_label:
-            mid_r = (r_parent + r_children) / 2
-            mid_angle = (norm_par + c_angle) / 2
-            _draw_school_label(ax, mid_r, c_angle, school_label)
+            child_r = math.hypot(cx, cy)
+            if diff > CIRCUIT_THRESHOLD:
+                # Circuit-board routing: place on the final radial segment
+                r_step_lbl = r_parent + (r_children - r_parent) * step_frac
+                label_r = (r_step_lbl + child_r) / 2
+            else:
+                # Straight line: midpoint
+                label_r = (math.hypot(px, py) + child_r) / 2
+            _draw_school_label(ax, label_r, c_angle, school_label)
         return
 
     # ── Multi-child: compute angular span ─────────────────────────────────
