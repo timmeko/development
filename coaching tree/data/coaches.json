@@ -1086,27 +1086,25 @@
     "born": 1941,
     "alma_mater": "Arkansas",
     "current_status": "retired",
-    "generation": 2,
+    "generation": 1,
     "hc_schools": [
       "Air Force",
       "Arkansas",
       "Clemson",
       "Rice"
     ],
-    "mentor": "lou-holtz",
-    "mentor_context": "Assistant/DB at Arkansas, 1977-83"
+    "holtz_connection": "Assistant/DB at Arkansas, 1977-83"
   },
   "joe-gibbs": {
     "name": "Joe Gibbs",
     "born": 1940,
     "alma_mater": "Santa Rosa Junior College",
     "current_status": "retired",
-    "generation": 2,
+    "generation": 1,
     "hc_schools": [
       "Washington Redskins"
     ],
-    "mentor": "lou-holtz",
-    "mentor_context": "OC at Arkansas, 1978-79"
+    "holtz_connection": "OC at Arkansas, 1978-79"
   },
   "chuck-pagano": {
     "name": "Chuck Pagano",
@@ -1274,7 +1272,7 @@
     "born": 1938,
     "alma_mater": "Tulane",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Washington Redskins (interim)"
     ],
@@ -1286,7 +1284,7 @@
     "born": 1940,
     "alma_mater": "Western Kentucky",
     "current_status": "deceased",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Phoenix Cardinals",
       "Oakland Raiders"
@@ -1299,7 +1297,7 @@
     "born": 1947,
     "alma_mater": "San Jose State",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "San Diego Chargers"
     ],
@@ -1311,7 +1309,7 @@
     "born": 1958,
     "alma_mater": "Delta State",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Buffalo Bills",
       "New Orleans Saints (interim)"
@@ -1324,7 +1322,7 @@
     "born": 1959,
     "alma_mater": "Illinois-Chicago",
     "current_status": "active",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Oakland Raiders",
       "Nebraska"
@@ -1337,7 +1335,7 @@
     "born": 1957,
     "alma_mater": "Oklahoma State",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Boise State",
       "Arkansas",
@@ -1351,7 +1349,7 @@
     "born": null,
     "alma_mater": null,
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Clemson (interim)",
       "Memphis",
@@ -1365,7 +1363,7 @@
     "born": null,
     "alma_mater": null,
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Texas State",
       "Rice"
@@ -1973,7 +1971,7 @@
     "born": 1952,
     "alma_mater": "Oregon",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Washington Redskins",
       "Oakland Raiders",
@@ -1987,7 +1985,7 @@
     "born": 1950,
     "alma_mater": "Tulsa",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Philadelphia Eagles",
       "Green Bay Packers"
