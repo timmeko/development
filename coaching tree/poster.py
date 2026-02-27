@@ -496,20 +496,20 @@ def assign_ring_positions(groups_ordered: list, r: float, gap_slots: float = GAP
     angle_map   = {}
     group_spans = {}
 
-    angle = math.pi / 2   # 12 o'clock
+    angle = math.pi / 2   # 12 o'clock, proceeding clockwise
 
     for gid, cids in nonempty:
         first_a = last_a = None
         for cid in cids:
-            a = angle + step / 2
+            a = angle - step / 2
             pos_dict[cid]  = (r * math.cos(a), r * math.sin(a))
             angle_map[cid] = a
             if first_a is None:
                 first_a = a
             last_a = a
-            angle += step
+            angle -= step
         group_spans[gid] = (first_a, last_a)
-        angle += gap
+        angle -= gap
 
     return pos_dict, angle_map, group_spans
 
@@ -559,24 +559,38 @@ def compute_positions(coaches: dict):
         gen1_groups_ordered, RADII[1], gap_slots=1.0
     )
 
-    # ── Build Gen 2 groups in Gen 1 angle order ────────────────────────────
-    gen1_by_angle = sorted(pos_g1.keys(), key=lambda c: angle_map_g1[c])
+    # ── Build Gen 2 groups in Gen 1 placement order (clockwise) ─────────
+    # Use the flattened gen1 placement order (already chronological) rather
+    # than sorting by raw angle, which can wrap around with clockwise layout.
+    gen1_by_angle = [cid for _, cids in gen1_groups_ordered
+                     for cid in cids if cid in pos_g1]
+
+    def chrono_key_g2(cid):
+        return (earliest_year(coaches[cid].get("mentor_context", "")),
+                coaches[cid]["name"])
+
     gen2_groups_ordered = []
     for g1 in gen1_by_angle:
-        ch2 = children_of(g1, 2, coaches)
+        ch2 = sorted(children_of(g1, 2, coaches), key=chrono_key_g2)
         gen2_groups_ordered.append((g1, ch2))
     if gen2_direct:
-        gen2_groups_ordered.append((_HOLTZ_DIRECT, gen2_direct))
+        gen2_groups_ordered.append((_HOLTZ_DIRECT, sorted(gen2_direct, key=chrono_key_g2)))
 
     pos_g2, angle_map_g2, gen2_group_spans = assign_ring_positions(
         gen2_groups_ordered, RADII[2]
     )
 
-    # ── Build Gen 3 groups ordered by Gen 2 parent's angle ─────────────────
-    gen2_by_angle = sorted(pos_g2.keys(), key=lambda c: angle_map_g2[c])
+    # ── Build Gen 3 groups in Gen 2 placement order (clockwise) ────────────
+    gen2_by_angle = [cid for _, cids in gen2_groups_ordered
+                     for cid in cids if cid in pos_g2]
+
+    def chrono_key_g3(cid):
+        return (earliest_year(coaches[cid].get("mentor_context", "")),
+                coaches[cid]["name"])
+
     gen3_groups_ordered = []
     for g2 in gen2_by_angle:
-        ch3 = children_of(g2, 3, coaches)
+        ch3 = sorted(children_of(g2, 3, coaches), key=chrono_key_g3)
         gen3_groups_ordered.append((g2, ch3))
 
     pos_g3, angle_map_g3, gen3_group_spans = assign_ring_positions(
