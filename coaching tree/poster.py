@@ -20,10 +20,25 @@ matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype']  = 42
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from matplotlib import font_manager
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 DATA_DIR   = Path(__file__).parent / "data"
 OUTPUT_DIR = Path(__file__).parent
+
+# ── Font setup ─────────────────────────────────────────────────────────────────
+_granesta_path = DATA_DIR / "granesta" / "Granesta.ttf"
+if _granesta_path.exists():
+    font_manager.fontManager.addfont(str(_granesta_path))
+    FONT_NAME = font_manager.FontProperties(fname=str(_granesta_path)).get_name()
+else:
+    FONT_NAME = "DejaVu Sans"
+
+# Fallback for Arial Black — use Liberation Sans Bold or DejaVu Sans Bold
+FONT_HC = "Liberation Sans"
+_has_liberation = any("Liberation Sans" in f.name for f in font_manager.fontManager.ttflist)
+if not _has_liberation:
+    FONT_HC = "DejaVu Sans"
 
 # ── Visual constants ───────────────────────────────────────────────────────────
 BG = "#0d0d1a"
@@ -35,9 +50,11 @@ GEN_COLOR = {
     3: "#F0993A",   # Gen 3 — amber
 }
 
+HC_TEXT_COLOR = "#48C774"  # Green for HC position labels
+
 RADII      = {0: 0.0, 1: 3.5, 2: 7.8, 3: 14.0}
-NODE_SZ    = {0: 280, 1: 110, 2: 55,  3: 26}
-FONT_SZ    = {0: 11,  1: 7.5, 2: 6.0, 3: 4.8}
+FONT_SZ    = {0: 14,  1: 8.5, 2: 6.5, 3: 5.0}
+HC_FONT_SZ = {0: 0,   1: 5.0, 2: 4.5, 3: 3.8}
 EDGE_W     = {1: 1.4, 2: 0.9, 3: 0.5}
 EDGE_A     = {1: 0.60, 2: 0.45, 3: 0.30}
 
@@ -46,6 +63,10 @@ GAP_SLOTS = 1.5
 
 # Comb geometry: junction radius as fraction of the gap between parent and child ring
 COMB_JUNCTION_FRAC = 0.60
+
+# School label on comb trunks
+SCHOOL_LABEL_SZ = 4.5
+SCHOOL_LABEL_COLOR = "#48C774"
 
 # ── School abbreviations ───────────────────────────────────────────────────────
 ABB = {
@@ -87,6 +108,7 @@ ABB = {
     "Baltimore Ravens":        "BAL",
     "Pittsburgh Steelers":     "PIT",
     "Tampa Bay Buccaneers":    "TB",
+    "Tampa Bay":               "TB",
     "Indianapolis Colts":      "IND",
     "Washington Redskins":     "WSH",
     "Washington Commanders":   "WSH",
@@ -201,7 +223,31 @@ ABB = {
     "Arizona":                 "Ariz",
     "Tennessee Titans":        "TEN",
     "Cincinnati Bengals":      "CIN",
+    "Arizona Cardinals":       "ARI",
 }
+
+# ── Known locations for context parsing ────────────────────────────────────────
+KNOWN_LOCATIONS = [
+    "Notre Dame", "Ohio State", "Florida", "Wisconsin", "Cincinnati",
+    "Maryland", "NC State", "Bowling Green", "Utah", "Arkansas",
+    "Minnesota", "South Carolina", "Texas", "Louisville", "Western Michigan",
+    "Kent State", "UNLV", "USC", "LSU", "Ole Miss", "Rutgers",
+    "New Mexico", "Iowa State", "Mississippi State", "Michigan State",
+    "Grand Valley State", "Central Michigan", "Northern Illinois",
+    "Houston", "Nevada", "UConn", "Eastern Michigan",
+    # NFL
+    "Tampa Bay", "Minnesota Vikings", "San Diego Chargers",
+    "Seattle Seahawks", "NY Jets", "New York Jets", "Indianapolis Colts",
+    "Chicago Bears", "Pittsburgh Steelers", "Baltimore Ravens",
+    "Atlanta Falcons", "Jacksonville Jaguars", "Washington Redskins",
+    "Washington", "Oakland Raiders", "Detroit Lions", "New England Patriots",
+]
+
+# Fallback mentoring location when context is vague
+MENTOR_DEFAULT_LOCATION = {
+    "monte-kiffin": "Tampa Bay",
+}
+
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
 _HOLTZ_DIRECT = "__holtz_direct__"   # virtual bucket for Gen-2 coaches directly under Holtz
@@ -212,30 +258,119 @@ def abb(school: str) -> str:
     return ABB.get(s, ABB.get(school, school))
 
 
-def node_label(coach_id: str, coaches: dict) -> str:
+def extract_mentor_schools(coach_id: str, coaches: dict) -> list:
+    """Extract the school(s) where this coach was mentored, for comb grouping."""
     info = coaches[coach_id]
-    name = info["name"]
-    hc   = [s for s in info.get("hc_schools", []) if s]
-    if not hc:
-        return name
-    shorts = [abb(s) for s in hc]
-    if len(shorts) > 3:
-        shorts = shorts[:3] + [f"+{len(shorts) - 3}"]
-    return f"{name}\n{', '.join(shorts)}"
+    gen = info.get("generation", 0)
 
+    if gen == 1:
+        ctx = info.get("holtz_connection", "")
+        mentor_id = "lou-holtz"
+    elif gen >= 2:
+        ctx = info.get("mentor_context", "")
+        mentor_id = info.get("mentor", "")
+    else:
+        return []
 
-def short_ctx(ctx: str) -> str:
-    """First semicolon clause, ≤28 chars."""
+    mentor_info = coaches.get(mentor_id, {})
+    parent_hc = mentor_info.get("hc_schools", [])
+
     if not ctx:
-        return ""
-    first = ctx.split(";")[0].strip()
-    return first[:28] + "…" if len(first) > 30 else first
+        # Check for default location
+        default = MENTOR_DEFAULT_LOCATION.get(mentor_id)
+        if default:
+            return [default]
+        return parent_hc[:1] if parent_hc else ["Unknown"]
+
+    ctx_lower = ctx.lower()
+
+    # Common abbreviations in context strings
+    _ALIASES = {
+        "New York Jets": ["ny jets", "new york jets"],
+        "South Carolina": ["south carolina", "s. carolina"],
+        "NC State": ["nc state", "n.c. state"],
+    }
+
+    # 1. Match against parent HC schools
+    matched_hc = []
+    for school in parent_hc:
+        if school.lower() in ctx_lower:
+            matched_hc.append(school)
+            continue
+        # Check aliases
+        for alias in _ALIASES.get(school, []):
+            if alias in ctx_lower:
+                matched_hc.append(school)
+                break
+
+    # Handle slash-separated (e.g. "Florida/Ohio State")
+    if "/" in ctx:
+        for part in ctx.split("/"):
+            part = part.strip()
+            for school in parent_hc:
+                if school.lower() in part.lower() and school not in matched_hc:
+                    matched_hc.append(school)
+
+    if matched_hc:
+        return matched_hc
+
+    # 2. No HC school matched — extract location from context
+    matched_any = []
+    for loc in KNOWN_LOCATIONS:
+        if loc.lower() in ctx_lower:
+            matched_any.append(loc)
+
+    # Deduplicate substrings (keep longer match)
+    deduped = []
+    for m in matched_any:
+        if not any(m != other and m in other for other in matched_any):
+            deduped.append(m)
+    if not deduped:
+        deduped = matched_any
+
+    if deduped:
+        return deduped
+
+    # 3. Fallback to mentor default or first HC school
+    default = MENTOR_DEFAULT_LOCATION.get(mentor_id)
+    if default:
+        return [default]
+    return parent_hc[:1] if parent_hc else ["Unknown"]
+
+
+def primary_holtz_school(coach_id: str, coaches: dict) -> str:
+    """For a Gen 1 coach, return their primary Holtz school for grouping."""
+    schools = extract_mentor_schools(coach_id, coaches)
+    # Prefer Notre Dame if present (it's the most significant Holtz stop)
+    if "Notre Dame" in schools:
+        return "Notre Dame"
+    return schools[0] if schools else "Other"
 
 
 def earliest_year(ctx: str) -> int:
     """Extract the earliest 4-digit year from a context string."""
     years = [int(m) for m in re.findall(r'\b(19\d{2}|20[0-2]\d)\b', ctx)]
     return min(years) if years else 9999
+
+
+def build_school_groups(mentor_id: str, child_gen: int, coaches: dict) -> dict:
+    """
+    Group proteges of mentor_id by the school where they were mentored.
+
+    Returns: {school_name: [protege_ids]}
+    """
+    groups = {}
+    for cid, info in coaches.items():
+        if info.get("generation") != child_gen:
+            continue
+        if info.get("mentor") != mentor_id:
+            continue
+        schools = extract_mentor_schools(cid, coaches)
+        for school in schools:
+            groups.setdefault(school, [])
+            if cid not in groups[school]:
+                groups[school].append(cid)
+    return groups
 
 
 # ── Graph helpers ──────────────────────────────────────────────────────────────
@@ -258,7 +393,7 @@ def assign_ring_positions(groups_ordered: list, r: float, gap_slots: float = GAP
 
     Returns:
         pos_dict   : coach_id → (x, y)
-        angle_map  : coach_id → raw layout angle (monotonically increasing, for comb drawing)
+        angle_map  : coach_id → raw layout angle
         group_spans: parent_id → (first_child_angle, last_child_angle)
     """
     nonempty = [(gid, cids) for gid, cids in groups_ordered if cids]
@@ -267,7 +402,6 @@ def assign_ring_positions(groups_ordered: list, r: float, gap_slots: float = GAP
     if N == 0:
         return {}, {}, {}
 
-    # step * N + gap * G = 2π,   gap = gap_slots * step
     step = 2 * math.pi / (N + G * gap_slots)
     gap  = step * gap_slots
 
@@ -275,7 +409,7 @@ def assign_ring_positions(groups_ordered: list, r: float, gap_slots: float = GAP
     angle_map   = {}
     group_spans = {}
 
-    angle = math.pi / 2   # 12 o'clock, advancing counter-clockwise
+    angle = math.pi / 2   # 12 o'clock
 
     for gid, cids in nonempty:
         first_a = last_a = None
@@ -295,18 +429,7 @@ def assign_ring_positions(groups_ordered: list, r: float, gap_slots: float = GAP
 
 def compute_positions(coaches: dict):
     """
-    Equal-spacing radial layout.
-
-    Gen 1  — equally spaced, sorted chronologically.
-    Gen 2  — equally spaced, grouped by Gen 1 parent in Gen 1 order, with inter-group gaps.
-    Gen 3  — equally spaced, grouped by Gen 2 parent in Gen 2 angle order, with inter-group gaps.
-
-    Returns:
-        pos          : coach_id → (x, y)
-        angle_map    : coach_id → raw layout angle (for comb drawing)
-        gen1_order   : list of Gen 1 ids in layout order
-        gen2_groups  : parent_id → [gen2_child_ids] in layout order
-        gen3_groups  : parent_id → [gen3_child_ids] in layout order
+    Equal-spacing radial layout with Gen 1 grouped by primary Holtz school.
     """
     # ── Gather generations ──────────────────────────────────────────────────
     gen1 = [cid for cid, info in coaches.items() if info.get("generation") == 1]
@@ -321,40 +444,54 @@ def compute_positions(coaches: dict):
 
     gen1_sorted = sorted(gen1, key=chrono_key)
 
-    # ── Selective Gen 1 reordering to improve comb alignment ─────────────────
-    # Charlie Strong's Gen-2 children cluster near Dean Pees's natural position;
-    # swapping them brings the comb trunk much closer to its children.
-    def _swap(lst, a, b):
-        if a in lst and b in lst:
-            i, j = lst.index(a), lst.index(b)
-            lst[i], lst[j] = lst[j], lst[i]
-    _swap(gen1_sorted, "charlie-strong", "dean-pees")
+    # ── Group Gen 1 by primary Holtz school ────────────────────────────────
+    # School order: chronological by Holtz's tenure
+    HOLTZ_SCHOOL_ORDER = [
+        "William & Mary", "NC State", "New York Jets",
+        "Arkansas", "Minnesota", "Notre Dame", "South Carolina",
+    ]
 
-    # ── Gen 1 ring: all coaches equally spaced, one group (all connect to Holtz)
-    gen1_groups_ordered = [("lou-holtz", gen1_sorted)]
-    pos_g1, angle_map_g1, _ = assign_ring_positions(gen1_groups_ordered, RADII[1], gap_slots=0)
+    school_buckets = {s: [] for s in HOLTZ_SCHOOL_ORDER}
+    school_buckets["Other"] = []
 
-    # ── Build Gen 2 groups in Gen 1 order ────────────────────────────────────
+    for cid in gen1_sorted:
+        primary = primary_holtz_school(cid, coaches)
+        if primary in school_buckets:
+            school_buckets[primary].append(cid)
+        else:
+            school_buckets["Other"].append(cid)
+
+    # Build Gen 1 groups ordered by Holtz school order
+    gen1_groups_ordered = []
+    for school in HOLTZ_SCHOOL_ORDER + ["Other"]:
+        bucket = school_buckets.get(school, [])
+        if bucket:
+            gen1_groups_ordered.append((f"holtz-{school}", bucket))
+
+    pos_g1, angle_map_g1, gen1_group_spans = assign_ring_positions(
+        gen1_groups_ordered, RADII[1], gap_slots=1.0
+    )
+
+    # ── Build Gen 2 groups in Gen 1 angle order ────────────────────────────
+    gen1_by_angle = sorted(pos_g1.keys(), key=lambda c: angle_map_g1[c])
     gen2_groups_ordered = []
-    for g1 in gen1_sorted:
+    for g1 in gen1_by_angle:
         ch2 = children_of(g1, 2, coaches)
         gen2_groups_ordered.append((g1, ch2))
     if gen2_direct:
         gen2_groups_ordered.append((_HOLTZ_DIRECT, gen2_direct))
 
-    # ── Gen 2 ring: equally spaced with gaps between groups ──────────────────
     pos_g2, angle_map_g2, gen2_group_spans = assign_ring_positions(
         gen2_groups_ordered, RADII[2]
     )
 
-    # ── Build Gen 3 groups ordered by Gen 2 parent's angle ───────────────────
+    # ── Build Gen 3 groups ordered by Gen 2 parent's angle ─────────────────
     gen2_by_angle = sorted(pos_g2.keys(), key=lambda c: angle_map_g2[c])
     gen3_groups_ordered = []
     for g2 in gen2_by_angle:
         ch3 = children_of(g2, 3, coaches)
         gen3_groups_ordered.append((g2, ch3))
 
-    # ── Gen 3 ring: equally spaced with gaps between groups ──────────────────
     pos_g3, angle_map_g3, gen3_group_spans = assign_ring_positions(
         gen3_groups_ordered, RADII[3]
     )
@@ -374,57 +511,106 @@ def compute_positions(coaches: dict):
     gen2_groups = {gid: cids for gid, cids in gen2_groups_ordered}
     gen3_groups = {gid: cids for gid, cids in gen3_groups_ordered}
 
-    return pos, angle_map, gen1_sorted, gen2_groups, gen3_groups
+    return (pos, angle_map, gen1_by_angle, gen1_groups_ordered,
+            gen2_groups, gen3_groups)
 
 
 # ── Rendering helpers ──────────────────────────────────────────────────────────
-def draw_edge_label(ax, x1, y1, x2, y2, label, fs):
-    if not label:
-        return
-    mx = (x1 + x2) / 2
-    my = (y1 + y2) / 2
-    deg = math.degrees(math.atan2(y2 - y1, x2 - x1))
-    if deg > 90:
-        deg -= 180
-    elif deg < -90:
-        deg += 180
-    ax.text(
-        mx, my, label,
-        fontsize=fs, color="#cccccc", alpha=0.80,
-        ha="center", va="center",
-        rotation=deg, rotation_mode="anchor",
-        bbox=dict(boxstyle="round,pad=0.15", fc=BG, ec="none", alpha=0.75),
-        zorder=5,
-    )
+
+def _normalise_angle(a, reference):
+    """Shift a into (reference - π, reference + π]."""
+    while a < reference - math.pi:
+        a += 2 * math.pi
+    while a > reference + math.pi:
+        a -= 2 * math.pi
+    return a
 
 
-def draw_comb(ax, pos, angle_map, parent_id,
-              children, r_parent, r_children,
-              color, edge_w, edge_a,
-              junction_frac=COMB_JUNCTION_FRAC,
-              step_frac=0.65):
+def draw_school_comb(ax, pos, angle_map, parent_id,
+                     school_groups, r_parent, r_children,
+                     color, edge_w, edge_a,
+                     junction_frac=COMB_JUNCTION_FRAC,
+                     step_frac=0.65):
     """
-    Generic comb-style edges: trunk from parent → junction arc → teeth to each child.
+    Draw school-grouped combs from a mentor to their proteges.
 
-    Works for any parent→children pair:
-      - Gen 1 → Gen 2   (r_parent=RADII[1], r_children=RADII[2])
-      - Gen 2 → Gen 3   (r_parent=RADII[2], r_children=RADII[3])
+    school_groups: {school_name: [protege_ids]}
+    Each school gets its own mini-comb with a perpendicular school label.
+    Multi-school proteges get lines from multiple school combs.
+    """
+    if not school_groups or parent_id not in pos:
+        return
 
-    Uses pre-computed raw layout angles (angle_map) to avoid atan2 wraparound issues.
+    px, py = pos[parent_id]
+    par_angle = math.atan2(py, px)
+    r_junc = r_parent + (r_children - r_parent) * junction_frac
 
-    When the parent's radial angle is far from its children's angular centre, the trunk
-    uses circuit-board routing: radial segment out → circular arc → radial segment to
-    junction.  This avoids ugly diagonal lines and keeps "vertical" lines on radii and
-    "horizontal" lines on circular arcs.
+    # Collect all children with positions
+    all_children_with_pos = set()
+    for school, cids in school_groups.items():
+        for cid in cids:
+            if cid in pos and cid in angle_map:
+                all_children_with_pos.add(cid)
+
+    if not all_children_with_pos:
+        return
+
+    # If only one school or few total children, draw a simple comb
+    # with a school label on the trunk
+    total_schools = len([s for s, cids in school_groups.items()
+                         if any(c in pos for c in cids)])
+
+    if total_schools <= 1:
+        # Single school: draw standard comb with school label
+        school_name = list(school_groups.keys())[0]
+        children = [c for c in school_groups[school_name] if c in pos]
+        _draw_simple_comb(ax, pos, angle_map, parent_id, children,
+                          r_parent, r_children, color, edge_w, edge_a,
+                          junction_frac, step_frac, school_label=school_name)
+        return
+
+    # Multiple schools: draw separate mini-combs for each school
+    # Sort schools by the average angle of their proteges
+    school_list = []
+    for school, cids in school_groups.items():
+        valid = [(cid, angle_map[cid]) for cid in cids
+                 if cid in pos and cid in angle_map]
+        if valid:
+            avg_angle = sum(a for _, a in valid) / len(valid)
+            school_list.append((school, cids, avg_angle))
+
+    school_list.sort(key=lambda x: x[2])
+
+    # Draw each school's mini-comb at slightly different junction radii
+    n_schools = len(school_list)
+    for i, (school, cids, _) in enumerate(school_list):
+        valid_cids = [c for c in cids if c in pos and c in angle_map]
+        if not valid_cids:
+            continue
+
+        # Offset junction fraction slightly for each school to avoid overlap
+        frac_offset = (i - (n_schools - 1) / 2) * 0.06
+        jf = junction_frac + frac_offset
+        jf = max(0.3, min(0.85, jf))
+
+        _draw_simple_comb(ax, pos, angle_map, parent_id, valid_cids,
+                          r_parent, r_children, color, edge_w, edge_a,
+                          jf, step_frac, school_label=school)
+
+
+def _draw_simple_comb(ax, pos, angle_map, parent_id, children,
+                      r_parent, r_children, color, edge_w, edge_a,
+                      junction_frac, step_frac, school_label=None):
+    """
+    Draw a comb from parent to children with optional school label.
     """
     if not children or parent_id not in pos:
         return
 
-    px, py     = pos[parent_id]
-    par_angle  = math.atan2(py, px)   # parent's radial angle
-    r_junc     = r_parent + (r_children - r_parent) * junction_frac
+    px, py = pos[parent_id]
+    par_angle = math.atan2(py, px)
+    r_junc = r_parent + (r_children - r_parent) * junction_frac
 
-    # Collect children that have positions, keep them in their raw layout angle order
     child_data = [
         (cid, angle_map[cid])
         for cid in children
@@ -433,116 +619,83 @@ def draw_comb(ax, pos, angle_map, parent_id,
     if not child_data:
         return
 
-    # Sort by raw layout angle (monotonically increasing — no wraparound ambiguity)
     child_data.sort(key=lambda x: x[1])
 
-    # ── Shared threshold for circuit-board routing ────────────────────────────
-    # Nearly every comb should route "out (radial) THEN over (arc)".
-    # Only perfectly aligned trunks (< ~1°) skip circuit-board routing.
-    CIRCUIT_THRESHOLD = 0.02  # radians (~1°)
+    CIRCUIT_THRESHOLD = 0.02
     trunk_w = edge_w + 0.2
     trunk_a = edge_a + 0.05
 
-    def _normalise_angle(a, reference):
-        """Shift a into (reference - π, reference + π]."""
-        while a < reference - math.pi:
-            a += 2 * math.pi
-        while a > reference + math.pi:
-            a -= 2 * math.pi
-        return a
-
-    def _circuit_board(target_angle, r_out, r_dest, start_angle=None):
-        """
-        Draw a circuit-board trunk from the parent node to (r_dest, target_angle).
-
-        r_out  : intermediate "horizontal arc" radius
-        r_dest : final destination radius (e.g. r_junc or r_children for single child)
-        start_angle : if None, starts from the parent node (px, py); otherwise
-                      from (r_out, start_angle) and only draws the arc + final radial.
-        """
-        if start_angle is None:
-            # Segment 1 — radial from parent outward to r_out along par_angle
-            ax.plot([px, r_out * math.cos(norm_par)],
-                    [py, r_out * math.sin(norm_par)],
-                    color=color, alpha=trunk_a, linewidth=trunk_w,
-                    solid_capstyle="round", zorder=1)
-            a_from = norm_par
-        else:
-            a_from = start_angle
-
-        # Segment 2 — circular arc at r_out from a_from → target_angle
-        span = target_angle - a_from
-        n    = max(20, int(abs(span) * 30))
-        ts   = [a_from + span * i / (n - 1) for i in range(n)]
+    def _circuit_board(target_angle, r_out, r_dest, norm_par_ref):
+        # Segment 1 — radial from parent outward
+        ax.plot([px, r_out * math.cos(norm_par_ref)],
+                [py, r_out * math.sin(norm_par_ref)],
+                color=color, alpha=trunk_a, linewidth=trunk_w,
+                solid_capstyle="round", zorder=1)
+        # Segment 2 — circular arc
+        span = target_angle - norm_par_ref
+        n = max(20, int(abs(span) * 30))
+        ts = [norm_par_ref + span * i / (n - 1) for i in range(n)]
         ax.plot([r_out * math.cos(t) for t in ts],
                 [r_out * math.sin(t) for t in ts],
                 color=color, alpha=trunk_a, linewidth=trunk_w,
                 solid_capstyle="round", zorder=1)
-
-        # Segment 3 — radial from r_out to r_dest at target_angle
+        # Segment 3 — radial to destination
         ax.plot([r_out * math.cos(target_angle), r_dest * math.cos(target_angle)],
                 [r_out * math.sin(target_angle), r_dest * math.sin(target_angle)],
                 color=color, alpha=trunk_a, linewidth=trunk_w,
                 solid_capstyle="round", zorder=1)
 
-    # ── Single-child case ─────────────────────────────────────────────────────
+    # ── Single-child case ─────────────────────────────────────────────────
     if len(child_data) == 1:
         cid, c_angle = child_data[0]
         cx, cy = pos[cid]
-        norm_par_s = _normalise_angle(par_angle, c_angle)
-        diff = abs(norm_par_s - c_angle)
+        norm_par = _normalise_angle(par_angle, c_angle)
+        diff = abs(norm_par - c_angle)
         if diff > CIRCUIT_THRESHOLD:
-            # Temporarily set norm_par so _circuit_board can reference it
-            norm_par = norm_par_s
             r_step = r_parent + (r_children - r_parent) * step_frac
-            _circuit_board(c_angle, r_step, math.hypot(cx, cy))
+            _circuit_board(c_angle, r_step, math.hypot(cx, cy), norm_par)
         else:
             ax.plot([px, cx], [py, cy],
                     color=color, alpha=edge_a, linewidth=edge_w,
                     solid_capstyle="round", zorder=1)
+
+        # School label on the midpoint of the line
+        if school_label:
+            mid_r = (r_parent + r_children) / 2
+            mid_angle = (norm_par + c_angle) / 2
+            _draw_school_label(ax, mid_r, c_angle, school_label)
         return
 
-    # ── Multi-child: compute angular span of children ─────────────────────────
+    # ── Multi-child: compute angular span ─────────────────────────────────
     theta_min = child_data[0][1]
     theta_max = child_data[-1][1]
-
     while theta_max < theta_min:
         theta_max += 2 * math.pi
-
     children_center_angle = (theta_min + theta_max) / 2
-
-    # Normalise par_angle into the same unwrapped frame as children_center_angle
     norm_par = _normalise_angle(par_angle, children_center_angle)
-
     angle_diff = abs(norm_par - children_center_angle)
 
-    # ── Trunk: circuit-board or straight ─────────────────────────────────────
-    # The trunk ALWAYS arrives at children_center_angle on the junction arc so
-    # there is never a floating / orphaned segment disconnected from the arc bar.
     r_step = r_parent + (r_junc - r_parent) * step_frac
 
     if angle_diff > CIRCUIT_THRESHOLD:
-        _circuit_board(children_center_angle, r_step, r_junc)
+        _circuit_board(children_center_angle, r_step, r_junc, norm_par)
     else:
-        # Straight trunk — but still land at children_center_angle, not par_angle,
-        # so the endpoint is guaranteed to sit on the arc bar.
         jx = r_junc * math.cos(children_center_angle)
         jy = r_junc * math.sin(children_center_angle)
         ax.plot([px, jx], [py, jy],
                 color=color, alpha=trunk_a, linewidth=trunk_w,
                 solid_capstyle="round", zorder=1)
 
-    # ── Arc bar at junction radius spanning all children ──────────────────────
+    # ── Arc bar ────────────────────────────────────────────────────────────
     n_arc = max(30, int(abs(theta_max - theta_min) * 40))
     arc_thetas = [theta_min + (theta_max - theta_min) * i / (n_arc - 1)
                   for i in range(n_arc)]
-    arc_xs = [r_junc * math.cos(t) for t in arc_thetas]
-    arc_ys = [r_junc * math.sin(t) for t in arc_thetas]
-    ax.plot(arc_xs, arc_ys,
+    ax.plot([r_junc * math.cos(t) for t in arc_thetas],
+            [r_junc * math.sin(t) for t in arc_thetas],
             color=color, alpha=edge_a, linewidth=edge_w,
             solid_capstyle="round", zorder=1)
 
-    # ── Teeth: junction arc → each child node ──
+    # ── Teeth ──────────────────────────────────────────────────────────────
     for cid, c_angle in child_data:
         bx = r_junc * math.cos(c_angle)
         by = r_junc * math.sin(c_angle)
@@ -551,9 +704,117 @@ def draw_comb(ax, pos, angle_map, parent_id,
                 color=color, alpha=edge_a, linewidth=edge_w,
                 solid_capstyle="round", zorder=1)
 
+    # ── School label on the arc bar ────────────────────────────────────────
+    if school_label:
+        _draw_school_label(ax, r_junc, children_center_angle, school_label)
 
+
+def _draw_school_label(ax, r, angle, label):
+    """Draw a school name label tangential to the arc at the given position."""
+    x = r * math.cos(angle)
+    y = r * math.sin(angle)
+    # Tangential rotation = angle + 90°
+    angle_deg = math.degrees(angle)
+    tang_deg = angle_deg + 90
+    # Normalize for readability
+    if tang_deg > 90:
+        tang_deg -= 180
+    elif tang_deg < -90:
+        tang_deg += 180
+
+    # Offset slightly inward (toward center) so label doesn't overlap comb lines
+    inward = 0.15
+    lx = x - (x / (r or 1e-6)) * inward
+    ly = y - (y / (r or 1e-6)) * inward
+
+    ax.text(lx, ly, abb(label).upper(),
+            fontsize=SCHOOL_LABEL_SZ,
+            fontfamily=FONT_HC,
+            fontweight="bold",
+            color=SCHOOL_LABEL_COLOR,
+            alpha=0.85,
+            ha="center", va="center",
+            rotation=tang_deg, rotation_mode="anchor",
+            bbox=dict(boxstyle="round,pad=0.08", fc=BG, ec="none", alpha=0.7),
+            zorder=5)
+
+
+def draw_node(ax, x, y, coach_id, coaches, gen):
+    """Draw a coach node: Granesta name + green HC position text below."""
+    info = coaches[coach_id]
+    name = info["name"]
+    hc_schools = info.get("hc_schools", [])
+
+    dist = math.hypot(x, y) or 1e-6
+    angle_rad = math.atan2(y, x)
+    angle_deg = math.degrees(angle_rad)
+
+    if gen == 0:
+        # Holtz at center — horizontal
+        ax.text(0, -0.5, name,
+                fontsize=FONT_SZ[0],
+                fontfamily=FONT_NAME,
+                color=GEN_COLOR[0],
+                ha="center", va="top",
+                zorder=4)
+        if hc_schools:
+            shorts = [abb(s) for s in hc_schools]
+            hc_text = " · ".join(shorts)
+            ax.text(0, -1.2, hc_text.upper(),
+                    fontsize=HC_FONT_SZ[1],
+                    fontfamily=FONT_HC,
+                    fontweight="bold",
+                    color=HC_TEXT_COLOR,
+                    ha="center", va="top",
+                    zorder=4)
+        return
+
+    # Determine text rotation and alignment based on which half of the circle
+    right_side = -90 <= angle_deg <= 90
+    if right_side:
+        rot = angle_deg
+        ha = "left"
+    else:
+        rot = angle_deg + 180 if angle_deg < 0 else angle_deg - 180
+        ha = "right"
+
+    # Offset outward from the ring for name
+    off = 0.15
+    lx = x + (x / dist) * off
+    ly = y + (y / dist) * off
+
+    # Name in Granesta font, rotated radially
+    ax.text(lx, ly, name,
+            fontsize=FONT_SZ[gen],
+            fontfamily=FONT_NAME,
+            color="white",
+            ha=ha, va="bottom",
+            rotation=rot, rotation_mode="anchor",
+            zorder=4)
+
+    # HC position text — same radial rotation, positioned just below the name
+    # (closer to center = "below" in the radial sense)
+    if hc_schools and gen <= 3:
+        shorts = [abb(s) for s in hc_schools]
+        if len(shorts) > 3:
+            shorts = shorts[:3] + [f"+{len(shorts) - 3}"]
+        hc_text = ", ".join(shorts).upper()
+
+        ax.text(lx, ly, hc_text,
+                fontsize=HC_FONT_SZ.get(gen, 3.8),
+                fontfamily=FONT_HC,
+                fontweight="bold",
+                color=HC_TEXT_COLOR,
+                alpha=0.85,
+                ha=ha, va="top",
+                rotation=rot, rotation_mode="anchor",
+                zorder=4)
+
+
+# ── Main render ────────────────────────────────────────────────────────────────
 def render(coaches: dict, output_base: str = "coaching_tree_poster"):
-    pos, angle_map, gen1_order, gen2_groups, gen3_groups = compute_positions(coaches)
+    (pos, angle_map, gen1_order, gen1_groups_ordered,
+     gen2_groups, gen3_groups) = compute_positions(coaches)
 
     unplaced = [cid for cid, info in coaches.items()
                 if info.get("generation", 99) in (1, 2, 3) and cid not in pos]
@@ -582,54 +843,51 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
                 fontsize=7, color="#555566", ha="right", va="center",
                 fontstyle="italic", zorder=2)
 
-    # ── Holtz → Gen 1: straight radial lines with relationship label ──────────
+    # ── Holtz school group labels on Gen 1 ring ────────────────────────────
+    # (Small labels between groups indicating which Holtz school)
+    # We'll draw these at the midpoint of each group's angular span
+
+    # ── Holtz → Gen 1: straight radial lines ──────────────────────────────
     for g1 in gen1_order:
         if g1 not in pos:
             continue
-        x1, y1 = 0.0, 0.0
         x2, y2 = pos[g1]
-        ctx = short_ctx(coaches[g1].get("holtz_connection", ""))
-        ax.plot([x1, x2], [y1, y2],
+        ax.plot([0, x2], [0, y2],
                 color=GEN_COLOR[1], alpha=EDGE_A[1], linewidth=EDGE_W[1],
                 solid_capstyle="round", zorder=1)
-        draw_edge_label(ax, x1, y1, x2, y2, ctx, fs=4.8)
 
-    # ── Gen 1 → Gen 2: comb edges ────────────────────────────────────────────
-    # Sort active G1 parents by angle for consistent alternation.
+    # ── Gen 1 → Gen 2: school-grouped combs ───────────────────────────────
     active_g2 = [
         (g1, ch2) for g1, ch2 in gen2_groups.items()
         if g1 != _HOLTZ_DIRECT and g1 in pos and ch2
     ]
     active_g2.sort(key=lambda x: angle_map.get(x[0], 0))
 
-    # Monotonically increasing turn radius: each successive comb (sorted by
-    # angle) gets a progressively longer radial "out" segment before its arc
-    # turn AND a progressively higher junction arc-bar.  This staircase /
-    # nested-bracket pattern guarantees no two combs share the same turn
-    # radius, eliminating overlap regardless of angular proximity.
     G12_STEP_MIN, G12_STEP_MAX = 0.25, 0.85
     G12_JUNC_MIN, G12_JUNC_MAX = 0.45, 0.80
     n12 = len(active_g2)
 
-    # Draw Holtz-direct G2 coaches first (straight lines from center)
+    # Draw Holtz-direct G2 coaches (straight lines from center)
     if _HOLTZ_DIRECT in gen2_groups:
         for g2 in gen2_groups[_HOLTZ_DIRECT]:
             if g2 not in pos:
                 continue
             x2, y2 = pos[g2]
-            ctx = short_ctx(coaches[g2].get("mentor_context", ""))
             ax.plot([0, x2], [0, y2],
                     color=GEN_COLOR[2], alpha=EDGE_A[2], linewidth=EDGE_W[2],
                     solid_capstyle="round", zorder=1)
-            draw_edge_label(ax, 0, 0, x2, y2, ctx, fs=4.2)
 
     for i, (g1, ch2) in enumerate(active_g2):
         frac = i / max(1, n12 - 1)
         step_f = G12_STEP_MIN + frac * (G12_STEP_MAX - G12_STEP_MIN)
         junc_f = G12_JUNC_MIN + frac * (G12_JUNC_MAX - G12_JUNC_MIN)
-        draw_comb(
+
+        # Build school groups for this mentor
+        sg = build_school_groups(g1, 2, coaches)
+
+        draw_school_comb(
             ax, pos, angle_map,
-            parent_id=g1, children=ch2,
+            parent_id=g1, school_groups=sg,
             r_parent=RADII[1], r_children=RADII[2],
             color=GEN_COLOR[2],
             edge_w=EDGE_W[2], edge_a=EDGE_A[2],
@@ -637,16 +895,13 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
             step_frac=step_f,
         )
 
-    # ── Gen 2 → Gen 3: comb edges ────────────────────────────────────────────
-    # Sort active G2 parents by angle so we can assign alternating junction heights,
-    # preventing adjacent combs from stacking their arc bars at the same radius.
+    # ── Gen 2 → Gen 3: school-grouped combs ───────────────────────────────
     active_g3 = [
         (g2, ch3) for g2, ch3 in gen3_groups.items()
         if ch3 and g2 in pos
     ]
     active_g3.sort(key=lambda x: angle_map.get(x[0], 0))
 
-    # Same monotonically increasing staircase rule for Gen 2 → Gen 3 combs.
     G23_STEP_MIN, G23_STEP_MAX = 0.20, 0.82
     G23_JUNC_MIN, G23_JUNC_MAX = 0.40, 0.78
     n23 = len(active_g3)
@@ -655,9 +910,12 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
         frac = i / max(1, n23 - 1)
         step_f = G23_STEP_MIN + frac * (G23_STEP_MAX - G23_STEP_MIN)
         junc_f = G23_JUNC_MIN + frac * (G23_JUNC_MAX - G23_JUNC_MIN)
-        draw_comb(
+
+        sg = build_school_groups(g2, 3, coaches)
+
+        draw_school_comb(
             ax, pos, angle_map,
-            parent_id=g2, children=ch3,
+            parent_id=g2, school_groups=sg,
             r_parent=RADII[2], r_children=RADII[3],
             color=GEN_COLOR[3],
             edge_w=EDGE_W[3], edge_a=EDGE_A[3],
@@ -665,75 +923,31 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
             step_frac=step_f,
         )
 
-    # ── Nodes & labels ────────────────────────────────────────────────────────
+    # ── Nodes & labels ────────────────────────────────────────────────────
     for cid, (x, y) in pos.items():
         if cid not in coaches:
             continue
         info = coaches[cid]
-        gen  = info.get("generation", 99)
+        gen = info.get("generation", 99)
         if gen > 3:
             continue
+        draw_node(ax, x, y, cid, coaches, gen)
 
-        color = GEN_COLOR.get(gen, "#cccccc")
-        ns    = NODE_SZ[gen]
-        fs    = FONT_SZ[gen]
-
-        ax.scatter(x, y, s=ns, c=color, zorder=3,
-                   edgecolors="#ffffff",
-                   linewidths=1.8 if gen == 0 else 0.6)
-
-        label = node_label(cid, coaches)
-        dist  = math.hypot(x, y) or 1e-6
-
-        if gen == 0:
-            ax.text(0, -0.70, label,
-                    fontsize=fs, color="white",
-                    ha="center", va="top",
-                    fontweight="bold", zorder=4)
-
-        elif gen == 3:
-            # Rotated radial labels
-            angle_deg = math.degrees(math.atan2(y, x))
-            if -90 <= angle_deg <= 90:
-                rot = angle_deg
-                ha  = "left"
-            else:
-                rot = angle_deg + 180 if angle_deg < 0 else angle_deg - 180
-                ha  = "right"
-            off = 0.30 + (ns ** 0.5) * 0.045
-            lx  = x + (x / dist) * off
-            ly  = y + (y / dist) * off
-            ax.text(lx, ly, label,
-                    fontsize=fs, color="white",
-                    ha=ha, va="center",
-                    rotation=rot, rotation_mode="anchor",
-                    linespacing=1.25, zorder=4)
-
-        else:
-            # Gen 1 and Gen 2: horizontal labels, radially offset
-            off = 0.30 + (ns ** 0.5) * 0.045
-            lx  = x + (x / dist) * off
-            ly  = y + (y / dist) * off
-            ax.text(lx, ly, label,
-                    fontsize=fs, color="white",
-                    ha="center", va="center",
-                    fontweight="bold" if gen == 1 else "normal",
-                    linespacing=1.25, zorder=4)
-
-    # ── Title ─────────────────────────────────────────────────────────────────
+    # ── Title ─────────────────────────────────────────────────────────────
     top = RADII[3] + 2.5
     ax.text(0, top, "Lou Holtz Coaching Tree",
             color="white", fontsize=24, fontweight="bold",
+            fontfamily=FONT_NAME,
             ha="center", va="center", zorder=6)
     ax.text(0, top - 1.1,
             "Generations 0 – 3  ·  Head coaching stops listed per coach",
             color="#777788", fontsize=10,
             ha="center", va="center", zorder=6)
 
-    # ── Legend ────────────────────────────────────────────────────────────────
+    # ── Legend ────────────────────────────────────────────────────────────
     handles = [
         mpatches.Patch(color=GEN_COLOR[0], label="Gen 0 — Lou Holtz"),
-        mpatches.Patch(color=GEN_COLOR[1], label="Gen 1 — Direct proteges"),
+        mpatches.Patch(color=GEN_COLOR[1], label="Gen 1 — Direct protégés"),
         mpatches.Patch(color=GEN_COLOR[2], label="Gen 2"),
         mpatches.Patch(color=GEN_COLOR[3], label="Gen 3"),
     ]
@@ -757,95 +971,12 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
     plt.close()
 
 
-def audit(coaches: dict):
-    """Print a detailed audit report of all coaches in the tree."""
-    by_gen = {g: [] for g in range(4)}
-    orphans = []
-
-    for cid, info in coaches.items():
-        gen = info.get("generation")
-        if gen is not None and gen in by_gen:
-            by_gen[gen].append((cid, info))
-        else:
-            orphans.append((cid, info))
-
-    total = sum(len(v) for v in by_gen.values())
-    print("=" * 72)
-    print("  LOU HOLTZ COACHING TREE — AUDIT REPORT")
-    print("=" * 72)
-    print(f"\n  Total coaches in coaches.json: {len(coaches)}")
-    print(f"  Gen 0 (root):  {len(by_gen[0]):>3}")
-    print(f"  Gen 1:         {len(by_gen[1]):>3}")
-    print(f"  Gen 2:         {len(by_gen[2]):>3}")
-    print(f"  Gen 3:         {len(by_gen[3]):>3}")
-    print(f"  ─────────────────────")
-    print(f"  Total placed:  {total:>3}")
-    if orphans:
-        print(f"  Unclassified:  {len(orphans):>3}")
-
-    # ── Mentor linkage check ────────────────────────────────────────────────
-    issues = []
-    for cid, info in coaches.items():
-        gen = info.get("generation", 0)
-        mentor = info.get("mentor")
-        schools = info.get("hc_schools", [])
-
-        if gen >= 2 and not mentor:
-            issues.append(f"  MISSING MENTOR: {info['name']} (gen {gen}, id: {cid})")
-        if gen >= 2 and mentor and mentor not in coaches:
-            issues.append(f"  BROKEN MENTOR LINK: {info['name']} → {mentor} (not in data)")
-        if gen >= 1 and not schools:
-            issues.append(f"  NO HC SCHOOLS: {info['name']} (gen {gen}, id: {cid})")
-
-    if issues:
-        print(f"\n  ⚠  DATA ISSUES ({len(issues)}):")
-        for iss in issues:
-            print(iss)
-    else:
-        print("\n  ✓  No data integrity issues found.")
-
-    # ── Detailed listing by generation ──────────────────────────────────────
-    for gen in range(4):
-        entries = sorted(by_gen[gen], key=lambda x: x[1]["name"])
-        gen_labels = {0: "ROOT", 1: "GEN 1 — Direct Holtz protégés",
-                      2: "GEN 2", 3: "GEN 3"}
-        print(f"\n{'─' * 72}")
-        print(f"  {gen_labels[gen]}  ({len(entries)} coaches)")
-        print(f"{'─' * 72}")
-        for cid, info in entries:
-            schools = ", ".join(info.get("hc_schools", [])) or "(none)"
-            mentor = info.get("mentor", "")
-            mentor_name = coaches[mentor]["name"] if mentor and mentor in coaches else ""
-            ctx = info.get("mentor_context") or info.get("holtz_connection") or ""
-            if gen == 0:
-                print(f"  {info['name']:30s}  Schools: {schools}")
-            elif gen == 1:
-                conn = info.get("holtz_connection", "")
-                print(f"  {info['name']:30s}  Schools: {schools}")
-                if conn:
-                    print(f"  {'':30s}  Holtz connection: {conn}")
-            else:
-                print(f"  {info['name']:30s}  Schools: {schools}")
-                if mentor_name:
-                    print(f"  {'':30s}  Mentor: {mentor_name}"
-                          + (f" ({ctx})" if ctx else ""))
-
-    # ── Summary line ─────────────────────────────────────────────────────────
-    print(f"\n{'=' * 72}")
-    print(f"  TOTAL: {total} coaches across {sum(1 for v in by_gen.values() if v)} generations")
-    print(f"{'=' * 72}\n")
-
-
 def main():
     import sys
     with open(DATA_DIR / "coaches.json") as f:
         coaches = json.load(f)
     print(f"Loaded {len(coaches)} coaches")
-
-    if "--audit" in sys.argv:
-        audit(coaches)
-    else:
-        render(coaches)
+    render(coaches)
 
 
 if __name__ == "__main__":
