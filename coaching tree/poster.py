@@ -52,7 +52,7 @@ GEN_COLOR = {
 
 HC_TEXT_COLOR = "#48C774"  # Green for HC position labels
 
-RADII      = {0: 0.0, 1: 3.5, 2: 7.8, 3: 14.0}
+RADII      = {0: 0.0, 1: 3.5, 2: 7.8, 3: 12.0}
 FONT_SZ    = {0: 14,  1: 8.5, 2: 6.5, 3: 5.0}
 HC_FONT_SZ = {0: 0,   1: 5.0, 2: 4.5, 3: 3.8}
 EDGE_W     = {1: 1.4, 2: 0.9, 3: 0.5}
@@ -429,6 +429,26 @@ def get_role_at_school(coach_id: str, school: str, coaches: dict) -> str:
     return roles.get("_default", "")
 
 
+def _year_range(ctx: str) -> str:
+    """Extract compact year range from a context string, e.g. '1987-89'."""
+    full_years = [int(y) for y in re.findall(r'\b((?:19|20)\d{2})\b', ctx)]
+    # Handle 2-digit suffixes like "89" in "1987-89"
+    for m in re.finditer(r'((?:19|20)\d{2})\s*-\s*(\d{2})\b', ctx):
+        base_century = int(m.group(1)[:2])
+        suffix = int(m.group(2))
+        full_years.append(base_century * 100 + suffix)
+
+    if not full_years:
+        return ""
+
+    mn, mx = min(full_years), max(full_years)
+    if mn == mx:
+        return str(mn)
+    if mn // 100 == mx // 100:
+        return f"{mn}-{mx % 100:02d}"
+    return f"{mn}-{mx}"
+
+
 def format_role_text(coach_id: str, coaches: dict) -> str:
     """
     Format role subtitle for the new label schema.
@@ -452,12 +472,19 @@ def format_role_text(coach_id: str, coaches: dict) -> str:
 
     mentor_schools = extract_mentor_schools(coach_id, coaches)
 
+    years = _year_range(ctx)
+
     if len(mentor_schools) <= 1:
-        # Single school — just the role
+        # Single school — just the role + years
         school_roles = {k: v for k, v in roles_dict.items() if k != "_default"}
+        role = ""
         if school_roles:
-            return list(school_roles.values())[0]
-        return roles_dict.get("_default", "")
+            role = list(school_roles.values())[0]
+        else:
+            role = roles_dict.get("_default", "")
+        if role and years:
+            return f"{role}, {years}"
+        return role
 
     # Multiple schools — build role-per-school map via mentor_schools
     role_per_school = {}
@@ -468,7 +495,10 @@ def format_role_text(coach_id: str, coaches: dict) -> str:
 
     if not role_per_school:
         all_roles = [v for k, v in roles_dict.items() if k != "_default"]
-        return all_roles[0] if all_roles else roles_dict.get("_default", "")
+        role = all_roles[0] if all_roles else roles_dict.get("_default", "")
+        if role and years:
+            return f"{role}, {years}"
+        return role
 
     # Group schools by role for compact display
     role_groups = {}
@@ -477,12 +507,16 @@ def format_role_text(coach_id: str, coaches: dict) -> str:
 
     if len(role_groups) == 1:
         role, schools = next(iter(role_groups.items()))
-        return f"{role} at {', '.join(schools)}"
+        result = f"{role} at {', '.join(schools)}"
+    else:
+        parts = []
+        for role, schools in role_groups.items():
+            parts.append(f"{role} at {', '.join(schools)}")
+        result = "; ".join(parts)
 
-    parts = []
-    for role, schools in role_groups.items():
-        parts.append(f"{role} at {', '.join(schools)}")
-    return "; ".join(parts)
+    if years:
+        result += f", {years}"
+    return result
 
 
 def earliest_year(ctx: str) -> int:
@@ -942,15 +976,15 @@ def draw_node(ax, x, y, coach_id, coaches, gen):
         rot = angle_deg + 180 if angle_deg < 0 else angle_deg - 180
         ha = "right"
 
-    # Offset outward from the ring for name
-    off = 0.15
+    # Offset inward from the ring so names don't overlap outward HC stubs
+    off = -0.15
     lx = x + (x / dist) * off
     ly = y + (y / dist) * off
 
     # Role subtitle for all generations (label 2)
     role_text = format_role_text(coach_id, coaches)
 
-    # Name in Granesta font, rotated radially
+    # Name in Granesta font, rotated radially (anchored inward, extends toward ring)
     ax.text(lx, ly, name,
             fontsize=FONT_SZ[gen],
             fontfamily=FONT_NAME,
@@ -959,9 +993,12 @@ def draw_node(ax, x, y, coach_id, coaches, gen):
             rotation=rot, rotation_mode="anchor",
             zorder=4)
 
-    # Role text below name (e.g. "DC" or "OC at BG, Utah, Florida")
+    # Role text further inward from name
     if role_text:
-        ax.text(lx, ly, role_text,
+        role_off = -0.35
+        rlx = x + (x / dist) * role_off
+        rly = y + (y / dist) * role_off
+        ax.text(rlx, rly, role_text,
                 fontsize=HC_FONT_SZ.get(gen, 3.8) - 0.5,
                 fontfamily=FONT_HC,
                 color=GEN_COLOR.get(gen, "#cccccc"),
