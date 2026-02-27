@@ -977,7 +977,7 @@ def draw_node(ax, x, y, coach_id, coaches, gen):
         ha = "right"
 
     # Offset inward from the ring so names don't overlap outward HC stubs
-    off = -0.15
+    off = -1.5
     lx = x + (x / dist) * off
     ly = y + (y / dist) * off
 
@@ -993,12 +993,9 @@ def draw_node(ax, x, y, coach_id, coaches, gen):
             rotation=rot, rotation_mode="anchor",
             zorder=4)
 
-    # Role text further inward from name
+    # Role text at same anchor, extending further inward
     if role_text:
-        role_off = -0.35
-        rlx = x + (x / dist) * role_off
-        rly = y + (y / dist) * role_off
-        ax.text(rlx, rly, role_text,
+        ax.text(lx, ly, role_text,
                 fontsize=HC_FONT_SZ.get(gen, 3.8) - 0.5,
                 fontfamily=FONT_HC,
                 color=GEN_COLOR.get(gen, "#cccccc"),
