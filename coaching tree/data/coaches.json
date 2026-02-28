@@ -2292,5 +2292,29 @@
     ],
     "mentor": "gregg-williams",
     "mentor_context": "DB Coach at Buffalo Bills, 2001-03"
+  },
+  "mike-martz": {
+    "name": "Mike Martz",
+    "born": 1951,
+    "alma_mater": "Fresno State",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "St. Louis Rams"
+    ],
+    "mentor": "rod-marinelli",
+    "mentor_context": "OC at Detroit Lions, 2006-07 (was already HC at Rams 2000-05 \u2014 reverse connection)"
+  },
+  "jim-haslett": {
+    "name": "Jim Haslett",
+    "born": 1955,
+    "alma_mater": "Indiana (PA)",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "New Orleans Saints"
+    ],
+    "mentor": "scott-linehan",
+    "mentor_context": "DC at St. Louis Rams, 2006-08 (was already HC at Saints 2000-05 \u2014 reverse connection)"
   }
 }

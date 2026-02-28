@@ -3027,5 +3027,31 @@
     "generation_gap": 1,
     "confidence": "high",
     "notes": "OC at Tampa Bay under Morris 2010; cross-ref (primary mentor: dan-quinn at Atlanta)"
+  },
+  {
+    "id": "marinelli-to-martz",
+    "mentor_id": "rod-marinelli",
+    "protege_id": "mike-martz",
+    "school": "Detroit Lions",
+    "year_start": 2006,
+    "year_end": 2007,
+    "relationship_type": "reverse_connection",
+    "protege_role": "offensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Reverse connection \u2014 Martz was HC at St. Louis Rams (2000-05) before joining Marinelli as OC at Detroit (2006-07)"
+  },
+  {
+    "id": "linehan-to-haslett",
+    "mentor_id": "scott-linehan",
+    "protege_id": "jim-haslett",
+    "school": "St. Louis Rams",
+    "year_start": 2006,
+    "year_end": 2008,
+    "relationship_type": "reverse_connection",
+    "protege_role": "defensive_coordinator",
+    "generation_gap": 1,
+    "confidence": "high",
+    "notes": "Reverse connection \u2014 Haslett was HC at New Orleans Saints (2000-05) before joining Linehan as DC at St. Louis (2006-08)"
   }
 ]
