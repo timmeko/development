@@ -660,7 +660,7 @@
     "protege_role": "defensive_coordinator",
     "generation_gap": 1,
     "confidence": "high",
-    "notes": "DC for all 5 Davie seasons; later DC at Michigan and Ohio State"
+    "notes": "DC for all 5 Davie seasons at Notre Dame; previously worked together at Texas A&M; later DC at Michigan and Ohio State"
   },
   {
     "id": "davie-to-colletto",
@@ -3040,5 +3040,55 @@
     "generation_gap": 1,
     "confidence": "high",
     "notes": "Reverse connection \u2014 Haslett was HC at New Orleans Saints (2000-05) before joining Linehan as DC at St. Louis (2006-08)"
+  },
+  {
+    "id": "davie-to-meyer",
+    "mentor_id": "bob-davie",
+    "protege_id": "urban-meyer",
+    "school": "Notre Dame",
+    "year_start": 1997,
+    "year_end": 2000,
+    "protege_role": "position_coach",
+    "notes": "WR coach retained by Davie after Holtz departure; left to become HC at Bowling Green"
+  },
+  {
+    "id": "davie-to-strong",
+    "mentor_id": "bob-davie",
+    "protege_id": "charlie-strong",
+    "school": "Notre Dame",
+    "year_start": 1997,
+    "year_end": 1998,
+    "protege_role": "position_coach",
+    "notes": "DL coach retained by Davie after Holtz departure; left after 1998 season"
+  },
+  {
+    "id": "davie-to-chmiel",
+    "mentor_id": "bob-davie",
+    "protege_id": "bob-chmiel",
+    "school": "Notre Dame",
+    "year_start": 1997,
+    "year_end": 1997,
+    "protege_role": "position_coach",
+    "notes": "TE/recruiting coordinator retained by Davie for one season after Holtz departure"
+  },
+  {
+    "id": "davie-to-sanford-sr",
+    "mentor_id": "bob-davie",
+    "protege_id": "mike-sanford-sr",
+    "school": "Notre Dame",
+    "year_start": 1997,
+    "year_end": 1998,
+    "protege_role": "position_coach",
+    "notes": "QB coach at Notre Dame under Davie"
+  },
+  {
+    "id": "meyer-to-marotti",
+    "mentor_id": "urban-meyer",
+    "protege_id": "mickey-marotti",
+    "school": "multiple",
+    "year_start": 1998,
+    "year_end": 2018,
+    "protege_role": "strength_coach",
+    "notes": "S&C coach under Meyer at Notre Dame, Bowling Green, Utah, Florida, and Ohio State; remained at Ohio State after Meyer's retirement"
   }
 ]

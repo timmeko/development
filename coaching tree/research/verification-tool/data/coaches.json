@@ -2396,5 +2396,15 @@
     "hc_schools": [],
     "mentor": "urban-meyer",
     "mentor_context": "DB coach at Ohio State under Meyer; later DC at Ohio State under Day and NFL assistant"
+  },
+  "mickey-marotti": {
+    "name": "Mickey Marotti",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": [],
+    "mentor": "urban-meyer",
+    "mentor_context": "S&C coach who followed Meyer from Notre Dame through Bowling Green, Utah, Florida, and Ohio State"
   }
 }
