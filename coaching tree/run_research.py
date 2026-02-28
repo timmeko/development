@@ -911,6 +911,174 @@ For each, format as:
 
 If none found, say "None found." """
     ),
+
+    # === PHASE 6: Gap Analysis & Completeness Audit ===
+    (
+        "47_nfl_uncovered_b",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. For each of the following NFL head coaches (all Generation 2 in the Holtz tree), list ALL assistant coaches who served on their staffs during their HC tenures and later became head coaches (NFL or college, ANY level including interim). Be thorough — check OC, DC, position coaches, quality control assistants, and special teams coordinators.
+
+IMPORTANT: A previous query returned "None found" for several NFL coaches with multi-year tenures, which seems unlikely. Please be extra thorough and check each coach's full staff rosters season by season.
+
+1. Tom Cable — HC at Oakland Raiders (2008-2010). I believe Hue Jackson was on his staff as offensive coordinator — please verify and check for others.
+2. Raheem Morris — HC at Tampa Bay Buccaneers (2009-2011). Three full seasons with a complete NFL staff. Check all coordinators and position coaches.
+3. Rod Marinelli — HC at Detroit Lions (2006-2008). Three seasons including the 0-16 year. Check DC, OC, and all position coaches.
+4. Scott Linehan — HC at St. Louis Rams (2006-2008). Check all coordinators and position coaches.
+5. Gunther Cunningham — HC at Kansas City Chiefs (1999-2000). Short tenure but check all staff.
+
+For each, format as:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years Under HC | Later HC Stops | Confidence |
+|---------------|------|----------------|----------------|------------|
+
+If truly none found after thorough search, say "None found — verified." """
+    ),
+    (
+        "48_nfl_recheck",
+        """I'm building a coaching tree database tracing Lou Holtz's coaching lineage. A previous research pass returned "None found" for the following NFL head coaches, but I want to double-check with a more thorough search. For each, please check ALL coaching staff members during their HC tenures who later became head coaches at ANY level (NFL, college, any division, including interim).
+
+Check coordinators (OC, DC, ST), position coaches, quality control coaches, and any assistant who later got a head coaching job.
+
+1. Bill Callahan — HC at Oakland Raiders (2002-03), also HC at Nebraska (2004-07). Check BOTH tenures. I know Bo Pelini was his DC at Nebraska — who else from either staff became a HC?
+2. Ray Rhodes — HC at Philadelphia Eagles (1995-98), Green Bay Packers (1999). Four seasons at Philadelphia is significant. Who were his coordinators? Did any become HCs?
+3. Joe Bugel — HC at Phoenix/Arizona Cardinals (1990-93), Oakland Raiders (1997). Four seasons at Phoenix. Check all staff.
+4. Gregg Williams — HC at Buffalo Bills (2001-03). Three seasons. Check all coordinators and position coaches.
+5. Al Saunders — HC at San Diego Chargers (1986-88). Three seasons. Check all staff.
+
+For each, format as:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years Under HC | Later HC Stops | Confidence |
+|---------------|------|----------------|----------------|------------|
+
+If truly none found, say "None found — verified." """
+    ),
+    (
+        "49_gen2_completeness_big",
+        """I'm auditing our coaching tree database for completeness. For each of the following Generation 2 coaches, we already have SOME of their proteges listed. I need you to identify ANY ADDITIONAL assistants who worked under them during their head coaching tenures and later became head coaches (NFL or college, any level, including interim). Do NOT repeat the proteges I already have — only list ones that are MISSING.
+
+1. Dan Quinn — HC at Atlanta Falcons (2015-2020), Dallas Cowboys (2025-).
+   Already have: Dan Campbell (Lions HC). MISSING? What about Kyle Shanahan (was he OC at Atlanta under Quinn?), Marquand Manuel, Raheem Morris (was he on Quinn's staff?), others?
+
+2. Jim Mora Jr. — HC at Atlanta Falcons (2004-06), Seattle Seahawks (2009), UCLA (2012-17), UConn (2022-23).
+   Already have: Steve Sarkisian (via UCLA). MISSING? Jedd Fisch (now Washington HC — was he at UCLA under Mora?), Adrian Klemm, others?
+
+3. Lovie Smith — HC at Chicago Bears (2004-2012), Tampa Bay Buccaneers (2014-15), Houston Texans (2022).
+   Already have: Ron Rivera. MISSING? Rod Marinelli was he on Lovie's Chicago staff? Bob Babich? Any others from a 9-year tenure at Chicago?
+
+4. Ed Orgeron — HC at Ole Miss (2005-07), USC (interim 2013), LSU (2016-2021).
+   Already have: Hugh Freeze, Dave Aranda, Bo Pelini, Mickey Joseph, Zach Arnett. MISSING? Any others from LSU's national championship staff (2019)?
+
+5. Greg Schiano — HC at Rutgers (2001-11), Tampa Bay Buccaneers (2012-13), Rutgers (2020-24).
+   Already have: Kyle Flood, P.J. Fleck, Joe Susan, Norries Wilson. MISSING? Any from 11 years at Rutgers or 2 years at Tampa Bay?
+
+For each coach, provide ONLY the missing proteges:
+
+## [Coach Name]
+
+**Already tracked:** [list I gave]
+**Additional proteges found:**
+
+| Name | Role | Years | Later HC Stops | Confidence |
+|------|------|-------|----------------|------------|"""
+    ),
+    (
+        "50_gen2_completeness_mid",
+        """I'm auditing our coaching tree database for completeness. For each of the following Generation 2 coaches, we have a small number of proteges. I need to identify ANY ADDITIONAL assistants who became head coaches that we might be missing.
+
+1. Tony Dungy — HC at Tampa Bay Buccaneers (1996-2001), Indianapolis Colts (2002-08).
+   Already have: Jim Caldwell, Leslie Frazier. MISSING? Dungy had a famous coaching tree. What about Mike Tomlin (was he under Dungy?), Herm Edwards, Rod Marinelli, Lovie Smith — were any of these on Dungy's staff? Who else from 13 years as NFL HC?
+
+2. John Harbaugh — HC at Baltimore Ravens (2008-present), recently named NY Giants HC.
+   Already have: Gary Kubiak, David Culley, Wink Martindale. MISSING? 16+ years as HC. Rex Ryan? Chuck Pagano (was he DC at Baltimore before Colts)? Dean Pees? Others?
+
+3. Herm Edwards — HC at New York Jets (2001-05), Kansas City Chiefs (2006-08), Arizona State (2018-22).
+   Already have: Todd Haley, Mike Nolan. MISSING? From 5 years at Jets and 3 years at Chiefs, are there more? Eric Mangini was on his Jets staff?
+
+4. Rex Ryan — HC at New York Jets (2009-14), Buffalo Bills (2015-16).
+   Already have: Dennis Thurman (as protege at Buffalo). MISSING? From 6 years at the Jets, any assistants who became HCs? Mike Pettine (DC at Jets, later HC at Cleveland)?
+
+5. Brad Childress — HC at Minnesota Vikings (2006-2010).
+   Already have: 2 proteges. MISSING? From 5 years at Minnesota, any additional assistants who became HCs?
+
+6. Lane Kiffin — HC at Oakland Raiders (2007-08), Tennessee (2009-10), USC (2010-13), FAU (2017-19), Ole Miss (2020-).
+   Already have: Clay Helton, Jeff Scott. MISSING? From multiple stops, any others? Charlie Weis Jr.? Any coordinators?
+
+For each, provide ONLY the missing proteges:
+
+## [Coach Name]
+
+**Already tracked:** [list I gave]
+**Additional proteges found:**
+
+| Name | Role | Years | Later HC Stops | Confidence |
+|------|------|-------|----------------|------------|"""
+    ),
+    (
+        "51_gen2_completeness_college",
+        """I'm auditing our coaching tree database for completeness. For each of the following college head coaches with multi-year tenures, I have very few or zero Gen 3 proteges. Please check thoroughly for assistants who became head coaches at ANY level.
+
+1. Dan McCarney — HC at Iowa State (1995-2006), North Texas (2011-13). TWELVE seasons at Iowa State. Who from his staff became HCs? Currently have 1 protege only.
+
+2. Steve Addazio — HC at Temple (2011-12), Boston College (2013-2019), Colorado State (2020). Seven seasons at BC. Currently have only Ryan Day (cross-ref). Any others?
+
+3. Steve Sarkisian — HC at Washington (2009-2013), USC (2014-15), Texas (2021-present). Five years at Washington. Currently have 1 protege. Marques Tuiasosopo? Chris Petersen was NOT on his staff. Who else?
+
+4. Paul Chryst — HC at Pittsburgh (2012-14), Wisconsin (2015-2022). Ten years total. Currently have only Jim Leonhard. Any other assistants from Wisconsin or Pitt who became HCs?
+
+5. Bill Cubit — HC at Western Michigan (2005-2012). Eight seasons. Any assistants who became HCs at any level?
+
+6. Gregg Brandon — HC at Bowling Green (2003-2008). Six seasons. Any assistants who became HCs at any level?
+
+7. Ted Roof — HC at Duke (2003-2007). Five seasons. Any assistants who became HCs?
+
+8. Dan Enos — HC at Central Michigan (2010-2014). Five seasons at a MAC school. Any assistants who became HCs?
+
+For each, format as:
+
+## [Coach Name]
+
+| Assistant Name | Role | Years | Later HC Stops | Confidence |
+|---------------|------|-------|----------------|------------|
+
+If none found, say "None found — verified." """
+    ),
+    (
+        "52_cross_verification",
+        """I'm building a comprehensive coaching tree database centered on Lou Holtz. I need you to help me verify completeness by approaching this from the OTHER direction: instead of looking at mentors and finding proteges, I'm going to list current and recent head coaches and ask you to trace them back to the Holtz tree.
+
+For each of the following current/recent prominent head coaches, tell me:
+1. Were they EVER an assistant under any coach in the Lou Holtz tree?
+2. If yes, who was the mentor and what was the role/years?
+
+Lou Holtz's tree includes (among others): Pete Carroll, Jimmy Johnson, Joe Gibbs, Barry Alvarez, Urban Meyer, Bob Davie, Brian Kelly, Mark Dantonio, Bret Bielema, Greg Schiano, Dan Quinn, Jim Mora Jr., Lovie Smith, Tony Dungy, John Harbaugh, Herm Edwards, Rex Ryan, Ed Orgeron, Lane Kiffin, Tom Herman, Ryan Day, Luke Fickell, Raheem Morris, Tom Cable, Rod Marinelli, Norv Turner, Houston Nutt, and their proteges.
+
+Check these coaches:
+1. Kyle Shanahan (HC San Francisco 49ers)
+2. Jedd Fisch (HC Washington Huskies)
+3. Hue Jackson (former HC Cleveland Browns, Oakland Raiders)
+4. Mike Pettine (former HC Cleveland Browns)
+5. Eric Mangini (former HC Cleveland Browns, New York Jets)
+6. Todd Bowles (HC Tampa Bay Buccaneers)
+7. Kliff Kingsbury (former HC Arizona Cardinals)
+8. Sean McDermott (HC Buffalo Bills)
+9. Kevin Stefanski (HC Cleveland Browns)
+10. Matt LaFleur (HC Green Bay Packers)
+11. Sean McVay (HC Los Angeles Rams)
+12. Robert Saleh (former HC New York Jets)
+13. Dennis Allen (former HC New Orleans Saints, Oakland Raiders)
+14. Nathaniel Hackett (former HC Denver Broncos)
+15. Frank Reich (former HC Indianapolis Colts, Carolina Panthers)
+
+For each, provide:
+
+| Coach | Connection to Holtz Tree? | Mentor | Role/Years | Confidence |
+|-------|--------------------------|--------|------------|------------|
+
+If NO connection found, say "No connection found." """
+    ),
 ]
 
 
