@@ -2217,5 +2217,80 @@
     ],
     "mentor": "manny-diaz",
     "mentor_context": "OC at Miami (FL), 2021"
+  },
+  "jon-gruden": {
+    "name": "Jon Gruden",
+    "born": 1963,
+    "alma_mater": "Dayton",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Oakland Raiders",
+      "Tampa Bay Buccaneers"
+    ],
+    "mentor": "ray-rhodes",
+    "mentor_context": "OC at Philadelphia Eagles, 1995-97"
+  },
+  "hue-jackson": {
+    "name": "Hue Jackson",
+    "born": 1965,
+    "alma_mater": "Pacific",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Oakland Raiders",
+      "Cleveland Browns"
+    ],
+    "mentor": "tom-cable",
+    "mentor_context": "OC at Oakland Raiders, 2010"
+  },
+  "eric-mangini": {
+    "name": "Eric Mangini",
+    "born": 1971,
+    "alma_mater": "Wesleyan",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "New York Jets",
+      "Cleveland Browns"
+    ],
+    "mentor": "herm-edwards",
+    "mentor_context": "DB Coach at New York Jets, 2001-03"
+  },
+  "tim-albin": {
+    "name": "Tim Albin",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Ohio"
+    ],
+    "mentor": "bill-callahan",
+    "mentor_context": "RB Coach at Nebraska, 2004-06"
+  },
+  "emmitt-thomas": {
+    "name": "Emmitt Thomas",
+    "born": 1943,
+    "alma_mater": "Bishop College",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Atlanta Falcons (interim)"
+    ],
+    "mentor": "ray-rhodes",
+    "mentor_context": "DC at Philadelphia Eagles, 1995-98"
+  },
+  "jerry-gray": {
+    "name": "Jerry Gray",
+    "born": 1962,
+    "alma_mater": "Texas",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Tennessee Titans (interim)"
+    ],
+    "mentor": "gregg-williams",
+    "mentor_context": "DB Coach at Buffalo Bills, 2001-03"
   }
 }
