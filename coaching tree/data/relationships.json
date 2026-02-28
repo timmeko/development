@@ -2769,19 +2769,6 @@
     "notes": "Defensive quality control at Washington under Turner 1997-98; cross-reference (primary mentor: lovie-smith at Chicago)"
   },
   {
-    "id": "johnson-to-norv-turner",
-    "mentor_id": "jimmy-johnson",
-    "protege_id": "norv-turner",
-    "school": "Dallas Cowboys",
-    "year_start": 1991,
-    "year_end": 1993,
-    "relationship_type": "direct_report",
-    "protege_role": "offensive_coordinator",
-    "generation_gap": 1,
-    "confidence": "high",
-    "notes": "OC at Dallas under Johnson 1991-93; also connected via Joe Gibbs at Washington"
-  },
-  {
     "id": "bailiff-to-herman",
     "mentor_id": "david-bailiff",
     "protege_id": "tom-herman",

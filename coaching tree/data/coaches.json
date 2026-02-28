@@ -2396,19 +2396,5 @@
     "hc_schools": [],
     "mentor": "urban-meyer",
     "mentor_context": "DB coach at Ohio State under Meyer; later DC at Ohio State under Day and NFL assistant"
-  },
-  "jimmy-johnson": {
-    "name": "Jimmy Johnson",
-    "born": 1943,
-    "alma_mater": "Arkansas",
-    "current_status": "retired",
-    "generation": -1,
-    "hc_schools": [
-      "Oklahoma State",
-      "Miami (FL)",
-      "Dallas Cowboys"
-    ],
-    "mentor": null,
-    "mentor_context": "External to Holtz tree; cross-reference as mentor to Norv Turner at Dallas"
   }
 }
