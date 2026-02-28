@@ -140,7 +140,7 @@
     "protege_role": "graduate_assistant",
     "generation_gap": 1,
     "confidence": "high",
-    "notes": "Pete Carroll was a GA at Arkansas under Holtz in 1977 \u2014 his first coaching job"
+    "notes": "Pete Carroll was a GA at Arkansas under Holtz in 1977 — his first coaching job"
   },
   {
     "id": "holtz-to-minter-arkansas",
@@ -1017,66 +1017,66 @@
     "id": "kiffin-to-lovie-smith",
     "mentor_id": "monte-kiffin",
     "protege_id": "lovie-smith",
-    "school": "NFL",
-    "year_start": null,
-    "year_end": null,
+    "school": "Tampa Bay Buccaneers",
+    "year_start": 1996,
+    "year_end": 2001,
     "relationship_type": "direct_report",
-    "protege_role": "assistant_coach",
+    "protege_role": "linebackers_coach",
     "generation_gap": 1,
     "confidence": "medium",
-    "notes": "NFL asst under Kiffin; later HC at Chicago Bears, Tampa Bay Bucs, Houston Texans"
+    "notes": "LB coach at Tampa Bay under Kiffin (DC) and Dungy (HC); promoted to DC 2001-03 under Gruden"
   },
   {
     "id": "kiffin-to-edwards",
     "mentor_id": "monte-kiffin",
     "protege_id": "herm-edwards",
-    "school": "NFL",
-    "year_start": null,
-    "year_end": null,
+    "school": "Tampa Bay Buccaneers",
+    "year_start": 1996,
+    "year_end": 2000,
     "relationship_type": "direct_report",
-    "protege_role": "assistant_coach",
+    "protege_role": "defensive_backs_coach",
     "generation_gap": 1,
     "confidence": "medium",
-    "notes": "NFL asst under Kiffin; later HC at NY Jets and Kansas City Chiefs"
+    "notes": "DB coach at Tampa Bay under Kiffin (DC) and Dungy (HC); left to become HC of NY Jets"
   },
   {
     "id": "kiffin-to-morris",
     "mentor_id": "monte-kiffin",
     "protege_id": "raheem-morris",
-    "school": "NFL",
-    "year_start": null,
-    "year_end": null,
+    "school": "Tampa Bay Buccaneers",
+    "year_start": 2002,
+    "year_end": 2006,
     "relationship_type": "direct_report",
-    "protege_role": "assistant_coach",
+    "protege_role": "defensive_backs_coach",
     "generation_gap": 1,
     "confidence": "medium",
-    "notes": "NFL asst under Kiffin; later HC at Tampa Bay Bucs and Atlanta Falcons"
+    "notes": "DB coach at Tampa Bay under Kiffin (DC) and Gruden (HC); later became Tampa Bay HC (2009-11)"
   },
   {
     "id": "kiffin-to-bradley",
     "mentor_id": "monte-kiffin",
     "protege_id": "gus-bradley",
-    "school": "NFL",
-    "year_start": null,
-    "year_end": null,
+    "school": "Tampa Bay Buccaneers",
+    "year_start": 2006,
+    "year_end": 2008,
     "relationship_type": "direct_report",
-    "protege_role": "assistant_coach",
+    "protege_role": "linebackers_coach",
     "generation_gap": 1,
     "confidence": "medium",
-    "notes": "NFL asst under Kiffin; later HC at Jacksonville Jaguars"
+    "notes": "LB coach at Tampa Bay under Kiffin (DC) and Gruden (HC); secondary connection — primary mentor is Pete Carroll at Seattle"
   },
   {
     "id": "kiffin-to-marinelli",
     "mentor_id": "monte-kiffin",
     "protege_id": "rod-marinelli",
-    "school": "NFL",
-    "year_start": null,
-    "year_end": null,
+    "school": "Tampa Bay Buccaneers",
+    "year_start": 1996,
+    "year_end": 2005,
     "relationship_type": "direct_report",
-    "protege_role": "assistant_coach",
+    "protege_role": "defensive_line_coach",
     "generation_gap": 1,
     "confidence": "medium",
-    "notes": "NFL asst under Kiffin; later HC at Detroit Lions"
+    "notes": "DL coach at Tampa Bay for 10 seasons under Kiffin (DC), serving under both Dungy and Gruden as HC"
   },
   {
     "id": "fickell-to-freeman",
@@ -3026,7 +3026,7 @@
     "protege_role": "offensive_coordinator",
     "generation_gap": 1,
     "confidence": "high",
-    "notes": "Reverse connection \u2014 Martz was HC at St. Louis Rams (2000-05) before joining Marinelli as OC at Detroit (2006-07)"
+    "notes": "Reverse connection — Martz was HC at St. Louis Rams (2000-05) before joining Marinelli as OC at Detroit (2006-07)"
   },
   {
     "id": "linehan-to-haslett",
@@ -3039,7 +3039,7 @@
     "protege_role": "defensive_coordinator",
     "generation_gap": 1,
     "confidence": "high",
-    "notes": "Reverse connection \u2014 Haslett was HC at New Orleans Saints (2000-05) before joining Linehan as DC at St. Louis (2006-08)"
+    "notes": "Reverse connection — Haslett was HC at New Orleans Saints (2000-05) before joining Linehan as DC at St. Louis (2006-08)"
   },
   {
     "id": "davie-to-meyer",

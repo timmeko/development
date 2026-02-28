@@ -475,13 +475,21 @@ def format_role_text(coach_id: str, coaches: dict) -> str:
     years = _year_range(ctx)
 
     if len(mentor_schools) <= 1:
-        # Single school — just the role + years
+        # Single school — include school name for gen 2+ to clarify tree placement
         school_roles = {k: v for k, v in roles_dict.items() if k != "_default"}
         role = ""
         if school_roles:
             role = list(school_roles.values())[0]
         else:
             role = roles_dict.get("_default", "")
+        # For gen 2+, always show school name (e.g. "DC at Florida, 2005-09")
+        school_label = ""
+        if gen >= 2 and mentor_schools:
+            school_label = abb(mentor_schools[0])
+        if role and school_label:
+            if years:
+                return f"{role} at {school_label}, {years}"
+            return f"{role} at {school_label}"
         if role and years:
             return f"{role}, {years}"
         return role
