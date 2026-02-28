@@ -2406,5 +2406,18 @@
     "hc_schools": [],
     "mentor": "urban-meyer",
     "mentor_context": "S&C coach who followed Meyer from Notre Dame through Bowling Green, Utah, Florida, and Ohio State"
+  },
+  "kyle-whittingham": {
+    "name": "Kyle Whittingham",
+    "born": 1959,
+    "alma_mater": "BYU",
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": [
+      "Utah",
+      "Michigan"
+    ],
+    "mentor": "urban-meyer",
+    "mentor_context": "DC at Utah under Meyer, 2003-04; succeeded Meyer as HC when Meyer left for Florida"
   }
 }

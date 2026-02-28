@@ -3090,5 +3090,85 @@
     "year_end": 2018,
     "protege_role": "strength_coach",
     "notes": "S&C coach under Meyer at Notre Dame, Bowling Green, Utah, Florida, and Ohio State; remained at Ohio State after Meyer's retirement"
+  },
+  {
+    "id": "meyer-to-strong-florida",
+    "mentor_id": "urban-meyer",
+    "protege_id": "charlie-strong",
+    "school": "Florida",
+    "year_start": 2005,
+    "year_end": 2009,
+    "protege_role": "coordinator",
+    "notes": "Asst head coach / co-defensive coordinator / LBs at Florida under Meyer; won two national titles (2006, 2008); left to become HC at Louisville"
+  },
+  {
+    "id": "meyer-to-addazio-florida",
+    "mentor_id": "urban-meyer",
+    "protege_id": "steve-addazio",
+    "school": "Florida",
+    "year_start": 2005,
+    "year_end": 2010,
+    "protege_role": "coordinator",
+    "notes": "TEs coach (2005-07), then promoted to OL coach and OC (2009-10) when Mullen left for Mississippi State; later HC at Temple and Boston College"
+  },
+  {
+    "id": "meyer-to-holliday-florida",
+    "mentor_id": "urban-meyer",
+    "protege_id": "doc-holliday",
+    "school": "Florida",
+    "year_start": 2005,
+    "year_end": 2007,
+    "protege_role": "position_coach",
+    "notes": "Safeties coach / associate HC / recruiting coordinator at Florida; helped recruit players for two national title teams; later HC at Marshall (2010-19)"
+  },
+  {
+    "id": "meyer-to-andersen-utah",
+    "mentor_id": "urban-meyer",
+    "protege_id": "gary-andersen",
+    "school": "Utah",
+    "year_start": 2004,
+    "year_end": 2004,
+    "protege_role": "position_coach",
+    "notes": "DL coach at Utah in 2004; hired by Meyer from Southern Utah HC job; helped Utah go 12-0 and win Fiesta Bowl; stayed as DC under Whittingham after Meyer left"
+  },
+  {
+    "id": "meyer-to-whittingham-utah",
+    "mentor_id": "urban-meyer",
+    "protege_id": "kyle-whittingham",
+    "school": "Utah",
+    "year_start": 2003,
+    "year_end": 2004,
+    "protege_role": "coordinator",
+    "notes": "DC at Utah under Meyer for two seasons; retained from prior staff; co-coached 2005 Fiesta Bowl; succeeded Meyer as Utah HC (2005-2025), then Michigan HC (2026-)"
+  },
+  {
+    "id": "meyer-to-drayton-florida",
+    "mentor_id": "urban-meyer",
+    "protege_id": "stan-drayton",
+    "school": "Florida",
+    "year_start": 2005,
+    "year_end": 2007,
+    "protege_role": "position_coach",
+    "notes": "RBs coach at Florida (2005-07) before moving to NFL; later reunited with Meyer at Ohio State (2012-18); became HC at Temple (2022-24)"
+  },
+  {
+    "id": "meyer-to-day-florida",
+    "mentor_id": "urban-meyer",
+    "protege_id": "ryan-day",
+    "school": "Florida",
+    "year_start": 2005,
+    "year_end": 2005,
+    "protege_role": "graduate_assistant",
+    "notes": "GA on offense at Florida in 2005, Meyer's first season; later reunited with Meyer at Ohio State as OC (2017-18) and succeeded him as HC (2019-present)"
+  },
+  {
+    "id": "meyer-to-sanford-utah",
+    "mentor_id": "urban-meyer",
+    "protege_id": "mike-sanford-sr",
+    "school": "Utah",
+    "year_start": 2003,
+    "year_end": 2004,
+    "protege_role": "coordinator",
+    "notes": "OC at Utah under Meyer; part of staff that went 22-2 over two seasons including 12-0 and Fiesta Bowl in 2004"
   }
 ]
