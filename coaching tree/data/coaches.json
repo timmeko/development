@@ -2316,5 +2316,99 @@
     ],
     "mentor": "scott-linehan",
     "mentor_context": "DC at St. Louis Rams, 2006-08 (was already HC at Saints 2000-05 \u2014 reverse connection)"
+  },
+  "greg-davis": {
+    "name": "Greg Davis",
+    "born": 1951,
+    "alma_mater": "Ohio Wesleyan",
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": [],
+    "mentor": "lou-holtz",
+    "mentor_context": "Assistant at Notre Dame under Holtz; later long-time OC at Texas and Iowa"
+  },
+  "joe-moore": {
+    "name": "Joe Moore",
+    "born": 1932,
+    "alma_mater": null,
+    "current_status": "deceased",
+    "generation": 1,
+    "hc_schools": [],
+    "mentor": "lou-holtz",
+    "mentor_context": "Legendary OL coach at Notre Dame under Holtz"
+  },
+  "george-stewart": {
+    "name": "George Stewart",
+    "born": 1958,
+    "alma_mater": "Arkansas",
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": [],
+    "mentor": "lou-holtz",
+    "mentor_context": "TE coach at Notre Dame; also GA at Arkansas under Holtz"
+  },
+  "vinny-cerrato": {
+    "name": "Vinny Cerrato",
+    "born": 1960,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": [],
+    "mentor": "lou-holtz",
+    "mentor_context": "Recruiting coordinator at Notre Dame; later front-office executive"
+  },
+  "bob-chmiel": {
+    "name": "Bob Chmiel",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "unknown",
+    "generation": 1,
+    "hc_schools": [],
+    "mentor": "lou-holtz",
+    "mentor_context": "TE/recruiting at Notre Dame under Holtz"
+  },
+  "greg-mattison": {
+    "name": "Greg Mattison",
+    "born": 1949,
+    "alma_mater": "Wisconsin-Superior",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": [],
+    "mentor": "bob-davie",
+    "mentor_context": "DC at Notre Dame under Davie for all 5 seasons; later DC at Michigan and Ohio State"
+  },
+  "kevin-rogers": {
+    "name": "Kevin Rogers",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "unknown",
+    "generation": 2,
+    "hc_schools": [],
+    "mentor": "bob-davie",
+    "mentor_context": "OC/QB coach at Notre Dame under Davie, replaced Colletto starting 1999"
+  },
+  "kerry-coombs": {
+    "name": "Kerry Coombs",
+    "born": 1961,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": [],
+    "mentor": "urban-meyer",
+    "mentor_context": "DB coach at Ohio State under Meyer; later DC at Ohio State under Day and NFL assistant"
+  },
+  "jimmy-johnson": {
+    "name": "Jimmy Johnson",
+    "born": 1943,
+    "alma_mater": "Arkansas",
+    "current_status": "retired",
+    "generation": -1,
+    "hc_schools": [
+      "Oklahoma State",
+      "Miami (FL)",
+      "Dallas Cowboys"
+    ],
+    "mentor": null,
+    "mentor_context": "External to Holtz tree; cross-reference as mentor to Norv Turner at Dallas"
   }
 }

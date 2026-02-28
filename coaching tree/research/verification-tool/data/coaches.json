@@ -1086,27 +1086,25 @@
     "born": 1941,
     "alma_mater": "Arkansas",
     "current_status": "retired",
-    "generation": 2,
+    "generation": 1,
     "hc_schools": [
       "Air Force",
       "Arkansas",
       "Clemson",
       "Rice"
     ],
-    "mentor": "lou-holtz",
-    "mentor_context": "Assistant/DB at Arkansas, 1977-83"
+    "holtz_connection": "Assistant/DB at Arkansas, 1977-83"
   },
   "joe-gibbs": {
     "name": "Joe Gibbs",
     "born": 1940,
     "alma_mater": "Santa Rosa Junior College",
     "current_status": "retired",
-    "generation": 2,
+    "generation": 1,
     "hc_schools": [
       "Washington Redskins"
     ],
-    "mentor": "lou-holtz",
-    "mentor_context": "OC at Arkansas, 1978-79"
+    "holtz_connection": "OC at Arkansas, 1978-79"
   },
   "chuck-pagano": {
     "name": "Chuck Pagano",
@@ -1274,7 +1272,7 @@
     "born": 1938,
     "alma_mater": "Tulane",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Washington Redskins (interim)"
     ],
@@ -1286,7 +1284,7 @@
     "born": 1940,
     "alma_mater": "Western Kentucky",
     "current_status": "deceased",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Phoenix Cardinals",
       "Oakland Raiders"
@@ -1299,7 +1297,7 @@
     "born": 1947,
     "alma_mater": "San Jose State",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "San Diego Chargers"
     ],
@@ -1311,7 +1309,7 @@
     "born": 1958,
     "alma_mater": "Delta State",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Buffalo Bills",
       "New Orleans Saints (interim)"
@@ -1324,7 +1322,7 @@
     "born": 1959,
     "alma_mater": "Illinois-Chicago",
     "current_status": "active",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Oakland Raiders",
       "Nebraska"
@@ -1337,7 +1335,7 @@
     "born": 1957,
     "alma_mater": "Oklahoma State",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Boise State",
       "Arkansas",
@@ -1351,7 +1349,7 @@
     "born": null,
     "alma_mater": null,
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Clemson (interim)",
       "Memphis",
@@ -1365,7 +1363,7 @@
     "born": null,
     "alma_mater": null,
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Texas State",
       "Rice"
@@ -1973,7 +1971,7 @@
     "born": 1952,
     "alma_mater": "Oregon",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Washington Redskins",
       "Oakland Raiders",
@@ -1987,7 +1985,7 @@
     "born": 1950,
     "alma_mater": "Tulsa",
     "current_status": "retired",
-    "generation": 3,
+    "generation": 2,
     "hc_schools": [
       "Philadelphia Eagles",
       "Green Bay Packers"
@@ -2168,5 +2166,249 @@
     ],
     "mentor": "jay-norvell",
     "mentor_context": "OC at Nevada, 2017-21"
+  },
+  "gus-malzahn": {
+    "name": "Gus Malzahn",
+    "born": 1965,
+    "alma_mater": "Henderson State",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Arkansas State",
+      "Auburn",
+      "UCF"
+    ],
+    "mentor": "houston-nutt",
+    "mentor_context": "OC at Arkansas, 2006"
+  },
+  "darrell-dickey": {
+    "name": "Darrell Dickey",
+    "born": 1961,
+    "alma_mater": "Kansas State",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "North Texas"
+    ],
+    "mentor": "tommy-west",
+    "mentor_context": "OC at Clemson, 1995-97"
+  },
+  "kim-dameron": {
+    "name": "Kim Dameron",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Eastern Illinois"
+    ],
+    "mentor": "houston-nutt",
+    "mentor_context": "Safeties Coach at Ole Miss, 2008-10",
+    "confidence": "medium"
+  },
+  "rhett-lashlee": {
+    "name": "Rhett Lashlee",
+    "born": 1983,
+    "alma_mater": "Arkansas",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "SMU"
+    ],
+    "mentor": "manny-diaz",
+    "mentor_context": "OC at Miami (FL), 2021"
+  },
+  "jon-gruden": {
+    "name": "Jon Gruden",
+    "born": 1963,
+    "alma_mater": "Dayton",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Oakland Raiders",
+      "Tampa Bay Buccaneers"
+    ],
+    "mentor": "ray-rhodes",
+    "mentor_context": "OC at Philadelphia Eagles, 1995-97"
+  },
+  "hue-jackson": {
+    "name": "Hue Jackson",
+    "born": 1965,
+    "alma_mater": "Pacific",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Oakland Raiders",
+      "Cleveland Browns"
+    ],
+    "mentor": "tom-cable",
+    "mentor_context": "OC at Oakland Raiders, 2010"
+  },
+  "eric-mangini": {
+    "name": "Eric Mangini",
+    "born": 1971,
+    "alma_mater": "Wesleyan",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "New York Jets",
+      "Cleveland Browns"
+    ],
+    "mentor": "herm-edwards",
+    "mentor_context": "DB Coach at New York Jets, 2001-03"
+  },
+  "tim-albin": {
+    "name": "Tim Albin",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Ohio"
+    ],
+    "mentor": "bill-callahan",
+    "mentor_context": "RB Coach at Nebraska, 2004-06"
+  },
+  "emmitt-thomas": {
+    "name": "Emmitt Thomas",
+    "born": 1943,
+    "alma_mater": "Bishop College",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Atlanta Falcons (interim)"
+    ],
+    "mentor": "ray-rhodes",
+    "mentor_context": "DC at Philadelphia Eagles, 1995-98"
+  },
+  "jerry-gray": {
+    "name": "Jerry Gray",
+    "born": 1962,
+    "alma_mater": "Texas",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Tennessee Titans (interim)"
+    ],
+    "mentor": "gregg-williams",
+    "mentor_context": "DB Coach at Buffalo Bills, 2001-03"
+  },
+  "mike-martz": {
+    "name": "Mike Martz",
+    "born": 1951,
+    "alma_mater": "Fresno State",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "St. Louis Rams"
+    ],
+    "mentor": "rod-marinelli",
+    "mentor_context": "OC at Detroit Lions, 2006-07 (was already HC at Rams 2000-05 \u2014 reverse connection)"
+  },
+  "jim-haslett": {
+    "name": "Jim Haslett",
+    "born": 1955,
+    "alma_mater": "Indiana (PA)",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "New Orleans Saints"
+    ],
+    "mentor": "scott-linehan",
+    "mentor_context": "DC at St. Louis Rams, 2006-08 (was already HC at Saints 2000-05 \u2014 reverse connection)"
+  },
+  "greg-davis": {
+    "name": "Greg Davis",
+    "born": 1951,
+    "alma_mater": "Ohio Wesleyan",
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": [],
+    "mentor": "lou-holtz",
+    "mentor_context": "Assistant at Notre Dame under Holtz; later long-time OC at Texas and Iowa"
+  },
+  "joe-moore": {
+    "name": "Joe Moore",
+    "born": 1932,
+    "alma_mater": null,
+    "current_status": "deceased",
+    "generation": 1,
+    "hc_schools": [],
+    "mentor": "lou-holtz",
+    "mentor_context": "Legendary OL coach at Notre Dame under Holtz"
+  },
+  "george-stewart": {
+    "name": "George Stewart",
+    "born": 1958,
+    "alma_mater": "Arkansas",
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": [],
+    "mentor": "lou-holtz",
+    "mentor_context": "TE coach at Notre Dame; also GA at Arkansas under Holtz"
+  },
+  "vinny-cerrato": {
+    "name": "Vinny Cerrato",
+    "born": 1960,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 1,
+    "hc_schools": [],
+    "mentor": "lou-holtz",
+    "mentor_context": "Recruiting coordinator at Notre Dame; later front-office executive"
+  },
+  "bob-chmiel": {
+    "name": "Bob Chmiel",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "unknown",
+    "generation": 1,
+    "hc_schools": [],
+    "mentor": "lou-holtz",
+    "mentor_context": "TE/recruiting at Notre Dame under Holtz"
+  },
+  "greg-mattison": {
+    "name": "Greg Mattison",
+    "born": 1949,
+    "alma_mater": "Wisconsin-Superior",
+    "current_status": "retired",
+    "generation": 2,
+    "hc_schools": [],
+    "mentor": "bob-davie",
+    "mentor_context": "DC at Notre Dame under Davie for all 5 seasons; later DC at Michigan and Ohio State"
+  },
+  "kevin-rogers": {
+    "name": "Kevin Rogers",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "unknown",
+    "generation": 2,
+    "hc_schools": [],
+    "mentor": "bob-davie",
+    "mentor_context": "OC/QB coach at Notre Dame under Davie, replaced Colletto starting 1999"
+  },
+  "kerry-coombs": {
+    "name": "Kerry Coombs",
+    "born": 1961,
+    "alma_mater": null,
+    "current_status": "active",
+    "generation": 2,
+    "hc_schools": [],
+    "mentor": "urban-meyer",
+    "mentor_context": "DB coach at Ohio State under Meyer; later DC at Ohio State under Day and NFL assistant"
+  },
+  "jimmy-johnson": {
+    "name": "Jimmy Johnson",
+    "born": 1943,
+    "alma_mater": "Arkansas",
+    "current_status": "retired",
+    "generation": -1,
+    "hc_schools": [
+      "Oklahoma State",
+      "Miami (FL)",
+      "Dallas Cowboys"
+    ],
+    "mentor": null,
+    "mentor_context": "External to Holtz tree; cross-reference as mentor to Norv Turner at Dallas"
   }
 }
