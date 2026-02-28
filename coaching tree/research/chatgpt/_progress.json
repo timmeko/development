@@ -228,5 +228,35 @@
     "status": "complete",
     "timestamp": "2026-02-27 17:27:54",
     "model": "gpt-4o"
+  },
+  "47_nfl_uncovered_b": {
+    "status": "complete",
+    "timestamp": "2026-02-27 22:34:44",
+    "model": "gpt-4o"
+  },
+  "48_nfl_recheck": {
+    "status": "complete",
+    "timestamp": "2026-02-27 22:34:55",
+    "model": "gpt-4o"
+  },
+  "49_gen2_completeness_big": {
+    "status": "complete",
+    "timestamp": "2026-02-27 22:35:04",
+    "model": "gpt-4o"
+  },
+  "50_gen2_completeness_mid": {
+    "status": "complete",
+    "timestamp": "2026-02-27 22:35:15",
+    "model": "gpt-4o"
+  },
+  "51_gen2_completeness_college": {
+    "status": "complete",
+    "timestamp": "2026-02-27 22:35:22",
+    "model": "gpt-4o"
+  },
+  "52_cross_verification": {
+    "status": "complete",
+    "timestamp": "2026-02-27 22:35:30",
+    "model": "gpt-4o"
   }
 }
