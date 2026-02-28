@@ -1192,21 +1192,21 @@
     "relationship_type": "direct_report",
     "protege_role": "OC",
     "generation_gap": 1,
-    "confidence": "high",
-    "notes": "HC at Southwest Minnesota State 1993-2005"
+    "confidence": "medium",
+    "notes": "Reverse chronology: was HC at Southwest Minnesota State (NAIA, 1993-2005) BEFORE joining Davie at UNM as OC"
   },
   {
-    "id": "davie-to-long",
-    "mentor_id": "bob-davie",
+    "id": "kelly-to-long",
+    "mentor_id": "brian-kelly",
     "protege_id": "chip-long",
-    "school": "New Mexico",
+    "school": "Notre Dame",
     "year_start": 2017,
     "year_end": 2019,
     "relationship_type": "direct_report",
     "protege_role": "OC",
     "generation_gap": 1,
     "confidence": "high",
-    "notes": "HC at Tulane 2023-present"
+    "notes": "OC/TE coach at Notre Dame under Brian Kelly; helped lead Irish to CFP in 2018. Never a head coach — was OC at Tulane and Georgia Tech after ND."
   },
   {
     "id": "minter-to-dantonio",

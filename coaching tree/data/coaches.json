@@ -920,19 +920,18 @@
       "Southwest Minnesota State"
     ],
     "mentor": "bob-davie",
-    "mentor_context": "OC at New Mexico, 2012-16"
+    "mentor_context": "OC at New Mexico, 2012-16",
+    "notes": "Reverse chronology: was HC at SW Minnesota State (NAIA, 1993-2005) BEFORE working under Davie at UNM"
   },
   "chip-long": {
     "name": "Chip Long",
     "born": null,
     "alma_mater": null,
     "current_status": "active",
-    "generation": 2,
-    "hc_schools": [
-      "Tulane"
-    ],
-    "mentor": "bob-davie",
-    "mentor_context": "OC at New Mexico, 2017-19"
+    "generation": 3,
+    "hc_schools": [],
+    "mentor": "brian-kelly",
+    "mentor_context": "OC at Notre Dame, 2017-19"
   },
   "mark-dantonio": {
     "name": "Mark Dantonio",
