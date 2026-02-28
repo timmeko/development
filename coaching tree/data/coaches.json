@@ -2166,5 +2166,56 @@
     ],
     "mentor": "jay-norvell",
     "mentor_context": "OC at Nevada, 2017-21"
+  },
+  "gus-malzahn": {
+    "name": "Gus Malzahn",
+    "born": 1965,
+    "alma_mater": "Henderson State",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "Arkansas State",
+      "Auburn",
+      "UCF"
+    ],
+    "mentor": "houston-nutt",
+    "mentor_context": "OC at Arkansas, 2006"
+  },
+  "darrell-dickey": {
+    "name": "Darrell Dickey",
+    "born": 1961,
+    "alma_mater": "Kansas State",
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "North Texas"
+    ],
+    "mentor": "tommy-west",
+    "mentor_context": "OC at Clemson, 1995-97"
+  },
+  "kim-dameron": {
+    "name": "Kim Dameron",
+    "born": null,
+    "alma_mater": null,
+    "current_status": "retired",
+    "generation": 3,
+    "hc_schools": [
+      "Eastern Illinois"
+    ],
+    "mentor": "houston-nutt",
+    "mentor_context": "Safeties Coach at Ole Miss, 2008-10",
+    "confidence": "medium"
+  },
+  "rhett-lashlee": {
+    "name": "Rhett Lashlee",
+    "born": 1983,
+    "alma_mater": "Arkansas",
+    "current_status": "active",
+    "generation": 3,
+    "hc_schools": [
+      "SMU"
+    ],
+    "mentor": "manny-diaz",
+    "mentor_context": "OC at Miami (FL), 2021"
   }
 }
