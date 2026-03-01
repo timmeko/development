@@ -1087,14 +1087,15 @@ def draw_hc_stubs(ax, pos, angle_map, coaches):
 SECONDARY_COLOR = "#FF6B9D"   # Muted rose for secondary mentor lines
 SECONDARY_W     = 0.4
 SECONDARY_A     = 0.30
+ARROW_SIZE      = 0.25        # Size of arrowhead triangle
 
 
 def draw_secondary_connections(ax, pos, coaches, relationships):
-    """Draw thin dashed lines from secondary mentors to dual-tree coaches.
+    """Draw thin dashed arrows from secondary mentors to their proteges.
 
-    For each coach on the poster, if they have relationship entries with mentors
-    OTHER than their primary mentor (coaches.json 'mentor' field), draw a curved
-    dashed line from the secondary mentor to the coach.
+    Direction: mentor → protege (arrow points at the protege).
+    Each arrow is a quadratic Bezier curve that bows toward the center
+    with a small filled triangle arrowhead at the protege end.
     """
     # Build lookup: protege_id → list of mentor_ids from relationships.json
     mentor_map = {}
@@ -1128,24 +1129,21 @@ def draw_secondary_connections(ax, pos, coaches, relationships):
                 continue
             drawn.add(key)
 
-            mx, my = pos[mid]
-            cx, cy = pos[cid]
+            mx, my = pos[mid]    # mentor position (start)
+            cx, cy = pos[cid]    # protege position (end / arrow tip)
 
-            # Draw a quadratic Bezier curve that bows toward the center (0,0)
-            # to avoid crossing over other tree branches
-            # Control point: midpoint of (mentor, coach) pulled toward center
+            # Control point: midpoint pulled toward center
             mid_x = (mx + cx) / 2
             mid_y = (my + cy) / 2
             dist_from_center = math.hypot(mid_x, mid_y)
             if dist_from_center > 0.1:
-                # Pull control point 30% toward center
                 pull = 0.3
                 ctrl_x = mid_x * (1 - pull)
                 ctrl_y = mid_y * (1 - pull)
             else:
                 ctrl_x, ctrl_y = mid_x, mid_y
 
-            # Sample the quadratic Bezier curve
+            # Sample the quadratic Bezier curve (mentor → protege)
             n_pts = 40
             xs, ys = [], []
             for i in range(n_pts + 1):
@@ -1155,13 +1153,50 @@ def draw_secondary_connections(ax, pos, coaches, relationships):
                 xs.append(bx)
                 ys.append(by)
 
-            ax.plot(xs, ys,
+            # Shorten the curve slightly so arrow doesn't overlap the node dot
+            # Stop at ~95% of the way to the protege
+            stop = int(n_pts * 0.92)
+            xs_draw = xs[:stop + 1]
+            ys_draw = ys[:stop + 1]
+
+            ax.plot(xs_draw, ys_draw,
                     color=SECONDARY_COLOR,
                     alpha=SECONDARY_A,
                     linewidth=SECONDARY_W,
-                    linestyle=(0, (3, 4)),  # dashed: 3 on, 4 off
+                    linestyle=(0, (3, 4)),  # dashed
                     solid_capstyle="round",
                     zorder=0.5)
+
+            # Draw arrowhead at the end pointing toward protege
+            # Use the last two points of the drawn curve for direction
+            if len(xs_draw) >= 2:
+                dx = xs_draw[-1] - xs_draw[-2]
+                dy = ys_draw[-1] - ys_draw[-2]
+                length = math.hypot(dx, dy)
+                if length > 0:
+                    # Unit vector in arrow direction
+                    ux, uy = dx / length, dy / length
+                    # Perpendicular vector
+                    px, py = -uy, ux
+
+                    # Arrow tip at the end of the drawn curve
+                    tip_x, tip_y = xs_draw[-1], ys_draw[-1]
+                    # Two base points of the triangle
+                    sz = ARROW_SIZE
+                    b1x = tip_x - sz * ux + sz * 0.4 * px
+                    b1y = tip_y - sz * uy + sz * 0.4 * py
+                    b2x = tip_x - sz * ux - sz * 0.4 * px
+                    b2y = tip_y - sz * uy - sz * 0.4 * py
+
+                    arrow = plt.Polygon(
+                        [[tip_x, tip_y], [b1x, b1y], [b2x, b2y]],
+                        closed=True,
+                        facecolor=SECONDARY_COLOR,
+                        edgecolor="none",
+                        alpha=SECONDARY_A + 0.1,
+                        zorder=0.5,
+                    )
+                    ax.add_patch(arrow)
 
 
 # ── Main render ────────────────────────────────────────────────────────────────
