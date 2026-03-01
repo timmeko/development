@@ -20,6 +20,7 @@ matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype']  = 42
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from matplotlib.patches import FancyArrowPatch
 from matplotlib import font_manager
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
@@ -1083,8 +1084,88 @@ def draw_hc_stubs(ax, pos, angle_map, coaches):
                     zorder=5)
 
 
+SECONDARY_COLOR = "#FF6B9D"   # Muted rose for secondary mentor lines
+SECONDARY_W     = 0.4
+SECONDARY_A     = 0.30
+
+
+def draw_secondary_connections(ax, pos, coaches, relationships):
+    """Draw thin dashed lines from secondary mentors to dual-tree coaches.
+
+    For each coach on the poster, if they have relationship entries with mentors
+    OTHER than their primary mentor (coaches.json 'mentor' field), draw a curved
+    dashed line from the secondary mentor to the coach.
+    """
+    # Build lookup: protege_id → list of mentor_ids from relationships.json
+    mentor_map = {}
+    for r in relationships:
+        pid = r["protege_id"]
+        mid = r["mentor_id"]
+        mentor_map.setdefault(pid, set()).add(mid)
+
+    drawn = set()  # avoid duplicate lines
+
+    for cid, mentors in mentor_map.items():
+        if cid not in pos or cid not in coaches:
+            continue
+        primary = coaches[cid].get("mentor")
+        gen = coaches[cid].get("generation", 99)
+        if gen not in (1, 2, 3):
+            continue
+
+        # For gen 1, primary mentor is always lou-holtz (implicit)
+        if gen == 1:
+            primary = "lou-holtz"
+
+        for mid in mentors:
+            if mid == primary:
+                continue
+            if mid not in pos:
+                continue
+            # Avoid duplicate lines (same pair in either direction)
+            key = tuple(sorted([cid, mid]))
+            if key in drawn:
+                continue
+            drawn.add(key)
+
+            mx, my = pos[mid]
+            cx, cy = pos[cid]
+
+            # Draw a quadratic Bezier curve that bows toward the center (0,0)
+            # to avoid crossing over other tree branches
+            # Control point: midpoint of (mentor, coach) pulled toward center
+            mid_x = (mx + cx) / 2
+            mid_y = (my + cy) / 2
+            dist_from_center = math.hypot(mid_x, mid_y)
+            if dist_from_center > 0.1:
+                # Pull control point 30% toward center
+                pull = 0.3
+                ctrl_x = mid_x * (1 - pull)
+                ctrl_y = mid_y * (1 - pull)
+            else:
+                ctrl_x, ctrl_y = mid_x, mid_y
+
+            # Sample the quadratic Bezier curve
+            n_pts = 40
+            xs, ys = [], []
+            for i in range(n_pts + 1):
+                t = i / n_pts
+                bx = (1 - t)**2 * mx + 2 * (1 - t) * t * ctrl_x + t**2 * cx
+                by = (1 - t)**2 * my + 2 * (1 - t) * t * ctrl_y + t**2 * cy
+                xs.append(bx)
+                ys.append(by)
+
+            ax.plot(xs, ys,
+                    color=SECONDARY_COLOR,
+                    alpha=SECONDARY_A,
+                    linewidth=SECONDARY_W,
+                    linestyle=(0, (3, 4)),  # dashed: 3 on, 4 off
+                    solid_capstyle="round",
+                    zorder=0.5)
+
+
 # ── Main render ────────────────────────────────────────────────────────────────
-def render(coaches: dict, output_base: str = "coaching_tree_poster"):
+def render(coaches: dict, output_base: str = "coaching_tree_poster", relationships: list = None):
     (pos, angle_map, gen1_order, gen1_groups_ordered,
      gen2_groups, gen3_groups) = compute_positions(coaches)
 
@@ -1250,6 +1331,10 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
     # ── HC stubs (label 3 — outward HC school branches) ──────────────────
     draw_hc_stubs(ax, pos, angle_map, coaches)
 
+    # ── Secondary mentor connections (dashed lines) ────────────────────
+    if relationships:
+        draw_secondary_connections(ax, pos, coaches, relationships)
+
     # ── Title ─────────────────────────────────────────────────────────────
     top = RADII[3] + 2.5
     ax.text(0, top, "Lou Holtz Coaching Tree",
@@ -1267,6 +1352,8 @@ def render(coaches: dict, output_base: str = "coaching_tree_poster"):
         mpatches.Patch(color=GEN_COLOR[1], label="Gen 1 — Direct protégés"),
         mpatches.Patch(color=GEN_COLOR[2], label="Gen 2"),
         mpatches.Patch(color=GEN_COLOR[3], label="Gen 3"),
+        mpatches.Patch(color=SECONDARY_COLOR, alpha=SECONDARY_A + 0.2,
+                       label="Secondary mentor link"),
     ]
     ax.legend(handles=handles, loc="lower left",
               facecolor="#1a1a2e", edgecolor="#333333",
@@ -1292,8 +1379,13 @@ def main():
     import sys
     with open(DATA_DIR / "coaches.json") as f:
         coaches = json.load(f)
+    rels_path = DATA_DIR / "relationships.json"
+    relationships = []
+    if rels_path.exists():
+        with open(rels_path) as f:
+            relationships = json.load(f)
     print(f"Loaded {len(coaches)} coaches")
-    render(coaches)
+    render(coaches, relationships=relationships)
 
 
 if __name__ == "__main__":
