@@ -258,5 +258,65 @@
     "status": "complete",
     "timestamp": "2026-02-27 22:35:30",
     "model": "gpt-4o"
+  },
+  "53_lane_kiffin_deep": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:21:03",
+    "model": "gpt-4o"
+  },
+  "54_sarkisian_deep": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:21:17",
+    "model": "gpt-4o"
+  },
+  "55_lovie_smith_deep": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:21:31",
+    "model": "gpt-4o"
+  },
+  "56_tom_herman_deep": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:21:42",
+    "model": "gpt-4o"
+  },
+  "57_jim_mora_jr_deep": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:21:54",
+    "model": "gpt-4o"
+  },
+  "58_kyle_whittingham_deep": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:22:12",
+    "model": "gpt-4o"
+  },
+  "59_norv_turner_deep": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:22:25",
+    "model": "gpt-4o"
+  },
+  "60_paul_chryst_deep": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:22:34",
+    "model": "gpt-4o"
+  },
+  "61_rex_ryan_deep": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:22:44",
+    "model": "gpt-4o"
+  },
+  "62_houston_nutt_deep": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:22:55",
+    "model": "gpt-4o"
+  },
+  "63_dan_quinn_deep": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:23:05",
+    "model": "gpt-4o"
+  },
+  "64_gary_andersen_dave_doeren": {
+    "status": "complete",
+    "timestamp": "2026-03-05 11:23:19",
+    "model": "gpt-4o"
   }
 }
