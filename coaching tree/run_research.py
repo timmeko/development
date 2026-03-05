@@ -1079,6 +1079,268 @@ For each, provide:
 
 If NO connection found, say "No connection found." """
     ),
+
+    # === PHASE 5: Gen 2 Tree Expansion — Thin Branches ===
+    (
+        "53_lane_kiffin_deep",
+        """I'm building a coaching tree database for college football. Lane Kiffin has been a head coach at five stops:
+
+1. Oakland Raiders (2007-08)
+2. Tennessee (2009-10)
+3. USC (2010-13, fired mid-season)
+4. Florida Atlantic (2017-19)
+5. Ole Miss (2020-present)
+
+The previous query only found Clay Helton and Ed Orgeron from his USC staff. I need a MORE THOROUGH search across ALL of his stops.
+
+For each stop, list EVERY assistant who later became a head coach at ANY level (NFL, FBS, FCS, D2, D3, NAIA, high school head coach does NOT count). Also include assistants who became interim head coaches.
+
+Pay special attention to:
+- Ole Miss (2020-present): His longest current tenure. Has anyone left to become a HC? Charlie Weis Jr., Chris Partridge, etc.?
+- FAU (2017-19): Did any assistants move up?
+- Tennessee (2009-10): Short stint but who was on staff? Ed Orgeron was there briefly.
+
+For each assistant who later became a head coach, provide:
+
+| Name | Role Under Kiffin | Years Under Kiffin | School/Team | Later HC Stops | Confidence |
+|------|------------------|-------------------|-------------|----------------|------------|
+
+After the tables, list any notable coordinators under Kiffin who are considered "HC candidates" but haven't landed a job yet."""
+    ),
+    (
+        "54_sarkisian_deep",
+        """I'm building a coaching tree database for college football. Steve Sarkisian has been a head coach at three stops:
+
+1. Washington (2009-2013)
+2. USC (2014-2015, fired mid-season)
+3. Texas (2021-present)
+
+The previous query only found Justin Wilcox (Cal HC) from Washington. I need a MUCH more thorough search.
+
+For each stop, list EVERY assistant who later became a head coach at ANY level (NFL, FBS, FCS, D2, D3, NAIA).
+
+Key names to investigate from his staffs:
+- Washington: Tosh Lupoi, Nick Holt, Brent Pease, Keith Bhonapha, Eric Schmidt, Peter Sirmon, Johnny Nansen
+- USC: Clancy Pendergast, Tyson Helton (later Western Kentucky HC?), Keith Heyward, Tommie Robinson
+- Texas: Pete Kwiatkowski, Kyle Flood, Jeff Choate, Jeff Banks, Tashard Choice, Bo Davis, AJ Milwee
+
+For each assistant who later became a head coach, provide:
+
+| Name | Role Under Sarkisian | Years Under Sark | School/Team | Later HC Stops | Confidence |
+|------|---------------------|-----------------|-------------|----------------|------------|
+
+Also note any who became NFL position coaches or coordinators but not yet HCs."""
+    ),
+    (
+        "55_lovie_smith_deep",
+        """I'm building a coaching tree database for college football/NFL. Lovie Smith has been a head coach at three stops:
+
+1. Chicago Bears (2004-2012)
+2. Tampa Bay Buccaneers (2014-2015)
+3. Houston Texans (2022)
+4. Also: Illinois head coach (2016-2020)
+
+We already have Ron Rivera and Rod Marinelli. I need ALL assistants who later became head coaches.
+
+Key names to investigate:
+- Bears: Bob Babich, Greg Blache, Mike Tice, Pep Hamilton, Jeremy Bates, Mike Martz (was he OC under Lovie?), Tim Hightower
+- Bears defensive staff produced many NFL coaches
+- Buccaneers: Marcus Arroyo, Mike Bajakian, Leslie Frazier (was he under Lovie?)
+- Illinois: any assistants who became HCs?
+
+For each, provide:
+
+| Name | Role Under Lovie | Years | Team/School | Later HC Stops | Confidence |
+|------|-----------------|-------|-------------|----------------|------------|"""
+    ),
+    (
+        "56_tom_herman_deep",
+        """I'm building a coaching tree database for college football. Tom Herman has been a head coach at two stops:
+
+1. Houston (2015-2016)
+2. Texas (2017-2020)
+3. Also: Florida Atlantic (2023-present)
+
+We only have Major Applewhite (Houston HC). I need ALL assistants across all stops who later became head coaches.
+
+Key names to investigate:
+- Houston: Todd Orlando, Kendal Briles, Major Applewhite, Mark D'Onofrio, Jason Washington
+- Texas: Todd Orlando, Tim Beck, Derek Warehime, Herb Hand, Craig Naivar, Oscar Giles, Stan Drayton (became Toledo HC?), Corby Meekins, Jeff Banks
+- FAU: current staff
+
+Stan Drayton is especially important — he was RB coach under Herman at Texas, then became Toledo HC.
+
+For each, provide:
+
+| Name | Role Under Herman | Years | School/Team | Later HC Stops | Confidence |
+|------|------------------|-------|-------------|----------------|------------|"""
+    ),
+    (
+        "57_jim_mora_jr_deep",
+        """I'm building a coaching tree database for college football/NFL. Jim Mora Jr. has been a head coach at:
+
+1. Atlanta Falcons (2004-2006)
+2. Seattle Seahawks (2009, interim for last game)
+3. UCLA (2012-2017)
+4. UConn (2022-present)
+
+We only have Jedd Fisch (Arizona/Washington HC). I need ALL assistants who became HCs.
+
+Key names to investigate:
+- Falcons: Many NFL assistants — who on his staff became HCs?
+- UCLA: Adrian Klemm, Demetrice Martin, Nate Woody, Jeff Ulbrich, Jason Kaufusi, Kennedy Polamalu (interim HC anywhere?)
+- UConn: any departures to HC jobs?
+
+For each, provide:
+
+| Name | Role Under Mora | Years | Team/School | Later HC Stops | Confidence |
+|------|----------------|-------|-------------|----------------|------------|"""
+    ),
+    (
+        "58_kyle_whittingham_deep",
+        """I'm building a coaching tree database for college football. Kyle Whittingham has been head coach at:
+
+1. Utah (2005-2024) — one of the longest tenures in college football
+2. Michigan (2025-present)
+
+With nearly 20 years at Utah, he surely produced multiple head coaches from his staff. I need ALL assistants who later became head coaches at ANY level.
+
+Key names to investigate from his Utah staffs over the years:
+- Morgan Scalley, Jay Hill (Weber State HC?), Kalani Sitake (BYU HC?), Andy Ludwig, Gary Andersen (Utah State/Wisconsin HC — was he under Whittingham?), Dennis Erickson, Brian Johnson, Aaron Roderick, Sharrieff Shah, Freddie Whittingham
+
+Kalani Sitake (BYU) and Jay Hill (Weber State) are both very likely from his tree.
+
+For each, provide:
+
+| Name | Role Under Whittingham | Years at Utah | Later HC Stops | Confidence |
+|------|----------------------|--------------|----------------|------------|"""
+    ),
+    (
+        "59_norv_turner_deep",
+        """I'm building a coaching tree database for NFL/college football. Norv Turner has been a head coach at:
+
+1. Washington Redskins (1994-2000)
+2. Oakland Raiders (2004)
+3. San Diego Chargers (2007-2012)
+
+We have Mike Nolan and Ron Rivera. Need ALL assistants who became HCs.
+
+Key names from his staffs:
+- Redskins: Many coaches came through this staff in the late 90s
+- Chargers: Rob Ryan, John Pagano, Frank Reich (was he on Chargers staff?), Ken Whisenhunt, Clarence Shelmon
+- Any OCs or DCs under Turner who got HC jobs?
+
+For each, provide:
+
+| Name | Role Under Turner | Years | Team | Later HC Stops | Confidence |
+|------|------------------|-------|------|----------------|------------|"""
+    ),
+    (
+        "60_paul_chryst_deep",
+        """I'm building a coaching tree database for college football. Paul Chryst has been head coach at:
+
+1. Pittsburgh (2012-2014)
+2. Wisconsin (2015-2022)
+
+We only have Jim Leonhard (interim at Wisconsin). Need ALL assistants who became HCs.
+
+Key names to investigate:
+- Wisconsin: Joe Rudolph, Bob Bostad, Chris Haering, Mickey Turner, Jim Leonhard, Bobby April, Joe Lorig, Matt Canada (was OC before leaving — became Maryland interim HC)
+- Pittsburgh: Dave Borbely, Tom Bradley
+
+Matt Canada is key — he was briefly OC at Pitt under Chryst before going to NC State, LSU, Maryland (interim HC), then Steelers OC.
+
+For each, provide:
+
+| Name | Role Under Chryst | Years | School | Later HC Stops | Confidence |
+|------|------------------|-------|--------|----------------|------------|"""
+    ),
+    (
+        "61_rex_ryan_deep",
+        """I'm building a coaching tree database for NFL. Rex Ryan has been a head coach at:
+
+1. New York Jets (2009-2014)
+2. Buffalo Bills (2015-2016)
+
+We have Anthony Lynn (Chargers HC) and Mike Pettine (Browns HC). Need ALL assistants who became HCs.
+
+Key names to investigate:
+- Jets: Mike Pettine (DC), Tony Sparano (OL/OC), Brian Schottenheimer (OC), Dennis Thurman, Jeff Weeks, Ben Kotwica, Karl Dunbar
+- Bills: Anthony Lynn (interim HC/then Chargers HC), Rob Ryan (DC, twin brother), Greg Roman, Thurman
+- Did Brian Schottenheimer ever become HC?
+
+For each, provide:
+
+| Name | Role Under Rex Ryan | Years | Team | Later HC Stops | Confidence |
+|------|-------------------|-------|------|----------------|------------|"""
+    ),
+    (
+        "62_houston_nutt_deep",
+        """I'm building a coaching tree database for college football. Houston Nutt has been head coach at:
+
+1. Murray State (1993-1996)
+2. Boise State (1997)
+3. Arkansas (1998-2007)
+4. Ole Miss (2008-2011)
+
+I need ALL assistants who later became head coaches at any level.
+
+Key names to investigate:
+- Arkansas: Gus Malzahn (was he ever on Nutt's staff?), Bobby Allen, Danny Ford, Mike Markuson, Mike Anderson, Reggie Herring, Louis Campbell
+- Ole Miss: Tyrone Nix, Dave Bentley, Werner Roberts
+- Murray State / Boise State: any early staff who moved up?
+
+For each, provide:
+
+| Name | Role Under Nutt | Years | School | Later HC Stops | Confidence |
+|------|----------------|-------|--------|----------------|------------|"""
+    ),
+    (
+        "63_dan_quinn_deep",
+        """I'm building a coaching tree database for NFL. Dan Quinn has been a head coach at:
+
+1. Atlanta Falcons (2015-2020)
+2. Washington Commanders (2024-present)
+
+We have Kyle Shanahan (OC, later 49ers HC) and Raheem Morris (later Falcons HC). Need ALL assistants who became HCs.
+
+Key names:
+- Falcons: Kyle Shanahan (OC 2015-16), Matt LaFleur (QB coach 2015-16, later Packers HC?), Steve Sarkisian (OC 2017-18), Marquand Manuel, Rahim Morris, Mike McDaniel (was he on this staff?)
+- Commanders: current staff — anyone leave for HC?
+
+Matt LaFleur is especially important — he was QB coach under Quinn in 2015-16 before becoming Packers HC. Mike McDaniel (Dolphins HC) may have passed through.
+
+For each, provide:
+
+| Name | Role Under Quinn | Years | Team | Later HC Stops | Confidence |
+|------|-----------------|-------|------|----------------|------------|"""
+    ),
+    (
+        "64_gary_andersen_dave_doeren",
+        """I'm building a coaching tree database for college football. I need to flesh out two Gen 2 coaches' trees:
+
+## Gary Andersen
+Head coach at:
+- Utah State (2009-2012)
+- Wisconsin (2013-2014)
+- Oregon State (2015-2017)
+
+## Dave Doeren
+Head coach at:
+- Northern Illinois (2011-2012)
+- NC State (2013-present)
+
+For each coach at each stop, list EVERY assistant who later became a head coach at any level.
+
+Key names to check:
+- Andersen at Utah State: Matt Wells (later Texas Tech HC?), Frank Maile, Todd Orlando
+- Doeren at NC State: Dave Huxtable, Tony Gibson, Tim Beck (was he under Doeren before going to Ohio State?), Matt Canada (was OC at NC State under Doeren)
+
+For each, provide:
+
+| Name | Role | Years | School | Later HC Stops | Confidence |
+|------|------|-------|--------|----------------|------------|"""
+    ),
 ]
 
 
