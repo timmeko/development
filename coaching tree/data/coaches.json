@@ -856,9 +856,7 @@
     "alma_mater": null,
     "current_status": "retired",
     "generation": 2,
-    "hc_schools": [
-      "New Mexico"
-    ],
+    "hc_schools": [],
     "mentor": "barry-alvarez",
     "mentor_context": "LB/DC at Wisconsin, 1995-2003"
   },
@@ -881,7 +879,7 @@
     "current_status": "retired",
     "generation": 2,
     "hc_schools": [
-      "Houston"
+      "Arkansas (interim)"
     ],
     "mentor": "chuck-amato",
     "mentor_context": "DC at NC State, 2002-06"
@@ -904,9 +902,7 @@
     "alma_mater": null,
     "current_status": "retired",
     "generation": 2,
-    "hc_schools": [
-      "Tennessee Tech"
-    ],
+    "hc_schools": [],
     "mentor": "chuck-amato",
     "mentor_context": "TE/ST at NC State, 2003-05"
   },
@@ -1172,9 +1168,7 @@
     "alma_mater": null,
     "current_status": "retired",
     "generation": 2,
-    "hc_schools": [
-      "Eastern Illinois"
-    ],
+    "hc_schools": [],
     "mentor": "ron-cooper",
     "mentor_context": "QB Coach at Eastern Michigan, 1995-96"
   },
@@ -1184,11 +1178,10 @@
     "alma_mater": null,
     "current_status": "retired",
     "generation": 2,
-    "hc_schools": [
-      "Connecticut"
-    ],
+    "hc_schools": [],
     "mentor": "skip-holtz",
-    "mentor_context": "DL Coach at UConn, 1995-98"
+    "mentor_context": "DL Coach at UConn, 1995-98",
+    "notes": "Briefly named interim HC at UConn Dec 1998 during coaching search; bulk of career in football operations"
   },
   "marcus-freeman": {
     "name": "Marcus Freeman",
@@ -1248,7 +1241,7 @@
     "generation": 2,
     "hc_schools": [
       "Atlanta Falcons",
-      "Dallas Cowboys"
+      "Washington Commanders"
     ],
     "mentor": "pete-carroll",
     "mentor_context": "DC at Seattle Seahawks, 2013-2014"
@@ -1553,8 +1546,7 @@
     "current_status": "active",
     "generation": 3,
     "hc_schools": [
-      "Jackson State",
-      "Mississippi Valley State"
+      "Jackson State"
     ],
     "mentor": "dan-mullen",
     "mentor_context": "Safeties Coach at Mississippi State, 2009-15"
@@ -1923,9 +1915,7 @@
     "alma_mater": null,
     "current_status": "active",
     "generation": 3,
-    "hc_schools": [
-      "East Carolina (interim)"
-    ],
+    "hc_schools": [],
     "mentor": "doc-holliday",
     "mentor_context": "OC at Marshall, 2010-12"
   },
@@ -2084,8 +2074,7 @@
     "current_status": "active",
     "generation": 3,
     "hc_schools": [
-      "Tennessee Titans",
-      "New England Patriots"
+      "Tennessee Titans"
     ],
     "mentor": "luke-fickell",
     "mentor_context": "LB coach at Ohio State, 2011-15"
@@ -2143,7 +2132,7 @@
     "mentor_context": "OC at Washington, 2012-13"
   },
   "melvin-tucker": {
-    "name": "Melvin Tucker",
+    "name": "Mel Tucker",
     "born": 1971,
     "alma_mater": "Wisconsin",
     "current_status": "retired",
@@ -2302,7 +2291,7 @@
       "St. Louis Rams"
     ],
     "mentor": "rod-marinelli",
-    "mentor_context": "OC at Detroit Lions, 2006-07 (was already HC at Rams 2000-05 — reverse connection)"
+    "mentor_context": "OC at Detroit Lions, 2006-07 (was already HC at Rams 2000-05 \u2014 reverse connection)"
   },
   "jim-haslett": {
     "name": "Jim Haslett",
@@ -2314,7 +2303,7 @@
       "New Orleans Saints"
     ],
     "mentor": "scott-linehan",
-    "mentor_context": "DC at St. Louis Rams, 2006-08 (was already HC at Saints 2000-05 — reverse connection)"
+    "mentor_context": "DC at St. Louis Rams, 2006-08 (was already HC at Saints 2000-05 \u2014 reverse connection)"
   },
   "greg-davis": {
     "name": "Greg Davis",

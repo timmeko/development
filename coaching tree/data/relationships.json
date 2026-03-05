@@ -140,7 +140,7 @@
     "protege_role": "graduate_assistant",
     "generation_gap": 1,
     "confidence": "high",
-    "notes": "Pete Carroll was a GA at Arkansas under Holtz in 1977 — his first coaching job"
+    "notes": "Pete Carroll was a GA at Arkansas under Holtz in 1977 \u2014 his first coaching job"
   },
   {
     "id": "holtz-to-minter-arkansas",
@@ -1063,7 +1063,7 @@
     "protege_role": "linebackers_coach",
     "generation_gap": 1,
     "confidence": "medium",
-    "notes": "LB coach at Tampa Bay under Kiffin (DC) and Gruden (HC); secondary connection — primary mentor is Pete Carroll at Seattle"
+    "notes": "LB coach at Tampa Bay under Kiffin (DC) and Gruden (HC); secondary connection \u2014 primary mentor is Pete Carroll at Seattle"
   },
   {
     "id": "kiffin-to-marinelli",
@@ -1206,7 +1206,7 @@
     "protege_role": "OC",
     "generation_gap": 1,
     "confidence": "high",
-    "notes": "OC/TE coach at Notre Dame under Brian Kelly; helped lead Irish to CFP in 2018. Never a head coach — was OC at Tulane and Georgia Tech after ND."
+    "notes": "OC/TE coach at Notre Dame under Brian Kelly; helped lead Irish to CFP in 2018. Never a head coach \u2014 was OC at Tulane and Georgia Tech after ND."
   },
   {
     "id": "minter-to-dantonio",
@@ -2678,19 +2678,6 @@
     "notes": "Tucker was DC under Dantonio at Michigan State; later became Michigan State HC"
   },
   {
-    "id": "norvell-to-kwilson",
-    "mentor_id": "jay-norvell",
-    "protege_id": "ken-wilson",
-    "school": "Nevada",
-    "year_start": 2017,
-    "year_end": 2021,
-    "relationship_type": "direct_report",
-    "protege_role": "offensive_coordinator",
-    "generation_gap": 1,
-    "confidence": "high",
-    "notes": "Wilson was OC under Norvell at Nevada; became Nevada HC when Norvell left for CSU"
-  },
-  {
     "id": "nutt-to-malzahn",
     "mentor_id": "houston-nutt",
     "protege_id": "gus-malzahn",
@@ -2873,19 +2860,6 @@
     "notes": "DB coach at Jets under Edwards 2001-03; later HC at Jets 2006-08 and Browns 2009-10"
   },
   {
-    "id": "callahan-to-albin",
-    "mentor_id": "bill-callahan",
-    "protege_id": "tim-albin",
-    "school": "Nebraska",
-    "year_start": 2004,
-    "year_end": 2006,
-    "relationship_type": "direct_report",
-    "protege_role": "running_backs_coach",
-    "generation_gap": 1,
-    "confidence": "medium",
-    "notes": "RB coach at Nebraska under Callahan 2004-06; later HC at Ohio 2021-present"
-  },
-  {
     "id": "williams-to-jerry-gray",
     "mentor_id": "gregg-williams",
     "protege_id": "jerry-gray",
@@ -3026,7 +3000,7 @@
     "protege_role": "offensive_coordinator",
     "generation_gap": 1,
     "confidence": "high",
-    "notes": "Reverse connection — Martz was HC at St. Louis Rams (2000-05) before joining Marinelli as OC at Detroit (2006-07)"
+    "notes": "Reverse connection \u2014 Martz was HC at St. Louis Rams (2000-05) before joining Marinelli as OC at Detroit (2006-07)"
   },
   {
     "id": "linehan-to-haslett",
@@ -3039,7 +3013,7 @@
     "protege_role": "defensive_coordinator",
     "generation_gap": 1,
     "confidence": "high",
-    "notes": "Reverse connection — Haslett was HC at New Orleans Saints (2000-05) before joining Linehan as DC at St. Louis (2006-08)"
+    "notes": "Reverse connection \u2014 Haslett was HC at New Orleans Saints (2000-05) before joining Linehan as DC at St. Louis (2006-08)"
   },
   {
     "id": "davie-to-meyer",
