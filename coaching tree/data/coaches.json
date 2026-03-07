@@ -286,7 +286,7 @@
     "name": "Pete Carroll",
     "born": 1951,
     "alma_mater": "Pacific",
-    "current_status": "active",
+    "current_status": "fired",
     "generation": 1,
     "hc_schools": [
       "New York Jets",
@@ -1516,9 +1516,9 @@
   },
   "kevin-wilson": {
     "name": "Kevin Wilson",
-    "born": null,
+    "born": 1966,
     "alma_mater": null,
-    "current_status": "active",
+    "current_status": "fired",
     "generation": 3,
     "hc_schools": [
       "Tulsa"
@@ -1926,7 +1926,8 @@
     "current_status": "active",
     "generation": 3,
     "hc_schools": [
-      "New York Jets"
+      "New York Jets",
+      "Tennessee Titans"
     ],
     "mentor": "gus-bradley",
     "mentor_context": "LB coach at Jacksonville, 2014-16"
@@ -2074,7 +2075,8 @@
     "current_status": "active",
     "generation": 3,
     "hc_schools": [
-      "Tennessee Titans"
+      "Tennessee Titans",
+      "New England Patriots"
     ],
     "mentor": "luke-fickell",
     "mentor_context": "LB coach at Ohio State, 2011-15"
@@ -2122,7 +2124,7 @@
     "name": "Jonathan Smith",
     "born": 1981,
     "alma_mater": "Oregon State",
-    "current_status": "active",
+    "current_status": "fired",
     "generation": 3,
     "hc_schools": [
       "Oregon State",
@@ -2147,7 +2149,7 @@
     "name": "Ken Wilson",
     "born": 1968,
     "alma_mater": null,
-    "current_status": "active",
+    "current_status": "fired",
     "generation": 3,
     "hc_schools": [
       "Nevada"
