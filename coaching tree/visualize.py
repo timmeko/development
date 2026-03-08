@@ -68,15 +68,15 @@ def build_graph(coaches, stints, relationships):
         if mentor not in G or protege not in G:
             continue
 
-        edge_label = f"{rel['school']} {rel['year_start']}-{rel['year_end']}"
+        edge_label = f"{rel.get('school', '')} {rel.get('year_start', '')}-{rel.get('year_end', '')}"
         G.add_edge(
             mentor,
             protege,
             label=edge_label,
-            school=rel["school"],
-            year_start=rel["year_start"],
-            year_end=rel["year_end"],
-            relationship_type=rel["relationship_type"],
+            school=rel.get("school", ""),
+            year_start=rel.get("year_start"),
+            year_end=rel.get("year_end"),
+            relationship_type=rel.get("relationship_type", "direct_report"),
             confidence=rel.get("confidence", "unknown"),
         )
 
