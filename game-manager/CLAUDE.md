@@ -15,8 +15,11 @@ No framework, no build step. Vanilla JS + CSS. Runs on GitHub Pages.
 - Repo: `timmeko/development`
 - Branch: `game-manager`
 - Working dir: `/home/user/development/game-manager/`
-- After changes: `git add <files> && git commit && git push -u origin game-manager`
-- Do NOT create a pull request
+- Develop on a feature branch (e.g. `claude/<feature-name>`), then always merge into `game-manager` and push both:
+  ```
+  git checkout game-manager && git merge <feature-branch> && git push -u origin game-manager
+  ```
+- Do NOT create a pull request — merge directly into `game-manager` so GitHub Pages updates immediately
 
 ---
 
