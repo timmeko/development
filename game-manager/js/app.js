@@ -725,11 +725,64 @@
     }
   }
 
+  // ─── CSV ROSTER IMPORT ───────────────────────────────────────────────────
+
+  var POS_MAP = {
+    mid: 'midfield', midfield: 'midfield',
+    def: 'defense',  defense:  'defense',
+    fwd: 'forward',  forward:  'forward',
+    keeper: 'keeper', gk: 'keeper'
+  };
+
+  function parseCSV(text) {
+    var lines = text.trim().split(/\r?\n/);
+    if (lines.length < 2) return [];
+    var headers = lines[0].split(',').map(function (h) { return h.trim().toLowerCase(); });
+    return lines.slice(1).map(function (line) {
+      var vals = line.split(',').map(function (v) { return v.trim(); });
+      var row = {};
+      headers.forEach(function (h, i) { row[h] = vals[i] || ''; });
+      return row;
+    });
+  }
+
+  function csvRowToPlayer(row) {
+    function parsePos(str) {
+      if (!str) return [];
+      return str.split(/[;|\/\s]+/).map(function (s) {
+        return POS_MAP[s.trim().toLowerCase()] || null;
+      }).filter(Boolean);
+    }
+    return SGM.createPlayer({
+      name:               row['name'] || '',
+      band:               parseInt(row['band']) || 2,
+      preferredPositions: parsePos(row['preferred-pos']),
+      secondaryPositions: parsePos(row['secondary-pos']),
+      keeperWilling:      (row['keeper_willing'] || '').toLowerCase() === 'yes',
+      notes:              row['notes'] || ''
+    });
+  }
+
+  function loadRosterFromCSV(callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'roster.csv', true);
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        var players = parseCSV(xhr.responseText)
+          .map(csvRowToPlayer)
+          .filter(function (p) { return p.name; });
+        callback(null, players);
+      } else {
+        callback(new Error('HTTP ' + xhr.status));
+      }
+    };
+    xhr.onerror = function () { callback(new Error('fetch failed')); };
+    xhr.send();
+  }
+
   // ─── INIT ────────────────────────────────────────────────────────────────
 
-  function init() {
-    state = SGM.buildInitialState();
-
+  function startApp() {
     // Restore to live/postgame if a game was in progress
     var g = SGM.getActiveGame(state);
     if (g && g.status === 'active')   session.view = 'live';
@@ -771,6 +824,24 @@
     });
 
     render();
+  }
+
+  function init() {
+    var hasSaved = !!SGM.loadState();
+    state = SGM.buildInitialState();
+
+    if (!hasSaved) {
+      // First run — try to load real roster from roster.csv, fall back to seed data
+      loadRosterFromCSV(function (err, players) {
+        if (!err && players && players.length) {
+          state.roster = players;
+          SGM.saveState(state);
+        }
+        startApp();
+      });
+    } else {
+      startApp();
+    }
   }
 
   document.addEventListener('DOMContentLoaded', init);
