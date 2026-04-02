@@ -234,6 +234,10 @@
       ? '<button class="btn btn-secondary btn-sm" data-action="edit-formation">' + totalPlayers + ' players</button>'
       : '';
 
+    var autofillBtn = isEditable
+      ? '<button class="btn btn-secondary" data-action="autofill-quarter" data-q="' + viewQ + '">Autofill</button>'
+      : '';
+
     return (
       '<div class="live-view">' +
         '<div class="live-header">' +
@@ -251,7 +255,7 @@
         readonlyNotice +
         renderField(game, viewQ, isEditable) +
         renderBench(game, viewQ, isEditable) +
-        '<div class="live-footer">' + fieldSizeBtn + copyBtn + advBtn + '</div>' +
+        '<div class="live-footer">' + fieldSizeBtn + copyBtn + autofillBtn + advBtn + '</div>' +
       '</div>'
     );
   }
@@ -673,6 +677,16 @@
         game.quarters[parseInt(el.dataset.quarter)].lineup[el.dataset.posId] = null;
         persist();
         closeModal(function () { render(); });
+        break;
+      }
+
+      case 'autofill-quarter': {
+        if (!game) break;
+        var aq = parseInt(el.dataset.q);
+        game.quarters[aq].lineup = SGM.prefillQuarter(game, state, aq);
+        persist();
+        session.warningsDismissed = false;
+        render();
         break;
       }
 
