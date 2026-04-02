@@ -223,6 +223,14 @@
         : '<button class="btn btn-danger"  style="flex:1;" data-action="end-game">End Game</button>';
     }
 
+    // Field size edit button (always visible in live quarter)
+    var f = game.formation;
+    var fieldSizeBtn = isLiveQ
+      ? '<button class="btn btn-secondary btn-sm" data-action="edit-formation" title="Change field size">' +
+          f.forward + '-' + f.midfield + '-' + f.defense +
+        '</button>'
+      : '';
+
     return (
       '<div class="live-view">' +
         '<div class="live-header">' +
@@ -240,7 +248,7 @@
         readonlyNotice +
         renderField(game, viewQ, isLiveQ) +
         renderBench(game, viewQ, isLiveQ) +
-        '<div class="live-footer">' + copyBtn + advBtn + '</div>' +
+        '<div class="live-footer">' + fieldSizeBtn + copyBtn + advBtn + '</div>' +
       '</div>'
     );
   }
@@ -319,12 +327,10 @@
       );
     }).join('');
 
-    // Unavailable players (absent, expected, left early, late in Q1)
+    // Unavailable players (marked Out)
     var unavail = state.roster.filter(function (p) {
       var s = game.attendance[p.id] || 'expected';
-      if (s === 'absent' || s === 'expected' || s === 'left_early') return true;
-      if (s === 'late' && quarterNum === 1) return true;
-      return false;
+      return s === 'absent';
     });
 
     var unavailHTML = unavail.length
@@ -461,7 +467,8 @@
     switch (session.modal.type) {
       case 'picker':      html = renderPickerModal(session.modal.data);     break;
       case 'player-form': html = renderPlayerFormModal(session.modal.data); isFullscreen = true; break;
-      case 'transition':  html = renderTransitionModal(session.modal.data); break;
+      case 'transition':       html = renderTransitionModal(session.modal.data);    break;
+      case 'formation-edit':   html = renderFormationEditModal(session.modal.data); break;
     }
 
     container.innerHTML = html;
@@ -680,6 +687,57 @@
         break;
       }
 
+      case 'edit-formation':
+        setSession({ modal: { type: 'formation-edit', data: {} } });
+        break;
+
+      case 'fe-inc': {
+        if (!game) break;
+        var feType = el.dataset.type, feMax = parseInt(el.dataset.max) || 4;
+        game.formation[feType] = Math.min(feMax, game.formation[feType] + 1);
+        // Re-render the stepper val in place without closing modal
+        var valEl = document.getElementById('fe-val-' + feType);
+        if (valEl) valEl.textContent = game.formation[feType];
+        var titleEl = document.querySelector('.modal-title');
+        if (titleEl) {
+          var f2 = game.formation;
+          titleEl.innerHTML = 'Field Size <span style="color:var(--muted);font-size:13px;font-weight:400">(' + (1+f2.defense+f2.midfield+f2.forward) + ' players)</span>';
+        }
+        break;
+      }
+
+      case 'fe-dec': {
+        if (!game) break;
+        var feType2 = el.dataset.type, feMin = parseInt(el.dataset.min) || 1;
+        game.formation[feType2] = Math.max(feMin, game.formation[feType2] - 1);
+        var valEl2 = document.getElementById('fe-val-' + feType2);
+        if (valEl2) valEl2.textContent = game.formation[feType2];
+        var titleEl2 = document.querySelector('.modal-title');
+        if (titleEl2) {
+          var f3 = game.formation;
+          titleEl2.innerHTML = 'Field Size <span style="color:var(--muted);font-size:13px;font-weight:400">(' + (1+f3.defense+f3.midfield+f3.forward) + ' players)</span>';
+        }
+        break;
+      }
+
+      case 'save-formation': {
+        if (!game) break;
+        // Resize lineups for current and future quarters — preserve existing assignments where slot still exists
+        var newPositions = SGM.getPositionsForGame(game);
+        for (var q = game.currentQuarter; q <= 4; q++) {
+          var oldLineup = game.quarters[q].lineup;
+          var newLineup = {};
+          newPositions.forEach(function (posId) {
+            newLineup[posId] = oldLineup[posId] !== undefined ? oldLineup[posId] : null;
+          });
+          game.quarters[q].lineup = newLineup;
+        }
+        persist();
+        closeModal();
+        setTimeout(render, 260);
+        break;
+      }
+
       case 'advance-quarter':
         if (!game) break;
         setSession({ modal: { type: 'transition', data: { fromQ: game.currentQuarter } } });
@@ -709,7 +767,7 @@
         if (!game) break;
         state.roster.forEach(function (p) {
           var s = game.attendance[p.id] || 'expected';
-          if (s !== 'present' && s !== 'late') return;
+          if (s !== 'expected') return;
           var qp = SGM.getQuartersPlayedThisGame(p.id, game, 4);
           state.gameHistory.push({ gameId: game.id, playerId: p.id, quartersPlayed: qp, attended: true });
         });
@@ -920,6 +978,47 @@
         '<button class="btn btn-ghost btn-full" style="margin-top:6px;" data-action="close-modal">Stay in Q' + fromQ + '</button>' +
       '</div>'
     );
+  }
+
+  // ─── FORMATION EDIT MODAL ────────────────────────────────────────────────
+
+  function renderFormationEditModal(data) {
+    var game = activeGame();
+    if (!game) return '';
+    var f = game.formation;
+    var total = 1 + f.defense + f.midfield + f.forward;
+
+    function stepper(label, type, val, min, max) {
+      return '<div class="formation-control">' +
+        '<div class="formation-label">' + posChip(type) + ' ' + label + '</div>' +
+        '<div class="formation-stepper">' +
+          '<button class="stepper-btn" data-action="fe-dec" data-type="' + type + '" data-min="' + min + '">−</button>' +
+          '<div class="stepper-val" id="fe-val-' + type + '">' + val + '</div>' +
+          '<button class="stepper-btn" data-action="fe-inc" data-type="' + type + '" data-max="' + max + '">+</button>' +
+        '</div>' +
+      '</div>';
+    }
+
+    return '<div class="modal-handle"></div>' +
+      '<div class="modal-header">' +
+        '<span class="modal-title">Field Size <span style="color:var(--muted);font-size:13px;font-weight:400">(' + total + ' players)</span></span>' +
+        '<button class="modal-close" data-action="close-modal">×</button>' +
+      '</div>' +
+      '<div class="modal-body">' +
+        '<div style="padding:8px 16px 0">' +
+          stepper('Forwards',    'forward',  f.forward,  1, 3) +
+          stepper('Midfielders', 'midfield', f.midfield, 2, 4) +
+          stepper('Defenders',   'defense',  f.defense,  2, 4) +
+          '<div class="formation-control" style="border-bottom:none">' +
+            '<div class="formation-label">' + posChip('keeper') + ' Goalkeeper</div>' +
+            '<div style="font-size:14px;font-weight:700;color:var(--muted)">1</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="modal-footer">' +
+        '<button class="btn btn-primary btn-full" data-action="save-formation">Apply to Remaining Quarters</button>' +
+        '<p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px">Past quarters are not affected</p>' +
+      '</div>';
   }
 
   // ─── POST-GAME VIEW ───────────────────────────────────────────────────────

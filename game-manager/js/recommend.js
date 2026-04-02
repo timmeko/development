@@ -264,9 +264,9 @@
       }
     }
 
-    // belowMinimum: players with <2 quarters who are present and game has <3 quarters left
+    // belowMinimum: only warn on Q3 and Q4 when time is actually running out
     var quartersLeft = 4 - quarterNum;
-    if (quartersLeft < 3) {
+    if (quartersLeft < 2) {
       var completedUpTo = quarterNum - 1;
       var present = SGM.getAvailablePlayers(game, state);
       var belowMin = present.filter(function(p) {

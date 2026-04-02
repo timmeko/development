@@ -32,22 +32,16 @@
   SGM.ALL_POSITIONS = ['keeper','def-1','def-2','def-3','mid-1','mid-2','mid-3','fwd-1','fwd-2'];
 
   SGM.STATUS_COLORS = {
-    present:    'var(--primary)',
-    absent:     'var(--red)',
-    late:       'var(--amber)',
-    expected:   'var(--muted)',
-    left_early: 'var(--orange)'
+    expected: 'var(--primary)',
+    absent:   'var(--red)'
   };
 
   SGM.STATUS_LABELS = {
-    present:    'Present',
-    absent:     'Absent',
-    late:       'Late',
-    expected:   'Expected',
-    left_early: 'Left Early'
+    expected: 'Playing',
+    absent:   'Out'
   };
 
-  SGM.STATUS_CYCLE = ['expected','present','absent','late','left_early'];
+  SGM.STATUS_CYCLE = ['expected', 'absent'];
 
   SGM.DEFAULT_FORMATION = { defense: 3, midfield: 3, forward: 2 };
 
@@ -160,7 +154,7 @@
   SGM.getAvailablePlayers = function(game, state) {
     return state.roster.filter(function(p) {
       var status = game.attendance[p.id] || 'expected';
-      return status === 'present' || status === 'late';
+      return status === 'expected';
     });
   };
 
