@@ -1212,7 +1212,7 @@
 
     function playerHistory(pid) {
       var cells = '';
-      for (var q = 1; q < game.currentQuarter; q++) {
+      for (var q = 1; q <= 4; q++) {
         var qlu = SGM.getQuarterLineup(game, q);
         var posPlayed = null;
         Object.keys(qlu).forEach(function (k) { if (qlu[k] === pid) posPlayed = k; });
@@ -1220,7 +1220,7 @@
         cells += '<span class="ph-cell"><span class="ph-hdr">Q' + q + '</span>' +
                  '<span class="ph-val' + (posPlayed ? '' : ' ph-val--bench') + '">' + lbl + '</span></span>';
       }
-      return cells ? '<span class="picker-history">' + cells + '</span>' : '';
+      return '<span class="picker-history">' + cells + '</span>';
     }
 
     function pickerSection(items, hdrCls, label) {
