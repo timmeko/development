@@ -225,9 +225,10 @@
 
     // Field size edit button (always visible in live quarter)
     var f = game.formation;
+    var totalPlayers = 1 + f.defense + f.midfield + f.forward;
     var fieldSizeBtn = isLiveQ
-      ? '<button class="btn btn-secondary btn-sm" data-action="edit-formation" title="Change field size">' +
-          f.forward + '-' + f.midfield + '-' + f.defense +
+      ? '<button class="btn btn-secondary btn-sm" data-action="edit-formation">' +
+          totalPlayers + ' players' +
         '</button>'
       : '';
 
@@ -314,7 +315,7 @@
 
     var chips = sorted.map(function (p) {
       var qp       = SGM.getQuartersPlayedThisGame(p.id, game, doneQ);
-      var needsMin = qp < 2;
+      var needsMin = doneQ > 0 && qp < 2;
       var attrs    = isLiveQ ? 'data-action="bench-tap" data-player-id="' + p.id + '"' : '';
       return (
         '<div class="bench-chip" ' + attrs + '>' +
