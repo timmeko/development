@@ -4,6 +4,8 @@
 Mobile-first single-page web app for a youth soccer coach to plan and manage live games.
 No framework, no build step. Vanilla JS + CSS. Runs on GitHub Pages.
 
+**Live URL:** https://timmeko.github.io/development/game-manager/
+
 **Core principle:** The system suggests. The coach decides. No blocking actions.
 **Primary flow:** Tap position → ranked player list → tap player → instant assign.
 
