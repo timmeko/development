@@ -79,22 +79,22 @@ input, textarea, select {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: var(--nav-height);
+  padding-top: var(--nav-height);
 }
 
-/* ===== BOTTOM NAV ===== */
+/* ===== TOP NAV ===== */
 #bottom-nav {
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
   height: var(--nav-height);
   background: var(--surface);
-  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: stretch;
   z-index: 100;
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  padding-top: env(safe-area-inset-top, 0);
 }
 
 .nav-tab {
@@ -500,7 +500,7 @@ input, textarea, select {
 /* FAB */
 .fab {
   position: fixed;
-  bottom: calc(var(--nav-height) + 16px);
+  bottom: 16px;
   right: 16px;
   width: 56px;
   height: 56px;
@@ -1467,7 +1467,7 @@ input[type=number] {
 /* ===== TOAST ===== */
 .toast {
   position: fixed;
-  bottom: calc(var(--nav-height) + 16px);
+  bottom: 16px;
   left: 50%;
   transform: translateX(-50%) translateY(0);
   background: var(--surface2);
