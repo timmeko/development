@@ -186,6 +186,16 @@
     return count;
   };
 
+  // Total quarters a player is assigned across all 4 quarters of this game
+  SGM.getQuartersScheduled = function(playerId, game) {
+    var count = 0;
+    for (var q = 1; q <= 4; q++) {
+      var lineup = SGM.getQuarterLineup(game, q);
+      if (Object.values(lineup).indexOf(playerId) !== -1) count++;
+    }
+    return count;
+  };
+
   SGM.getFairnessScore = function(playerId, gameHistory) {
     var history = gameHistory.filter(function(h) { return h.playerId === playerId && h.attended; });
     if (history.length === 0) return 0;

@@ -174,17 +174,18 @@
       );
     }
 
-    var viewQ   = liveQ();
-    var isLiveQ = (viewQ === game.currentQuarter);
-    var warnings = SGM.computeWarnings(game, state, viewQ);
-    var showWarn = !session.warningsDismissed && warnings.length > 0;
+    var viewQ      = liveQ();
+    var isLiveQ    = (viewQ === game.currentQuarter);   // the active quarter
+    var isEditable = (viewQ >= game.currentQuarter);    // current or future = editable
+    var warnings   = SGM.computeWarnings(game, state, viewQ);
+    var showWarn   = !session.warningsDismissed && warnings.length > 0;
 
-    // Quarter tabs
+    // Quarter tabs — past quarters read-only, current + future editable
     var tabs = [1, 2, 3, 4].map(function (q) {
       var cls = 'q-tab';
-      if (q === viewQ) cls += ' active';
+      if (q === viewQ)              cls += ' active';
       else if (q < game.currentQuarter) cls += ' past';
-      else cls += ' future';
+      else                          cls += ' future';
       return '<button class="' + cls + '" data-action="view-quarter" data-q="' + q + '">Q' + q + '</button>';
     }).join('');
 
@@ -203,19 +204,19 @@
         '</div>';
     }
 
-    // Read-only notice for past/future quarters
-    var readonlyNotice = !isLiveQ
-      ? '<div class="readonly-notice">Viewing Q' + viewQ + ' \u2014 read only. Tap Q' + game.currentQuarter + ' to edit.</div>'
+    // Read-only notice only for past quarters
+    var readonlyNotice = (viewQ < game.currentQuarter)
+      ? '<div class="readonly-notice">Q' + viewQ + ' already played \u2014 read only</div>'
       : '';
 
-    // Copy Prior Quarter button
-    // Q1 → no copy; Q2 → copy Q1; Q3 → copy Q1 (N-2); Q4 → copy Q2 (N-2)
+    // Copy Prior Quarter button — available for any editable quarter
+    // Q1 → none; Q2 → copy Q1; Q3 → copy Q1 (N-2); Q4 → copy Q2 (N-2)
     var priorQ = viewQ >= 3 ? viewQ - 2 : (viewQ === 2 ? 1 : 0);
-    var copyBtn = (isLiveQ && priorQ > 0)
+    var copyBtn = (isEditable && priorQ > 0)
       ? '<button class="btn btn-secondary" data-action="copy-prior" data-from-q="' + priorQ + '">Copy Q' + priorQ + '</button>'
       : '';
 
-    // Advance / End button
+    // Advance / End button — only on the live quarter
     var advBtn = '';
     if (isLiveQ) {
       advBtn = game.currentQuarter < 4
@@ -223,13 +224,11 @@
         : '<button class="btn btn-danger"  style="flex:1;" data-action="end-game">End Game</button>';
     }
 
-    // Field size edit button (always visible in live quarter)
+    // Field size button — only on live quarter
     var f = game.formation;
     var totalPlayers = 1 + f.defense + f.midfield + f.forward;
     var fieldSizeBtn = isLiveQ
-      ? '<button class="btn btn-secondary btn-sm" data-action="edit-formation">' +
-          totalPlayers + ' players' +
-        '</button>'
+      ? '<button class="btn btn-secondary btn-sm" data-action="edit-formation">' + totalPlayers + ' players</button>'
       : '';
 
     return (
@@ -247,14 +246,14 @@
         '</div>' +
         warnHTML +
         readonlyNotice +
-        renderField(game, viewQ, isLiveQ) +
-        renderBench(game, viewQ, isLiveQ) +
+        renderField(game, viewQ, isEditable) +
+        renderBench(game, viewQ, isEditable) +
         '<div class="live-footer">' + fieldSizeBtn + copyBtn + advBtn + '</div>' +
       '</div>'
     );
   }
 
-  function renderField(game, quarterNum, isLiveQ) {
+  function renderField(game, quarterNum, isEditable) {
     var positions = SGM.getPositionsForGame(game);
     var lineup    = SGM.getQuarterLineup(game, quarterNum);
 
@@ -265,7 +264,7 @@
 
     function row(ids) {
       return '<div class="field-row">' +
-        ids.map(function (id) { return renderSlot(id, lineup, game, quarterNum, isLiveQ); }).join('') +
+        ids.map(function (id) { return renderSlot(id, lineup, game, quarterNum, isEditable); }).join('') +
       '</div>';
     }
 
@@ -279,26 +278,26 @@
     );
   }
 
-  function renderSlot(posId, lineup, game, quarterNum, isLiveQ) {
+  function renderSlot(posId, lineup, game, quarterNum, isEditable) {
     var posType  = SGM.getPositionType(posId);
     var pid      = lineup[posId];
     var player   = pid ? SGM.getPlayer(state, pid) : null;
     var doneQ    = quarterNum - 1;
 
-    var cls = 'position-slot position-slot--' + posType + (isLiveQ ? '' : ' readonly');
-    var attrs = isLiveQ
+    var cls = 'position-slot position-slot--' + posType + (isEditable ? '' : ' readonly');
+    var attrs = isEditable
       ? 'data-action="open-picker" data-pos-id="' + posId + '" data-quarter="' + quarterNum + '"'
       : '';
 
     var inner = '';
     if (player) {
-      var qp = SGM.getQuartersPlayedThisGame(player.id, game, doneQ);
+      var scheduled = SGM.getQuartersScheduled(player.id, game);
       inner =
         '<div class="slot-band-dot band-dot band-dot--' + player.band + '"></div>' +
         '<div class="slot-label">' + slotLabel(posId) + '</div>' +
         '<div class="slot-player">' + esc(player.name) + '</div>' +
         (player.jersey ? '<div class="slot-jersey">#' + esc(player.jersey) + '</div>' : '') +
-        '<div class="quarters-badge" style="margin-top:2px;">' + qp + 'q</div>';
+        '<div class="quarters-badge" style="margin-top:2px;">' + scheduled + 'q</div>';
     } else {
       inner =
         '<div class="slot-label">' + slotLabel(posId) + '</div>' +
@@ -308,21 +307,19 @@
     return '<div class="' + cls + '" ' + attrs + '>' + inner + '</div>';
   }
 
-  function renderBench(game, quarterNum, isLiveQ) {
+  function renderBench(game, quarterNum, isEditable) {
     var bench  = SGM.getBenchPlayers(game, state, quarterNum);
     var sorted = SGM.sortBench(bench, game, state);
-    var doneQ  = quarterNum - 1;
-
     var chips = sorted.map(function (p) {
-      var qp       = SGM.getQuartersPlayedThisGame(p.id, game, doneQ);
-      var needsMin = doneQ > 0 && qp < 2;
-      var attrs    = isLiveQ ? 'data-action="bench-tap" data-player-id="' + p.id + '"' : '';
+      var scheduled = SGM.getQuartersScheduled(p.id, game);
+      var needsMin  = game.currentQuarter > 1 && scheduled < 2;
+      var attrs     = isEditable ? 'data-action="bench-tap" data-player-id="' + p.id + '"' : '';
       return (
         '<div class="bench-chip" ' + attrs + '>' +
           bandDot(p.band) +
           '<span class="bench-name">' + esc(p.name) + '</span>' +
           (p.jersey ? '<span class="bench-jersey">#' + esc(p.jersey) + '</span>' : '') +
-          '<span class="quarters-badge">' + qp + 'q</span>' +
+          '<span class="quarters-badge">' + scheduled + 'q</span>' +
           (needsMin ? '<span class="needs-min-tag">Needs min</span>' : '') +
         '</div>'
       );
