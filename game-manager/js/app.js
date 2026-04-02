@@ -157,6 +157,9 @@
           '</div>' +
           '<button class="btn btn-secondary btn-full" style="margin-top:12px;" data-action="go-roster">Manage Roster</button>' +
         '</div>' +
+        '<div style="margin-top:8px;text-align:center;">' +
+          '<button class="btn btn-ghost btn-sm" style="color:var(--muted);font-size:12px;" data-action="restart-session">Reset All Data</button>' +
+        '</div>' +
       '</div>'
     );
   }
@@ -777,6 +780,13 @@
 
       case 'close-modal':
         closeModal();
+        break;
+
+      case 'restart-session':
+        if (confirm('Reset all data and start fresh?\n\nThis clears the roster, all games, and game history.')) {
+          SGM.clearState();
+          window.location.reload();
+        }
         break;
     }
   }
