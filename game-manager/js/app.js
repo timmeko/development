@@ -1221,7 +1221,6 @@
             ' data-quarter="' + quarterNum + '">' +
             bandDot(p.band) +
             '<span class="picker-name">' + esc(p.name) + '</span>' +
-            (p.jersey ? '<span class="picker-jersey">#' + esc(p.jersey) + '</span>' : '') +
             playerHistory(p.id) +
             '<span class="quarters-badge">' + qp + 'q</span>' +
           '</div>'
