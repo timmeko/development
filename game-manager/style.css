@@ -861,7 +861,7 @@ input, textarea, select {
 
 /* Bench Section */
 .bench-section {
-  padding: 8px 12px;
+  padding: 8px 12px 80px;
   border-top: 1px solid var(--border);
 }
 
@@ -945,16 +945,18 @@ input, textarea, select {
 /* Live Footer */
 .live-footer {
   position: sticky;
-  bottom: var(--nav-height);
+  bottom: 0;
   left: 0;
   right: 0;
   background: var(--bg);
   border-top: 1px solid var(--border);
   padding: 10px 12px;
+  padding-bottom: max(10px, env(safe-area-inset-bottom, 10px));
   display: flex;
   gap: 8px;
   z-index: 40;
 }
+
 
 .live-footer .btn {
   font-size: 14px;
