@@ -125,7 +125,46 @@
     var lineup = {};
     positions.forEach(function(p) { lineup[p] = null; });
 
-    if (quarterNum <= 1) return lineup;
+    if (quarterNum <= 1) {
+      // Q1: no prior quarter info, sort by band balance then fairness
+      var available0 = SGM.getAvailablePlayers(game, state);
+      var sorted0 = available0.slice().sort(function(a, b) {
+        return SGM.getFairnessScore(a.id, state.gameHistory) - SGM.getFairnessScore(b.id, state.gameHistory);
+      });
+      var selected0 = sorted0.slice(0, positions.length);
+      var filled0 = new Set();
+      // preferred pass
+      positions.forEach(function(posId) {
+        var posType = SGM.getPositionType(posId);
+        for (var i = 0; i < selected0.length; i++) {
+          if (filled0.has(selected0[i].id)) continue;
+          if (SGM.getPositionMatch(selected0[i], posType) === 'preferred') {
+            lineup[posId] = selected0[i].id; filled0.add(selected0[i].id); break;
+          }
+        }
+      });
+      // secondary pass
+      positions.forEach(function(posId) {
+        if (lineup[posId]) return;
+        var posType = SGM.getPositionType(posId);
+        for (var i = 0; i < selected0.length; i++) {
+          if (filled0.has(selected0[i].id)) continue;
+          if (SGM.getPositionMatch(selected0[i], posType) !== 'none') {
+            lineup[posId] = selected0[i].id; filled0.add(selected0[i].id); break;
+          }
+        }
+      });
+      // fill remainder
+      positions.forEach(function(posId) {
+        if (lineup[posId]) return;
+        for (var i = 0; i < selected0.length; i++) {
+          if (!filled0.has(selected0[i].id)) {
+            lineup[posId] = selected0[i].id; filled0.add(selected0[i].id); break;
+          }
+        }
+      });
+      return lineup;
+    }
 
     var available = SGM.getAvailablePlayers(game, state);
 
