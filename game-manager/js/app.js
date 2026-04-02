@@ -1196,15 +1196,24 @@
 
     var recs = SGM.recommend(posType, quarterNum, game, state, curPid);
 
+    function playerHistory(pid) {
+      var cells = '';
+      for (var q = 1; q < game.currentQuarter; q++) {
+        var qlu = SGM.getQuarterLineup(game, q);
+        var posPlayed = null;
+        Object.keys(qlu).forEach(function (k) { if (qlu[k] === pid) posPlayed = k; });
+        var lbl = posPlayed ? slotLabel(posPlayed) : '\u2014';
+        cells += '<span class="ph-cell"><span class="ph-hdr">Q' + q + '</span>' +
+                 '<span class="ph-val' + (posPlayed ? '' : ' ph-val--bench') + '">' + lbl + '</span></span>';
+      }
+      return cells ? '<span class="picker-history">' + cells + '</span>' : '';
+    }
+
     function pickerSection(items, hdrCls, label) {
       if (!items.length) return '';
       var rows = items.map(function (r) {
-        var p         = r.player;
-        var qp        = r.quartersThisGame;
-        var reason    = r.reasons[0] || '';
-        var tagCls    = r.category === 'best' ? 'reason-tag--best'
-                      : r.category === 'less_ideal' ? 'reason-tag--bad'
-                      : 'reason-tag--warn';
+        var p  = r.player;
+        var qp = r.quartersThisGame;
         return (
           '<div class="picker-row" data-action="assign-player"' +
             ' data-player-id="' + p.id + '"' +
@@ -1213,8 +1222,8 @@
             bandDot(p.band) +
             '<span class="picker-name">' + esc(p.name) + '</span>' +
             (p.jersey ? '<span class="picker-jersey">#' + esc(p.jersey) + '</span>' : '') +
+            playerHistory(p.id) +
             '<span class="quarters-badge">' + qp + 'q</span>' +
-            (reason ? '<span class="reason-tag ' + tagCls + '">' + esc(reason) + '</span>' : '') +
           '</div>'
         );
       }).join('');
