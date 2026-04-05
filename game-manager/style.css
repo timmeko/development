@@ -1325,6 +1325,20 @@ input, textarea, select {
   font-weight: 700;
 }
 
+.pt-pos-cell {
+  padding: 6px 4px;
+  white-space: nowrap;
+}
+
+.pt-pos-cell--bench {
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.pt-name-cell {
+  white-space: nowrap;
+}
+
 /* ===== FEASIBILITY INDICATOR ===== */
 .feasibility-bar {
   display: flex;

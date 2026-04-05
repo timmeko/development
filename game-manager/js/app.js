@@ -238,6 +238,8 @@
       ? '<button class="btn btn-secondary" data-action="autofill-quarter" data-q="' + viewQ + '">Autofill</button>'
       : '';
 
+    var posTableBtn = '<button class="btn btn-secondary btn-sm" data-action="show-positions-table" title="Positions by quarter">Positions</button>';
+
     return (
       '<div class="live-view">' +
         '<div class="live-header">' +
@@ -255,7 +257,7 @@
         readonlyNotice +
         renderField(game, viewQ, isEditable) +
         renderBench(game, viewQ, isEditable) +
-        '<div class="live-footer">' + fieldSizeBtn + copyBtn + autofillBtn + advBtn + '</div>' +
+        '<div class="live-footer">' + fieldSizeBtn + copyBtn + autofillBtn + posTableBtn + advBtn + '</div>' +
       '</div>'
     );
   }
@@ -470,10 +472,11 @@
     var html        = '';
     var isFullscreen = false;
     switch (session.modal.type) {
-      case 'picker':      html = renderPickerModal(session.modal.data);     break;
-      case 'player-form': html = renderPlayerFormModal(session.modal.data); isFullscreen = true; break;
-      case 'transition':       html = renderTransitionModal(session.modal.data);    break;
-      case 'formation-edit':   html = renderFormationEditModal(session.modal.data); break;
+      case 'picker':           html = renderPickerModal(session.modal.data);          break;
+      case 'player-form':      html = renderPlayerFormModal(session.modal.data); isFullscreen = true; break;
+      case 'transition':       html = renderTransitionModal(session.modal.data);         break;
+      case 'formation-edit':   html = renderFormationEditModal(session.modal.data);      break;
+      case 'positions-table':  html = renderPositionsTableModal();                       break;
     }
 
     container.innerHTML = html;
@@ -796,6 +799,10 @@
         closeModal();
         break;
 
+      case 'show-positions-table':
+        setSession({ modal: { type: 'positions-table', data: {} } });
+        break;
+
       case 'restart-session':
         if (confirm('Reset all data and start fresh?\n\nThis clears the roster, all games, and game history.')) {
           SGM.clearState();
@@ -1087,7 +1094,8 @@
               '<tbody>' + tableRows + '</tbody>' +
             '</table>' +
           '</div>' +
-          '<button class="btn btn-primary btn-full" style="margin-top:20px;" data-action="finish-game">Save &amp; Done</button>' +
+          '<button class="btn btn-secondary btn-full" style="margin-top:12px;" data-action="show-positions-table">View Positions by Quarter</button>' +
+          '<button class="btn btn-primary btn-full" style="margin-top:8px;" data-action="finish-game">Save &amp; Done</button>' +
         '</div>' +
       '</div>'
     );
@@ -1177,6 +1185,55 @@
   }
 
   // ─── PLAYER PICKER MODAL ─────────────────────────────────────────────────
+
+  // ─── POSITIONS TABLE MODAL ───────────────────────────────────────────────
+
+  function renderPositionsTableModal() {
+    var game = activeGame();
+    if (!game) return '';
+
+    var players = state.roster.filter(function (p) {
+      var s = game.attendance[p.id] || 'expected';
+      return s !== 'absent';
+    }).sort(function (a, b) { return a.name.localeCompare(b.name); });
+
+    var rows = players.map(function (p) {
+      var cells = [1, 2, 3, 4].map(function (q) {
+        var lineup = SGM.getQuarterLineup(game, q);
+        var posId  = Object.keys(lineup).find(function (k) { return lineup[k] === p.id; });
+        if (!posId) return '<td class="pt-pos-cell pt-pos-cell--bench">\u2013</td>';
+        var posType = SGM.getPositionType(posId);
+        return '<td class="pt-pos-cell">' + posChip(posType) + '</td>';
+      }).join('');
+      var total = SGM.getQuartersScheduled(p.id, game);
+      return (
+        '<tr>' +
+          '<td class="pt-name-cell">' + bandDot(p.band) + ' ' + esc(p.name) + '</td>' +
+          cells +
+          '<td class="pt-total" style="color:var(--primary)">' + total + '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    return (
+      '<div class="modal-handle"></div>' +
+      '<div class="modal-header">' +
+        '<span class="modal-title">Positions by Quarter</span>' +
+        '<button class="modal-close" data-action="close-modal">\u00d7</button>' +
+      '</div>' +
+      '<div class="modal-body">' +
+        '<div class="scroll-x">' +
+          '<table class="pt-table">' +
+            '<thead><tr>' +
+              '<th style="text-align:left;">Player</th>' +
+              '<th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Tot</th>' +
+            '</tr></thead>' +
+            '<tbody>' + rows + '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>'
+    );
+  }
 
   function renderPickerModal(data) {
     var posId     = data.posId;
