@@ -1214,41 +1214,90 @@ input, textarea, select {
 
 /* Quarter Transition Modal */
 .transition-modal {
-  padding: 20px 16px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .transition-title {
   font-size: 20px;
   font-weight: 800;
   text-align: center;
+  margin-bottom: 4px;
 }
 
-.transition-summary-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px;
+.transition-section {
   background: var(--bg);
   border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.summary-icon {
-  font-size: 20px;
+.transition-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.transition-section-label {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.transition-goal-badge {
+  background: var(--primary);
+  color: #000;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 10px;
+  padding: 0 8px;
+  line-height: 22px;
+  min-width: 22px;
+  text-align: center;
+}
+
+.goal-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.goal-entry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.goal-entry .goal-scorer-select {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+.goal-remove-btn {
   flex-shrink: 0;
+  padding: 4px 8px;
+  font-size: 16px;
   line-height: 1;
 }
 
-.summary-text {
-  font-size: 13px;
-  line-height: 1.5;
+.goal-stepper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.summary-label {
-  font-weight: 700;
-  margin-bottom: 2px;
+.transition-notes {
+  width: 100%;
+  resize: vertical;
+  min-height: 64px;
+  box-sizing: border-box;
+  font-size: 14px;
 }
 
 /* Post Game */
@@ -1279,6 +1328,64 @@ input, textarea, select {
 .postgame-score .vs-text {
   font-size: 16px;
   color: var(--muted);
+}
+
+/* Quarter Log (postgame) */
+.quarter-log {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quarter-log-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.quarter-log-row {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.quarter-log-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quarter-log-label {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.quarter-log-score {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--primary);
+}
+
+.quarter-log-scorers {
+  font-size: 13px;
+  color: var(--text);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.quarter-log-notes {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  white-space: pre-wrap;
 }
 
 .pt-table {

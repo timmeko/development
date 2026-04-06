@@ -97,10 +97,10 @@
       currentQuarter:  data.currentQuarter || 1,
       attendance:      data.attendance || {},
       quarters: {
-        1: { lineup: Object.assign({}, emptyLineup) },
-        2: { lineup: Object.assign({}, emptyLineup) },
-        3: { lineup: Object.assign({}, emptyLineup) },
-        4: { lineup: Object.assign({}, emptyLineup) }
+        1: { lineup: Object.assign({}, emptyLineup), notes: '', goals: [], goalsAgainst: 0 },
+        2: { lineup: Object.assign({}, emptyLineup), notes: '', goals: [], goalsAgainst: 0 },
+        3: { lineup: Object.assign({}, emptyLineup), notes: '', goals: [], goalsAgainst: 0 },
+        4: { lineup: Object.assign({}, emptyLineup), notes: '', goals: [], goalsAgainst: 0 }
       }
     };
   };

@@ -43,7 +43,7 @@ SGM.DEFAULT_FORMATION          // { defense:3, midfield:3, forward:2 }
 SGM.STATUS_CYCLE               // ['expected', 'absent']
 SGM.STATUS_LABELS              // { expected:'Playing', absent:'Out' }
 SGM.createPlayer(data)         // → player object
-SGM.createGame(data)           // → game with empty quarters 1-4
+SGM.createGame(data)           // → game with empty quarters 1-4 (each has lineup, notes, goals[], goalsAgainst)
 SGM.buildInitialState()        // → { roster, games, gameHistory, activeGameId }
 SGM.saveState(state)
 SGM.getActiveGame(state)

@@ -758,11 +758,20 @@
 
       case 'advance-quarter':
         if (!game) break;
-        setSession({ modal: { type: 'transition', data: { fromQ: game.currentQuarter } } });
+        {
+          var fromQ = game.currentQuarter;
+          var qd    = game.quarters[fromQ];
+          setSession({ modal: { type: 'transition', data: {
+            fromQ:        fromQ,
+            goals:        (qd.goals || []).slice(),
+            goalsAgainst: qd.goalsAgainst || 0
+          }}});
+        }
         break;
 
       case 'confirm-advance': {
         if (!game) break;
+        saveTransitionData(game, session.modal.data.fromQ);
         var toQ      = parseInt(el.dataset.toQ);
         var prefilled = SGM.prefillQuarter(game, state, toQ);
         game.quarters[toQ].lineup = prefilled;
@@ -776,10 +785,58 @@
 
       case 'end-game':
         if (!game) break;
+        {
+          var fromQ = game.currentQuarter;
+          var qd    = game.quarters[fromQ];
+          setSession({ modal: { type: 'transition', data: {
+            fromQ:        fromQ,
+            isLast:       true,
+            goals:        (qd.goals || []).slice(),
+            goalsAgainst: qd.goalsAgainst || 0
+          }}});
+        }
+        break;
+
+      case 'confirm-end-game': {
+        if (!game) break;
+        saveTransitionData(game, session.modal.data.fromQ);
         game.status = 'complete';
         persist();
-        setSession({ view: 'postgame' });
+        closeModal(function () { setSession({ view: 'postgame' }); });
         break;
+      }
+
+      case 'transition-add-goal': {
+        var md = session.modal.data;
+        md.goals = captureGoalSelects();
+        md.goals.push({ playerId: null });
+        setSession({ modal: { type: 'transition', data: md } });
+        break;
+      }
+
+      case 'transition-remove-goal': {
+        var md = session.modal.data;
+        md.goals = captureGoalSelects();
+        md.goals.splice(parseInt(el.dataset.idx), 1);
+        setSession({ modal: { type: 'transition', data: md } });
+        break;
+      }
+
+      case 'transition-goals-against-inc': {
+        var md = session.modal.data;
+        md.goals = captureGoalSelects();
+        md.goalsAgainst = (md.goalsAgainst || 0) + 1;
+        setSession({ modal: { type: 'transition', data: md } });
+        break;
+      }
+
+      case 'transition-goals-against-dec': {
+        var md = session.modal.data;
+        md.goals = captureGoalSelects();
+        md.goalsAgainst = Math.max(0, (md.goalsAgainst || 0) - 1);
+        setSession({ modal: { type: 'transition', data: md } });
+        break;
+      }
 
       case 'finish-game': {
         if (!game) break;
@@ -933,62 +990,96 @@
 
   document.addEventListener('DOMContentLoaded', init);
 
+  // ─── QUARTER TRANSITION HELPERS ──────────────────────────────────────────
+
+  function captureGoalSelects() {
+    var goals = [];
+    document.querySelectorAll('.goal-scorer-select').forEach(function(sel) {
+      goals.push({ playerId: sel.value || null });
+    });
+    return goals;
+  }
+
+  function saveTransitionData(game, fromQ) {
+    var data    = session.modal.data;
+    var notesEl = document.getElementById('transition-notes');
+    var notes   = notesEl ? notesEl.value : (game.quarters[fromQ].notes || '');
+    var goals   = captureGoalSelects();
+    var q       = game.quarters[fromQ];
+    q.notes        = notes;
+    q.goals        = goals;
+    q.goalsAgainst = data.goalsAgainst || 0;
+  }
+
   // ─── QUARTER TRANSITION MODAL ────────────────────────────────────────────
 
   function renderTransitionModal(data) {
-    var game  = activeGame();
+    var game   = activeGame();
     if (!game) return '';
-    var fromQ = data.fromQ;
-    var toQ   = fromQ + 1;
+    var fromQ        = data.fromQ;
+    var isLast       = data.isLast || false;
+    var toQ          = fromQ + 1;
+    var goals        = data.goals || [];
+    var goalsAgainst = data.goalsAgainst || 0;
+    var existingNotes = game.quarters[fromQ].notes || '';
 
-    // Players who still need more minutes
-    var present  = SGM.getAvailablePlayers(game, state);
-    var belowMin = present.filter(function (p) {
-      return SGM.getQuartersPlayedThisGame(p.id, game, fromQ) < 2;
-    });
+    var present = SGM.getAvailablePlayers(game, state);
 
-    // Band balance for the quarter just completed
-    var fieldIds  = SGM.getPlayersOnField(game, fromQ);
-    var bandCnt   = SGM.computeBandBalance(fieldIds, state);
-    var feas      = SGM.computeFeasibility(game, state);
-    var feasLabel = { on_track: 'On Track', at_risk: 'At Risk', not_feasible: 'Not Feasible' }[feas];
-    var feasIcon  = { on_track: '\u2705', at_risk: '\u26a0\ufe0f', not_feasible: '\u274c' }[feas];
-    var feasColor = { on_track: 'var(--primary)', at_risk: 'var(--amber)', not_feasible: 'var(--red)' }[feas];
+    // Build goal scorer option list for a given selected player id
+    function goalOptions(selectedId) {
+      var opts = '<option value=""' + (selectedId ? '' : ' selected') + '>Unknown</option>';
+      present.forEach(function(p) {
+        opts += '<option value="' + esc(p.id) + '"' + (p.id === selectedId ? ' selected' : '') + '>' + esc(p.name) + '</option>';
+      });
+      return opts;
+    }
 
-    var belowHTML = belowMin.length
-      ? '<div class="transition-summary-item">' +
-          '<span class="summary-icon">\u26a0\ufe0f</span>' +
-          '<div class="summary-text">' +
-            '<div class="summary-label" style="color:var(--amber)">Needs more time</div>' +
-            belowMin.map(function (p) {
-              var qp = SGM.getQuartersPlayedThisGame(p.id, game, fromQ);
-              return esc(p.name) + ' (' + qp + 'q)';
-            }).join(', ') +
-          '</div>' +
+    var goalEntries = goals.map(function(g, i) {
+      return (
+        '<div class="goal-entry">' +
+          '<select class="goal-scorer-select form-input" data-idx="' + i + '">' +
+            goalOptions(g.playerId) +
+          '</select>' +
+          '<button class="btn btn-sm btn-danger goal-remove-btn" data-action="transition-remove-goal" data-idx="' + i + '">\u00d7</button>' +
         '</div>'
-      : '';
+      );
+    }).join('');
 
-    var bandHTML = fieldIds.length
-      ? '<div class="transition-summary-item">' +
-          '<span class="summary-icon">\ud83c\udf96\ufe0f</span>' +
-          '<div class="summary-text">' +
-            '<div class="summary-label">Q' + fromQ + ' Band Balance</div>' +
-            '<span style="color:var(--band1)">B1: ' + (bandCnt[1] || 0) + '</span> &middot; ' +
-            '<span style="color:var(--band2)">B2: ' + (bandCnt[2] || 0) + '</span> &middot; ' +
-            '<span style="color:var(--band3)">B3: ' + (bandCnt[3] || 0) + '</span>' +
+    var ourGoalsSection =
+      '<div class="transition-section">' +
+        '<div class="transition-section-header">' +
+          '<span class="transition-section-label">\u26bd Goals For</span>' +
+          '<div style="display:flex;align-items:center;gap:8px;">' +
+            '<span class="transition-goal-badge">' + goals.length + '</span>' +
+            '<button class="btn btn-sm btn-secondary" data-action="transition-add-goal">+ Goal</button>' +
           '</div>' +
-        '</div>'
-      : '';
+        '</div>' +
+        (goalEntries ? '<div class="goal-entries">' + goalEntries + '</div>' : '') +
+      '</div>';
 
-    var spots = 1 + game.formation.defense + game.formation.midfield + game.formation.forward;
-    var feasHTML =
-      '<div class="transition-summary-item">' +
-        '<span class="summary-icon">' + feasIcon + '</span>' +
-        '<div class="summary-text">' +
-          '<div class="summary-label" style="color:' + feasColor + '">Playing Time: ' + feasLabel + '</div>' +
-          present.length + ' players, ' + spots + ' spots/quarter' +
+    var againstSection =
+      '<div class="transition-section">' +
+        '<div class="transition-section-header">' +
+          '<span class="transition-section-label">\ud83d\udd34 Goals Against</span>' +
+          '<div class="goal-stepper">' +
+            '<button class="stepper-btn" data-action="transition-goals-against-dec">\u2212</button>' +
+            '<span class="stepper-val">' + goalsAgainst + '</span>' +
+            '<button class="stepper-btn" data-action="transition-goals-against-inc">+</button>' +
+          '</div>' +
         '</div>' +
       '</div>';
+
+    var notesSection =
+      '<div class="transition-section">' +
+        '<div class="transition-section-header">' +
+          '<span class="transition-section-label">\ud83d\udcdd Notes</span>' +
+        '</div>' +
+        '<textarea id="transition-notes" class="form-input transition-notes" rows="3" placeholder="Notes for Q' + fromQ + '...">' + esc(existingNotes) + '</textarea>' +
+      '</div>';
+
+    var continueBtn = isLast
+      ? '<button class="btn btn-danger btn-full" data-action="confirm-end-game">End Game</button>'
+      : '<button class="btn btn-primary btn-full" data-action="confirm-advance" data-to-q="' + toQ + '">Continue to Q' + toQ + '</button>';
 
     return (
       '<div class="modal-handle"></div>' +
@@ -999,11 +1090,11 @@
       '<div class="modal-body">' +
         '<div class="transition-modal">' +
           '<div class="transition-title">Q' + fromQ + ' Complete</div>' +
-          belowHTML + bandHTML + feasHTML +
+          ourGoalsSection + againstSection + notesSection +
         '</div>' +
       '</div>' +
       '<div class="modal-footer">' +
-        '<button class="btn btn-primary btn-full" data-action="confirm-advance" data-to-q="' + toQ + '">Continue to Q' + toQ + '</button>' +
+        continueBtn +
         '<button class="btn btn-ghost btn-full" style="margin-top:6px;" data-action="close-modal">Stay in Q' + fromQ + '</button>' +
       '</div>'
     );
@@ -1077,6 +1168,39 @@
       );
     }).join('');
 
+    // Quarter log: score + notes per quarter
+    var quarterLogRows = [1, 2, 3, 4].map(function(q) {
+      var qData       = game.quarters[q];
+      var goals       = qData.goals || [];
+      var against     = qData.goalsAgainst || 0;
+      var notes       = qData.notes || '';
+      var hasContent  = goals.length || against || notes;
+      if (!hasContent) return '';
+
+      var scorerLines = goals.map(function(g) {
+        var p = g.playerId ? SGM.getPlayer(state, g.playerId) : null;
+        return '\u26bd ' + (p ? esc(p.name) : 'Unknown');
+      }).join('  ');
+
+      return (
+        '<div class="quarter-log-row">' +
+          '<div class="quarter-log-header">' +
+            '<span class="quarter-log-label">Q' + q + '</span>' +
+            '<span class="quarter-log-score">' + goals.length + ' \u2013 ' + against + '</span>' +
+          '</div>' +
+          (scorerLines ? '<div class="quarter-log-scorers">' + scorerLines + '</div>' : '') +
+          (notes ? '<div class="quarter-log-notes">' + esc(notes) + '</div>' : '') +
+        '</div>'
+      );
+    }).filter(Boolean).join('');
+
+    var quarterLogSection = quarterLogRows
+      ? '<div class="quarter-log">' +
+          '<div class="quarter-log-title">Quarter Log</div>' +
+          quarterLogRows +
+        '</div>'
+      : '';
+
     return (
       '<div class="view postgame-view">' +
         '<div class="view-header"><h1>Game Complete</h1></div>' +
@@ -1085,6 +1209,7 @@
             '<div class="final-label">vs ' + esc(game.opponent || 'Opponent') + '</div>' +
             '<div class="score-display">' + game.score.home + ' \u2013 ' + game.score.away + '</div>' +
           '</div>' +
+          quarterLogSection +
           '<div class="scroll-x">' +
             '<table class="pt-table">' +
               '<thead><tr>' +
