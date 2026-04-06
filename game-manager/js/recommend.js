@@ -303,20 +303,29 @@
       }
     }
 
-    // belowMinimum: only warn on Q3 and Q4 when time is actually running out
-    var quartersLeft = 4 - quarterNum;
-    if (quartersLeft < 2) {
-      var completedUpTo = quarterNum - 1;
-      var present = SGM.getAvailablePlayers(game, state);
-      var belowMin = present.filter(function(p) {
-        var q = SGM.getQuartersPlayedThisGame(p.id, game, completedUpTo);
-        return q < 2;
+    // consecutiveQuarters: warn if any player in this lineup played more than 2 consecutive previous quarters
+    if (quarterNum > 3) {
+      var overplayed = fieldIds.filter(function(pid) {
+        var streak = 0;
+        for (var q = quarterNum - 1; q >= 1; q--) {
+          var qLineup = SGM.getQuarterLineup(game, q);
+          var qIds = Object.values(qLineup).filter(Boolean);
+          if (qIds.indexOf(pid) !== -1) {
+            streak++;
+          } else {
+            break;
+          }
+        }
+        return streak > 2;
       });
-      if (belowMin.length > 0) {
-        var names = belowMin.map(function(p) { return p.name; }).join(', ');
+      if (overplayed.length > 0) {
+        var names = overplayed.map(function(pid) {
+          var p = SGM.getPlayer(state, pid);
+          return p ? p.name : pid;
+        }).join(', ');
         warnings.push({
-          type: 'belowMinimum',
-          message: 'Under 2 quarters played: ' + names
+          type: 'consecutiveQuarters',
+          message: 'Played every quarter so far: ' + names
         });
       }
     }

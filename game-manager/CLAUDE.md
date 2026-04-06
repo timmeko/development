@@ -119,7 +119,7 @@ var isLiveQ    = viewQ === game.currentQuarter; // only for advance/end/field-si
 
 ## Warnings
 - `missingKeeper`, `duplicatePlayer`, `invalidCount`, `bandImbalance`
-- `belowMinimum` — only fires Q3 and Q4 (`quartersLeft < 2`)
+- `consecutiveQuarters` — fires in Q4 when a player in the lineup played all 3 previous quarters
 - All warnings are advisory only, never blocking
 
 ---
