@@ -223,8 +223,8 @@
     var advBtn = '';
     if (isLiveQ) {
       advBtn = game.currentQuarter < 4
-        ? '<button class="btn btn-primary" style="flex:1;" data-action="advance-quarter">End Q' + game.currentQuarter + ' \u2192</button>'
-        : '<button class="btn btn-danger"  style="flex:1;" data-action="end-game">End Game</button>';
+        ? '<button class="btn btn-primary" style="flex:1;" data-action="advance-quarter">Begin Q' + game.currentQuarter + ' \u2192</button>'
+        : '<button class="btn btn-primary" style="flex:1;" data-action="end-game">Begin Q4 \u2192</button>';
     }
 
     // Field size button — only on live quarter
@@ -840,6 +840,7 @@
 
       case 'finish-game': {
         if (!game) break;
+        downloadGameCSV(game);
         state.roster.forEach(function (p) {
           var s = game.attendance[p.id] || 'expected';
           if (s !== 'expected') return;
@@ -1009,6 +1010,13 @@
     q.notes        = notes;
     q.goals        = goals;
     q.goalsAgainst = data.goalsAgainst || 0;
+    // Recompute overall score from all quarters
+    game.score.home = [1, 2, 3, 4].reduce(function(s, n) {
+      return s + ((game.quarters[n].goals || []).length);
+    }, 0);
+    game.score.away = [1, 2, 3, 4].reduce(function(s, n) {
+      return s + (game.quarters[n].goalsAgainst || 0);
+    }, 0);
   }
 
   // ─── QUARTER TRANSITION MODAL ────────────────────────────────────────────
@@ -1139,6 +1147,87 @@
         '<button class="btn btn-primary btn-full" data-action="save-formation">Apply to Remaining Quarters</button>' +
         '<p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px">Past quarters are not affected</p>' +
       '</div>';
+  }
+
+  // ─── CSV EXPORT ──────────────────────────────────────────────────────────
+
+  function downloadGameCSV(game) {
+    function posLabel(posId) {
+      if (posId === 'keeper') return 'Keeper';
+      var m = posId.match(/^(def|mid|fwd)-(\d+)$/);
+      if (!m) return posId;
+      var names = { def: 'Defender', mid: 'Midfielder', fwd: 'Forward' };
+      return (names[m[1]] || m[1]) + ' ' + m[2];
+    }
+
+    function csvRow(cells) {
+      return cells.map(function(cell) {
+        var s = String(cell == null ? '' : cell);
+        if (/[,"\n\r]/.test(s)) s = '"' + s.replace(/"/g, '""') + '"';
+        return s;
+      }).join(',');
+    }
+
+    var date = (game.createdAt || '').split('T')[0] || 'unknown';
+    var totalFor     = [1,2,3,4].reduce(function(s,n){ return s + ((game.quarters[n].goals||[]).length); }, 0);
+    var totalAgainst = [1,2,3,4].reduce(function(s,n){ return s + (game.quarters[n].goalsAgainst||0); }, 0);
+
+    var lines = [];
+
+    lines.push(csvRow(['Date', 'Opponent', 'Final Score']));
+    lines.push(csvRow([date, game.opponent || '', totalFor + ' - ' + totalAgainst]));
+    lines.push('');
+
+    lines.push(csvRow(['QUARTER LINEUPS', '', '']));
+    lines.push(csvRow(['Quarter', 'Position', 'Player']));
+    [1, 2, 3, 4].forEach(function(q) {
+      var lineup = SGM.getQuarterLineup(game, q);
+      Object.keys(lineup).forEach(function(posId) {
+        var pid = lineup[posId];
+        var playerName = '';
+        if (pid) { var p = SGM.getPlayer(state, pid); playerName = p ? p.name : ''; }
+        lines.push(csvRow(['Q' + q, posLabel(posId), playerName]));
+      });
+    });
+    lines.push('');
+
+    lines.push(csvRow(['GOALS', '', '']));
+    lines.push(csvRow(['Quarter', 'Type', 'Scorer']));
+    var hasGoals = false;
+    [1, 2, 3, 4].forEach(function(q) {
+      var qd = game.quarters[q];
+      (qd.goals || []).forEach(function(g) {
+        var p = g.playerId ? SGM.getPlayer(state, g.playerId) : null;
+        lines.push(csvRow(['Q' + q, 'For', p ? p.name : 'Unknown']));
+        hasGoals = true;
+      });
+      for (var i = 0; i < (qd.goalsAgainst || 0); i++) {
+        lines.push(csvRow(['Q' + q, 'Against', '']));
+        hasGoals = true;
+      }
+    });
+    if (!hasGoals) lines.push(csvRow(['', 'No goals recorded', '']));
+    lines.push('');
+
+    lines.push(csvRow(['NOTES', '']));
+    lines.push(csvRow(['Quarter', 'Notes']));
+    var hasNotes = false;
+    [1, 2, 3, 4].forEach(function(q) {
+      var notes = (game.quarters[q].notes || '').trim();
+      if (notes) { lines.push(csvRow(['Q' + q, notes])); hasNotes = true; }
+    });
+    if (!hasNotes) lines.push(csvRow(['', 'No notes recorded']));
+
+    var csv = lines.join('\r\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'game-' + date + '-' + (game.opponent || 'game').replace(/\s+/g, '-').toLowerCase() + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 
   // ─── POST-GAME VIEW ───────────────────────────────────────────────────────
