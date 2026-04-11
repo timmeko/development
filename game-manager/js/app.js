@@ -1445,6 +1445,9 @@
             '<tbody>' + rows + '</tbody>' +
           '</table>' +
         '</div>' +
+      '</div>' +
+      '<div class="modal-footer">' +
+        '<button class="btn btn-ghost btn-full" data-action="close-modal">Close</button>' +
       '</div>'
     );
   }
