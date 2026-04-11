@@ -14,7 +14,8 @@
     view: 'dashboard',   // dashboard | roster | setup | live | postgame
     modal: null,         // { type, data } or null
     viewingQuarter: null,
-    warningsDismissed: false
+    warningsDismissed: false,
+    selectedSlot: null   // { posId, quarterNum } — first tap of a two-tap swap
   };
 
   // Setup form local state (reset each time setup view opens)
@@ -212,6 +213,15 @@
       ? '<div class="readonly-notice">Q' + viewQ + ' already played \u2014 read only</div>'
       : '';
 
+    // Swap hint — shown while a slot in the current quarter is selected
+    var sel = session.selectedSlot;
+    var swapHint = '';
+    if (isEditable && sel && sel.quarterNum === viewQ) {
+      var selPlayer = SGM.getPlayer(state, game.quarters[viewQ].lineup[sel.posId]);
+      var selName   = selPlayer ? esc(selPlayer.name) : 'player';
+      swapHint = '<div class="swap-hint">Tap another player to swap \u00b7 tap <strong>' + selName + '</strong> again to edit</div>';
+    }
+
     // Copy Prior Quarter button — available for any editable quarter
     // Q1 → none; Q2 → copy Q1; Q3 → copy Q1 (N-2); Q4 → copy Q2 (N-2)
     var priorQ = viewQ >= 3 ? viewQ - 2 : (viewQ === 2 ? 1 : 0);
@@ -259,6 +269,7 @@
         '</div>' +
         warnHTML +
         readonlyNotice +
+        swapHint +
         renderField(game, viewQ, isEditable) +
         renderBench(game, viewQ, isEditable) +
         '<div class="live-footer">' + fieldSizeBtn + copyBtn + autofillBtn + importCsvBtn + posTableBtn + advBtn + '</div>' +
@@ -295,11 +306,18 @@
     var posType  = SGM.getPositionType(posId);
     var pid      = lineup[posId];
     var player   = pid ? SGM.getPlayer(state, pid) : null;
-    var doneQ    = quarterNum - 1;
 
-    var cls = 'position-slot position-slot--' + posType + (isEditable ? '' : ' readonly');
+    var sel         = session.selectedSlot;
+    var isSelected  = !!(sel && sel.posId === posId && sel.quarterNum === quarterNum);
+    var swapActive  = !!(sel && sel.quarterNum === quarterNum);
+
+    var cls = 'position-slot position-slot--' + posType;
+    if (!isEditable) cls += ' readonly';
+    if (isSelected)                     cls += ' position-slot--selected';
+    else if (swapActive && player)      cls += ' position-slot--swap-target';
+
     var attrs = isEditable
-      ? 'data-action="open-picker" data-pos-id="' + posId + '" data-quarter="' + quarterNum + '"'
+      ? 'data-action="tap-field-slot" data-pos-id="' + posId + '" data-quarter="' + quarterNum + '"'
       : '';
 
     var inner = '';
@@ -314,7 +332,7 @@
     } else {
       inner =
         '<div class="slot-label">' + slotLabel(posId) + '</div>' +
-        '<div class="slot-empty">Tap to assign</div>';
+        '<div class="slot-empty">' + (isEditable && swapActive ? 'Move here' : 'Tap to assign') + '</div>';
     }
 
     return '<div class="' + cls + '" ' + attrs + '>' + inner + '</div>';
@@ -495,6 +513,7 @@
   }
 
   function closeModal(cb) {
+    session.selectedSlot = null;
     var overlay   = document.getElementById('modal-overlay');
     var container = document.getElementById('modal-container');
     overlay.classList.remove('visible');
@@ -626,6 +645,7 @@
       case 'view-quarter':
         session.viewingQuarter    = parseInt(el.dataset.q);
         session.warningsDismissed = false;
+        session.selectedSlot      = null;
         render();
         break;
 
@@ -638,9 +658,50 @@
         setSession({ modal: { type: 'picker', data: { posId: el.dataset.posId, quarterNum: parseInt(el.dataset.quarter) } } });
         break;
 
+      // Two-tap swap: first tap selects, second tap on a different slot swaps them.
+      // Tapping the already-selected slot opens the picker (to change/remove).
+      // Tapping an empty slot while a slot is selected moves the player there.
+      case 'tap-field-slot': {
+        if (!game) break;
+        var tapPosId = el.dataset.posId;
+        var tapQ     = parseInt(el.dataset.quarter);
+        var tapLu    = game.quarters[tapQ].lineup;
+        var tapPid   = tapLu[tapPosId];
+        var sel      = session.selectedSlot;
+
+        if (sel) {
+          if (sel.posId === tapPosId && sel.quarterNum === tapQ) {
+            // Second tap on the same slot → open picker to change/remove player
+            session.selectedSlot = null;
+            setSession({ modal: { type: 'picker', data: { posId: tapPosId, quarterNum: tapQ } } });
+          } else {
+            // Tap a different slot → swap players (works for occupied↔occupied and occupied↔empty)
+            var srcLu            = game.quarters[sel.quarterNum].lineup;
+            var srcPid           = srcLu[sel.posId];
+            srcLu[sel.posId]     = tapPid;  // null if target was empty
+            tapLu[tapPosId]      = srcPid;
+            session.selectedSlot      = null;
+            session.warningsDismissed = false;
+            persist();
+            render();
+          }
+        } else {
+          if (tapPid) {
+            // First tap on an occupied slot → select it
+            session.selectedSlot = { posId: tapPosId, quarterNum: tapQ };
+            render();
+          } else {
+            // Tap on an empty slot with no selection → open picker
+            setSession({ modal: { type: 'picker', data: { posId: tapPosId, quarterNum: tapQ } } });
+          }
+        }
+        break;
+      }
+
       case 'bench-tap': {
         // Find the first empty preferred or any empty slot for this player
         if (!game) break;
+        session.selectedSlot = null;
         var bpid    = el.dataset.playerId;
         var bPlayer = SGM.getPlayer(state, bpid);
         var lineup  = SGM.getQuarterLineup(game, game.currentQuarter);
@@ -693,6 +754,7 @@
         game.quarters[aq].lineup = SGM.prefillQuarter(game, state, aq);
         persist();
         session.warningsDismissed = false;
+        session.selectedSlot      = null;
         render();
         break;
       }
@@ -757,6 +819,7 @@
         game.quarters[curQ].lineup = Object.assign({}, fromLu);
         persist();
         session.warningsDismissed = false;
+        session.selectedSlot      = null;
         render();
         break;
       }
