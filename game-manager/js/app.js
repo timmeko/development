@@ -238,6 +238,10 @@
       ? '<button class="btn btn-secondary" data-action="autofill-quarter" data-q="' + viewQ + '">Autofill</button>'
       : '';
 
+    var importCsvBtn = isEditable
+      ? '<button class="btn btn-secondary btn-sm" data-action="import-lineup-csv" title="Import lineup from saved CSV">Import CSV</button>'
+      : '';
+
     var posTableBtn = '<button class="btn btn-secondary btn-sm" data-action="show-positions-table" title="Positions by quarter">Positions</button>';
 
     return (
@@ -257,7 +261,7 @@
         readonlyNotice +
         renderField(game, viewQ, isEditable) +
         renderBench(game, viewQ, isEditable) +
-        '<div class="live-footer">' + fieldSizeBtn + copyBtn + autofillBtn + posTableBtn + advBtn + '</div>' +
+        '<div class="live-footer">' + fieldSizeBtn + copyBtn + autofillBtn + importCsvBtn + posTableBtn + advBtn + '</div>' +
       '</div>'
     );
   }
@@ -690,6 +694,58 @@
         persist();
         session.warningsDismissed = false;
         render();
+        break;
+      }
+
+      case 'import-lineup-csv': {
+        if (!game) break;
+        var fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.csv,text/csv';
+        document.body.appendChild(fileInput);
+        fileInput.addEventListener('change', function () {
+          var file = fileInput.files[0];
+          document.body.removeChild(fileInput);
+          if (!file) return;
+          var reader = new FileReader();
+          reader.onload = function (evt) {
+            var result = importLineupFromCSV(evt.target.result);
+            if (result.error) {
+              alert('Could not import lineup:\n' + result.error);
+              return;
+            }
+            var f = result.formation;
+            var totalPlayers = 1 + f.defense + f.midfield + f.forward;
+            var msg = 'Import lineup from CSV?\n\n' +
+              'Detected: ' + totalPlayers + ' players  (' +
+              f.defense + ' def \u00b7 ' + f.midfield + ' mid \u00b7 ' + f.forward + ' fwd)\n' +
+              'This will replace all 4 quarter lineups.';
+            if (result.unmatched.length) {
+              msg += '\n\nNot found in roster (will be left empty):\n' + result.unmatched.join(', ');
+            }
+            if (!confirm(msg)) return;
+
+            // Apply detected formation to the game
+            game.formation = f;
+
+            // Resize and populate all quarter lineups
+            var newPositions = SGM.getPositionsForFormation(f);
+            [1, 2, 3, 4].forEach(function (q) {
+              var imported = result.lineups[q] || {};
+              var lu = {};
+              newPositions.forEach(function (posId) {
+                lu[posId] = imported.hasOwnProperty(posId) ? imported[posId] : null;
+              });
+              game.quarters[q].lineup = lu;
+            });
+
+            persist();
+            session.warningsDismissed = false;
+            render();
+          };
+          reader.readAsText(file);
+        });
+        fileInput.click();
         break;
       }
 
@@ -1228,6 +1284,125 @@
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  }
+
+  // ─── CSV LINEUP IMPORT ───────────────────────────────────────────────────
+
+  // Proper CSV line parser that handles quoted fields
+  function parseCsvLine(line) {
+    var result = [], cell = '', inQuote = false;
+    for (var k = 0; k < line.length; k++) {
+      var ch = line[k];
+      if (inQuote) {
+        if (ch === '"') {
+          if (line[k + 1] === '"') { cell += '"'; k++; }
+          else inQuote = false;
+        } else {
+          cell += ch;
+        }
+      } else {
+        if (ch === '"') { inQuote = true; }
+        else if (ch === ',') { result.push(cell); cell = ''; }
+        else { cell += ch; }
+      }
+    }
+    result.push(cell);
+    return result;
+  }
+
+  // Convert export-style position label back to posId ("Defender 2" → "def-2")
+  function posLabelToId(label) {
+    if (!label) return null;
+    var s = label.trim();
+    if (/^keeper$/i.test(s)) return 'keeper';
+    var m = s.match(/^(Defender|Midfielder|Forward)\s+(\d+)$/i);
+    if (!m) return null;
+    var prefix = { defender: 'def', midfielder: 'mid', forward: 'fwd' }[m[1].toLowerCase()];
+    return prefix ? prefix + '-' + m[2] : null;
+  }
+
+  // Parse a previously exported game CSV and extract lineup data.
+  // Returns { formation, lineups:{1..4}, unmatched:[] } or { error: string }
+  function importLineupFromCSV(text) {
+    var lines = text.split(/\r?\n/);
+
+    // Locate the QUARTER LINEUPS section header
+    var sectionIdx = -1;
+    for (var i = 0; i < lines.length; i++) {
+      if (/^quarter lineups/i.test(lines[i].trim())) { sectionIdx = i; break; }
+    }
+    if (sectionIdx === -1) return { error: 'No quarter lineup section found in this file.' };
+
+    // Find the column header row (Quarter,Position,Player)
+    var dataStart = -1;
+    for (var j = sectionIdx + 1; j < lines.length; j++) {
+      if (/^quarter,position,player/i.test(lines[j].trim())) { dataStart = j + 1; break; }
+    }
+    if (dataStart === -1) return { error: 'Could not find lineup header row (Quarter,Position,Player).' };
+
+    // Collect data rows until an empty line or non-Q row
+    var rows = [];
+    for (var k = dataStart; k < lines.length; k++) {
+      var trimmed = lines[k].trim();
+      if (!trimmed) break;
+      var cells = parseCsvLine(trimmed);
+      var qm = (cells[0] || '').trim().match(/^Q(\d)$/i);
+      if (!qm) break;
+      rows.push({ q: parseInt(qm[1]), pos: (cells[1] || '').trim(), name: (cells[2] || '').trim() });
+    }
+    if (rows.length === 0) return { error: 'No lineup rows found in this file.' };
+
+    // Auto-detect formation by counting position types in the first quarter present
+    var firstQ = rows[0].q;
+    var q1rows = rows.filter(function (r) { return r.q === firstQ; });
+    var defCount = 0, midCount = 0, fwdCount = 0;
+    q1rows.forEach(function (r) {
+      var p = r.pos.toLowerCase();
+      if (p.indexOf('defender') === 0)   defCount++;
+      else if (p.indexOf('midfielder') === 0) midCount++;
+      else if (p.indexOf('forward') === 0)    fwdCount++;
+    });
+    if (defCount === 0 && midCount === 0 && fwdCount === 0) {
+      return { error: 'Could not detect formation from lineup data.' };
+    }
+
+    var formation = {
+      defense:  defCount  || SGM.DEFAULT_FORMATION.defense,
+      midfield: midCount  || SGM.DEFAULT_FORMATION.midfield,
+      forward:  fwdCount  || SGM.DEFAULT_FORMATION.forward
+    };
+
+    // Build case-insensitive name → player id map from current roster
+    var nameToId = {};
+    state.roster.forEach(function (p) {
+      nameToId[p.name.toLowerCase().trim()] = p.id;
+    });
+
+    var unmatched = [];
+    var positions = SGM.getPositionsForFormation(formation);
+
+    function emptyLineup() {
+      var lu = {};
+      positions.forEach(function (p) { lu[p] = null; });
+      return lu;
+    }
+
+    var lineups = { 1: emptyLineup(), 2: emptyLineup(), 3: emptyLineup(), 4: emptyLineup() };
+    rows.forEach(function (r) {
+      if (r.q < 1 || r.q > 4) return;
+      var posId = posLabelToId(r.pos);
+      if (!posId) return;
+      var lu = lineups[r.q];
+      if (!lu.hasOwnProperty(posId)) return;
+      var pid = null;
+      if (r.name) {
+        pid = nameToId[r.name.toLowerCase().trim()] || null;
+        if (!pid && unmatched.indexOf(r.name) === -1) unmatched.push(r.name);
+      }
+      lu[posId] = pid;
+    });
+
+    return { formation: formation, lineups: lineups, unmatched: unmatched };
   }
 
   // ─── POST-GAME VIEW ───────────────────────────────────────────────────────
